@@ -1,0 +1,548 @@
+---
+title: "R-package Btrait: working with biological data and trait information"
+author: "Karline Soetaert and Olivier Beauchard"
+date: "18 November 2022"
+output: pdf_document
+vignette: >
+  %\VignetteIndexEntry{R-package Btrait: working with biological data and trait information}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE, warning=FALSE, message=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+require(Btrait)
+Rpacks <- c(citation(package="base"), citation(package="plot3D"), 
+            citation(package="Btrait"), citation(package="worms"))
+```
+
+# Package Btrait
+
+The R-package *Btrait* contains functions and data sets to work with density data, trait information and taxonomic relationships. 
+
+The package contains:
+
+* functions to work with a combination of species-density (or species-biomass) data, species-trait information, and taxonomy 
+* two data sets with density and biomass data of the macrobenthos\footnote{macrobenthos are animals that live in the sediment and that are generally larger than 1 mm} in the North Sea. 
+* several macrobenthos trait databases
+
+Here we explain how to work with the package functions using a small data set. 
+
+Another vignette deals with the density and trait databases in the package (*vignette ("BtraitData")*).   (to trigger this vignette in R, write: *vignette ("BtraitData")*). 
+
+# Density data
+
+Taxon density data record -for a certain taxon- how many individuals are present on a unit surface at a certain place (station).
+Rather than abundances, also biomasses, i.e. the summed weight of the individuals of that taxon, may be recorded. 
+Typically, but not always, the densities in a certain station will have been estimated several times (i.e. there are replicate measurements). 
+
+There are two ways to represent density datasets: in \emph{long} format and in \emph{wide} format. 
+
+* The *long* format is most often used to store density data; it has several columns (station, taxon, value, ...). This format is special in the sense that absences (0 densities) are NOT represented explicitly in the data. Thus, it is implicitly assumed that, when a taxon is not represented in the data, its density = 0. These implicit absences need to be taken into account when performing calculations with these data. 
+* In the *wide* format, each row represents the station (where the data were taken), while the columns represent the taxa (what), and the values are the densities or biomasses. In this format, the absences ARE represented, which make the format suitable for performing calculations. However, each time a new taxon is found in a station, the data of the other stations will also need to be changed (i.e. an extra column with 0 densities added). 
+
+## A small density dataset
+
+We start with a small density dataset, a *data.frame* with station, species, and density data, in long format. 
+
+In this data set, *st.a* has been sampled in 2000 and 2001 (i.e. 2 replicates), while *st.b* was sampled in 2002 only, *st.c* only in 2003. 
+
+Note also that there are two records on species "sp.1" for station "st.a" in 2001. 
+This is not uncommon in density data: perhaps another species was later reassigned to be "sp.1", or separate measurements (i.e. weighing) were done on two batches of individuals of this species. 
+
+```{r}
+S.density <- data.frame(
+  station = c("st.a","st.a","st.a","st.a","st.a","st.b","st.b","st.b","st.c"),
+  year    = c(2000  , 2000 , 2001 , 2001 , 2001,  2002 , 2002 , 2002 , 2003 ),
+  species = c("sp.1","sp.2","sp.1","sp.1","sp.4","sp.2","sp.3","sp.4","sp.4"),
+  density = c(    1,     2,     3,     1,     2,     5,     3,     1,     3)
+)
+```
+
+```{r, echo=FALSE}
+knitr::kable(S.density, caption="Data.frame with species density information", 
+             align="c", row.names=FALSE)
+```
+
+There are `r length(unique(S.density$species))` different species in this data set from `r length(unique(S.density$station))` different stations. 
+Note that not all species are present in all stations. For a certain station, absence of a species in the dataset means their density = 0.
+
+A complete representation of the data would be:
+
+```{r, echo=FALSE}
+SD.full <- with (S.density, 
+  addAbsences(
+    taxon      = data.frame(species=species), 
+    descriptor = cbind(station,year), 
+    value      = data.frame(density=density)))
+```
+
+```{r, echo=FALSE}
+SD.full <- SD.full[order(SD.full$station),]
+  knitr::kable(SD.full, caption="Species density with added absences", 
+             align="c", row.names=FALSE)
+```
+
+The same data, in *wide* format is:
+
+```{r, echo=FALSE}
+SD.wide <- with (S.density, 
+   l2wDensity(taxon=species, descriptor=cbind(station,year), value=density)
+)
+```
+
+```{r, echo=FALSE}
+knitr::kable(SD.wide, caption="Species density in wide format", 
+             align="c", row.names=FALSE)
+```
+
+and, averaged over years:
+
+```{r, echo=FALSE}
+SDW <- with (S.density, 
+  l2wDensity(taxon=species, descriptor=station, averageOver=year, value=density)
+)
+```
+
+```{r, echo=FALSE}
+knitr::kable(SDW, caption="Species density in wide format, averaged over years", 
+             align="c", row.names=FALSE)
+```
+
+# Taxonomic data
+
+The taxonomy records the relationships between the taxa. 
+
+Typically we order taxa in species, genus, family, order, class, and phylum level. 
+For real marine data, this information can be extracted from the world register of marine species, conveniently abbreviated into WoRMS. 
+
+In the WoRMS database, each taxon is also assigned a unique identifier (AphiaID). 
+The R-package *worms* allows to access this database from R.
+
+In *Btrait*, the taxonomy can be used in several ways: 
+
+* to fill in the gaps of the trait information, assuming that closely related taxa will share similar traits, and 
+* to estimate densities or trait composition on higher taxonomic levels. 
+
+In the dataset below, the species belong to 4 genera ("g.1", "g.2", "g.3", "g.4"), 3 families ("f.1", "f.2", "f.3"), 2 orders ("o.1", "o.2") and 1 class ("c.1").
+
+```{r}
+S.taxonomy <- data.frame(
+  species = c("sp.1","sp.2","sp.3","sp.4","sp.5","sp.6"),
+  genus   = c( "g.1", "g.2", "g.3", "g.3", "g.3", "g.4"),
+  family  = c( "f.1", "f.1", "f.2", "f.2", "f.2", "f.3"),
+  order   = c( "o.1", "o.1", "o.2", "o.2", "o.2", "o.2"),
+  class   = c( "c.1", "c.1", "c.1", "c.1", "c.1", "c.1")
+)
+```
+
+```{r, echo=FALSE}
+knitr::kable(S.taxonomy, caption="Data.frame with taxonomic information", 
+             row.names=FALSE)
+```
+
+
+# Trait data (taxa x trait)
+
+Traits assign certain properties to taxa, generally relating to how these taxa affect the ecosystem (these are called "functional effects traits"), or how the taxa deal with their environment and will react to changes in the environment, such as a disturbance (called "response traits"). 
+
+There are two ways in which to assign traits to species:
+
+* When in *crisp* format, each trait is assigned one value per species. 
+* When traits are in *fuzzy* format, a species can belong to several modalities within one trait; for each trait the sum of the modality proportions is $1$.
+
+It is possible to convert traits from fuzzy to crisp format, but the reverse conversion is not unambiguous.
+
+Note that it is customary to store trait data in *wide* format, where the taxa are the rows, and the trait modalities are the columns.
+
+## A fuzzy-coded trait dataset
+
+In the trait dataset (*S.traits*) inputted below, the species are represented by two traits (*T1*, *T2*); these traits have 3 (*T1_M1*, *T1_M2*, *T1_M3*) and 2 modalities (*T2_M1*, *T2_M2*) respectively. 
+For instance, trait 1 could be the depth of occurrence of the species, and its modalities "0-5cm", "5-10cm", and "10-15cm"; trait 2 could be the feeding type of the species, either "filterfeeding" or "depositfeeding".
+
+The trait information is stored in a *data.frame* with the names of the species in the first column, and the membership to each trait modality in the other columns. 
+
+Note: information on *sp.4* is lacking in the trait database; *sp.5* and *sp.6* from the trait database are not in the density dataset.
+
+```{r}
+S.traits <- data.frame(
+  species = c("sp.1","sp.2","sp.3","sp.5","sp.6"),
+  T1_M1   = c(0     , 0    ,   0  , 0.2  ,     1),
+  T1_M2   = c(1     , 0    , 0.5  , 0.3  ,     0),
+  T1_M3   = c(0     , 1    , 0.5  , 0.5  ,     0),
+  T2_M1   = c(0     , 0    ,   1  , 0.5  ,     1),
+  T2_M2   = c(1     , 1    ,   0  , 0.5  ,     0)
+)
+```
+
+```{r, echo=FALSE}
+knitr::kable(S.traits, caption="Data.frame with species trait information, fuzzy coded", 
+             align="c", row.names=FALSE)
+```
+
+As R has no knowledge on what these traits and modalities mean, a *data.frame* called *S.traits.lab* describes the modalities of each trait. 
+Here also a numerical value (*score*) is assigned to these modalities. 
+
+```{r}
+S.traits.lab <- data.frame(
+  colname  =c("T1_M1","T1_M2" ,"T1_M3",  "T2_M1",  "T2_M2"),
+  trait    =c("depth","depth" ,"depth",  "feeding","feeding"),
+  modality =c("0-5cm","5-10cm","10-15cm","filter", "deposit"), 
+  score    =c(2.5    , 7.5    , 12.5    , 1      , 2     )
+  )
+```
+
+```{r, echo=FALSE}
+knitr::kable(S.traits.lab, caption="Data.frame with trait descriptions", 
+             align="c", row.names=FALSE)
+```
+
+The trait *score* is required for recasting the fuzzy traits into crisp format:.
+
+```{r, echo=FALSE}
+FC <- fuzzy2crisp(trait=S.traits, trait.class= S.traits.lab$trait, trait.score=S.traits.lab$score)
+```
+
+```{r, echo=FALSE}
+knitr::kable(FC, caption="Trait dataset in crisp format, based on the trait score", 
+             align="c", row.names=FALSE)
+```
+
+## A crisp trait dataset
+
+While for traits that are fuzzy coded, one species can belong to different trait modalities, for traits in crisp (binary) format, a species can belong only to ONE modality within one trait. 
+
+Thus, a crisp trait *data.frame* contains only $0$s or $1$s (or TRUE/FALSE) for 'binary' traits. 
+Traits can also have a value for 'numerical' traits, but they can also be a factor or character string for 'categorical' traits.
+
+Examples of 'numerical' traits for a taxon are, e.g. mean biomass, mean longevity, respiration rate. 
+The feeding type to which a taxon belongs is a 'categorical' trait. 
+
+Here is an example of a crisp trait dataset:
+
+```{r}
+S.traits2 <- data.frame(
+  species   = c("sp.1"  ,"sp.2"   ,"sp.3"   ,"sp.5"  ,"sp.6"),
+  Feeding   = c("filter","deposit","deposit","grazer","filter"), # categorical
+  Longlived = c(TRUE    ,TRUE     ,FALSE    ,FALSE   ,TRUE),     # binary 
+  Weight    = c(0.1     ,0.5      ,5        ,2       ,10   )     # numerical 
+)
+```
+
+```{r, echo=FALSE}
+knitr::kable(S.traits2, caption="Data.frame with species trait information, crisp coded", 
+             align="c", row.names=FALSE)
+```
+
+This data set in "fuzzy" format needs more columns:
+
+```{r, echo=FALSE}
+CF <- crisp2fuzzy(S.traits2)
+```
+
+```{r, echo=FALSE}
+knitr::kable(CF, caption="Crisp trait dataset in fuzzy format", 
+             align="c", row.names=FALSE)
+```
+
+\newpage
+
+# Working with density data using Btrait functions
+
+We now demonstrate how to use the functions from the R-package Btrait to work with a combination of density, taxonomic and trait data 
+
+## Generating density summaries
+
+We first make two tables, recasting the density data from *long* into *wide* format, using function *l2wDensity*, and where we either keep the years (first example), or we average over the years (2nd example). 
+
+```{r}
+with(S.density,   # data in long format
+     l2wDensity(descriptor = data.frame(station, year), 
+                taxon      = species, 
+                value      = density)
+    )
+
+with(S.density, 
+     l2wDensity(descriptor  = station, 
+                averageOver = year, 
+                taxon       = species, 
+                value       = density)
+    )
+```
+
+The same can be done, but now returning the summaries in long format using the function *getDensity*:
+
+```{r}
+with(S.density, 
+     getDensity(descriptor = data.frame(station, year), 
+                taxon      = species, 
+                value      = density)
+    )
+
+with(S.density, 
+     getDensity(descriptor  = station, 
+                averageOver = year, 
+                taxon       = species, 
+                value       = density)
+    )
+```
+
+The Btrait functions to extract densities work as follows:
+
+* first the sum of the *value* is taken over *descriptor* x *taxon* combinations,
+* then the average is taken over the vector passed by argument *averageOver*, taking into account the hidden absences. 
+
+## Merging density with taxonomic data
+
+Base R has a convenient function to combine (merge) several datasets, based on common information. 
+
+We use the *merge* function to add taxonomic information at a higher taxonomic level to the density data. 
+
+In the code below, the density data, at species level is extended with taxonomic information of each species.
+
+When using this function, it is good practice to explicitly specify the name of the column on which we need to merge the two datasets. In our example, the column called "species" is the only column name that both datasets (S.density and S.taxonomy) have in common, so in theory we do not need to specify on which column the merger is done (argument "by"), but here we do this for clarity.   
+
+```{r}
+S.density.tax <- merge(S.density, 
+                       S.taxonomy, 
+                       by="species")
+head(S.density.tax)
+```
+
+Once the merge has been done, it is simple to generate tables with densities calculated on higher taxonomic level. 
+
+As an example, we create density at family level, taking yearly averages:
+
+```{r}
+with(S.density.tax, 
+     getDensity(descriptor  = station, 
+                averageOver = year, 
+                taxon       = family, 
+                value       = density)
+)
+```
+
+The merged dataset can also be used to generate summaries based on taxonomic identity. 
+Below we request the summed densities, on family level, for all taxa belonging to a particular order (*o.2*). We use the argument *subset* to extract the data
+
+```{r}
+with(S.density.tax, 
+     getDensity(descriptor  = station, 
+                averageOver = year, 
+                taxon       = family, 
+                subset      = (order == "o.2"),
+                value       = density)
+)
+```
+
+Often we want to keep the names of the input data in the output, which we can achieve by passing the arguments as *named lists*:
+
+```{r}
+with (S.density.tax, 
+  getDensity(descriptor  = list(station=station), 
+             taxon       = list(family =family), 
+             averageOver = year, 
+             value       = list(density=density))
+)
+```
+
+# Working with trait data.
+
+## From wide to long format
+
+While trait data are conveniently stored in wide format, sometimes it may be easier to look at the trait data in long format. 
+This format can easily be generated from the wide format:
+
+```{r}
+S.traits.long <- w2lTrait(
+            wide        = S.traits, 
+            trait.names = S.traits.lab[,c("trait", "modality")])
+S.traits.long[order(S.traits.long$species),]
+```
+
+## From fuzzy to crisp format
+
+The example trait database (S.traits) is fuzzy-coded, meaning that one trait is represented by several modalities for which a taxon can have partial membership. 
+For instance, trait T1 (depth) for sp.2 can be either expressed as modality M1 or M2, etc...
+
+For summaries it may be more instructive to have one number for each trait, i.e. to represent the trait data in crisp format. 
+To do this, we need to pass the trait.class that each column belongs to, and the score that needs to be assigned to each modality.
+
+```{r}
+S.traits.crisp <- fuzzy2crisp(
+            trait       = S.traits, 
+            trait.class = S.traits.lab$trait, 
+            trait.score = S.traits.lab$score)
+knitr::kable(S.traits.crisp, 
+       caption="Data.frame with species traits in crisp format", 
+       align="c", row.names=FALSE)
+```
+
+## From crisp to fuzzy format
+
+It is also possible to cast traits from fuzzy to crisp format:
+
+```{r}
+crisp2fuzzy(S.traits.crisp)
+```
+
+## Extending traits based on taxonomic information
+
+The trait database has information for species "sp.1", "sp.2", "sp.3" that are present in our density data, but it lacks data for species "sp.4". 
+
+If we need traits for each species, we can use the taxonomic relationships of the species. For instance "sp.4" belongs to the same genus as "sp.3" and "sp.5", so "plausible" values for the traits of species "sp.4" can be calculated as the mean of the two other members of the genus. 
+
+Using function *getTrait*, it suffices to pass the taxonomy to do this.
+
+```{r}
+taxaList <- unique(S.density$species)
+getTrait(   taxon    = taxaList,
+            trait    = S.traits,  
+            taxonomy = S.taxonomy)
+```
+
+This function proceeds in two steps: 
+
+* first the traits are extended with information on higher taxonomic levels (using function *extendTrait*), provided that information is not yet in the trait database,
+* then, for each taxon that is not present in the trait database, the traits on the closest taxonomic level are used. 
+For instance, for an  unrecorded species, it is first checked if the trait is known on genus level, if not, family level and so on.
+
+In our case, species "sp.4" belongs to genus "g.3", so in lack of trait information for "sp.4", the traits from "g.3" will be used; the latter estimated as the average of traits for species "sp.3" and "sp.5", for which trait information is known.
+
+```{r}
+S.traits.extended <- extendTrait(
+            trait    = S.traits, 
+            taxonomy = S.taxonomy)
+S.traits.extended
+
+getTrait(   taxon    = unique(S.density$species),
+            trait    = rbind(S.traits, S.traits.extended), 
+            taxonomy = S.taxonomy)
+```
+
+We can also use the taxonomy to generate mean trait modalities on higher taxonomic levels:
+
+```{r}
+# This does not work, as these genera are not in the traits database
+getTrait( taxon    = c("g.1", "g.2", "g.3"),
+          trait    = S.traits)
+
+getTrait( taxon    = c("g.1", "g.2", "g.3"),
+          trait    = S.traits,
+          taxonomy = S.taxonomy)
+
+```
+
+In the first statement, we deliberately forgot to add the taxonomic relationships; as none of the genera are explicitly included in the trait database S.traits, this returns a table with NAs.
+
+In the second statement, the traits on genus level are estimated as averages of species traits.
+
+# From taxon density to trait density
+
+Often we want to combine the density with the trait information, to find the mean values of traits at certain locations. 
+
+These *community weighted mean* trait scores for each station are estimated by combining the density, taxonomy, and trait data. 
+
+This can be done in one step, using function *getTraitDensity*.
+
+* When, for fuzzy-coded traits, we also pass the trait *classes* and trait *scores*, then the fuzzy traits will be cast in crisp format; when we do NOT pass this information, then the result will remain in fuzzy format. 
+* If we pass taxonomical information of the taxa, then the trait scores for unknown species are estimated based on taxonomic closeness.
+
+In the next example, we combine the yearly-averaged density data in *S.density*, with the fuzzy-coded trait database *S.traits*. This trait database records 5 modalities of 2 traits (as columns). The data.frame *S.traits.lab* describes to which trait these modalities belong. By passing this information, the result will be in crisp format. 
+
+```{r}
+cwm <- getTraitDensity(
+        descriptor  = S.density$station, 
+        taxon       = S.density$species,
+        averageOver = S.density$year,
+        value       = S.density$density, 
+        trait       = S.traits,             # fuzzy coded traits per station
+        trait.class = S.traits.lab$trait,   # fuzzy trait class for S.trait columns
+        trait.score = S.traits.lab$score,   # modality value 
+        taxonomy    = S.taxonomy)
+knitr::kable(cwm, row.names=FALSE)
+```
+
+Without the taxonomy, the trait scores for station "st.c" cannot be calculated, as trait information is lacking for "sp.4", the only taxon present in this station. 
+Also the scores for the other stations will differ, as they are estimated without "sp.4".
+
+```{r}
+cwm2 <- getTraitDensity(
+         descriptor  = S.density$station, 
+         averageOver = S.density$year,
+         taxon       = S.density$species, 
+         value       = S.density$density, 
+         trait       = S.traits,             
+         trait.class = S.traits.lab$trait,    
+         trait.score = S.traits.lab$score)
+knitr::kable(cwm2, row.names=FALSE)
+```
+
+If we do not pass the trait classes and scores, then the function *getTraitDensity* will return the trait scores in fuzzy format. 
+These fuzzy traits can then later be recast in crisp format, which gives the stations trait scores as before.
+
+```{r}
+cwm.fuz <- getTraitDensity(
+            descriptor  = S.density$station, 
+            averageOver = S.density$year,
+            taxon       = S.density$species, 
+            value       = S.density$density, 
+            trait       = S.traits,           # fuzzy coded traits per station
+            taxonomy    = S.taxonomy)
+knitr::kable(cwm.fuz, row.names=FALSE)
+
+fuzzy2crisp(trait      = cwm.fuz, 
+           trait.class = S.traits.lab$trait,   
+           trait.score = S.traits.lab$score)
+```
+
+# Show results
+
+For plotting, we need the coordinates of the stations (longitude *x*, latitude *y*): 
+
+```{r}
+S.stations <- data.frame(
+  station = c("st.a","st.b","st.c"),
+  x       = c(   3.1,   3.2,   3.5),
+  y       = c(  52.2,  53.7,  53.4)
+)
+```
+
+```{r, echo=FALSE}
+knitr::kable(S.stations, caption="Data.frame with station positions", 
+             align="c", row.names=FALSE)
+```
+
+The mean trait values per station can be plotted using function *mapBtrait*. 
+
+For this function to work, we need to add the stations coordinates to the community weighted mean data. 
+We use R-function *merge* for this; the column on which to merge the station and cwm data is the first one for both datasets (here we do not specify the name of the common column but rather its position).
+
+```{r, fig.height=4, fig.width=8}
+Stations.traits <- merge(S.stations, cwm, by=1)
+
+par(mfrow=c(1,2))
+nscore <- colnames(cwm)
+nunits <- c("cm", "-")
+for (i in 2:length(nscore))
+ mapBtrait(x      = S.stations$x,    #x-positions
+           y      = S.stations$y,    #y-positions
+           colvar = cwm[,i],         #color-variable
+           
+           contours=MWTL$contours,   #contourlines
+           draw.levels=TRUE,
+           
+           main    =nscore[i],       #main title
+           clab    =nunits[i],       #title above color bar
+           pch=16, cex=2)
+```
+
+# References
+
+Beauchard O, Brind’Amour A, Schratzberger M, Laffargue P, Hintzen NT, Somerfield PJ, Piet G (2021) A generic approach to develop a trait-based indicator of trawling-induced disturbance. Mar Ecol Prog Ser 675:35-52. https://doi.org/10.3354/meps13840 
+ 
+Wilson, R. J., Speirs, D. C., Sabatino, A., and Heath, M. R. (2018). A synthetic map of the north-west European Shelf sedimentary environment for applications in marine science. Earth Sys. Sci. Data 10, 109–130. doi: 10.5194/essd-10-109-2018
+
+```{r, results='asis', echo=FALSE}
+print(Rpacks, style="text")
+```

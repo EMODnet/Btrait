@@ -1,0 +1,740 @@
+---
+title: "Benthic density and trait databases in R-package Btrait"
+author: "Karline Soetaert and Olivier Beauchard"
+date: "18 November 2022"
+output:
+  pdf_document: default
+  word_document: default
+vignette: >
+  %\VignetteIndexEntry{Benthic density and trait databases in R-package Btrait} 
+  %\VignetteEngine{knitr::rmarkdown} 
+  %\VignetteEncoding{UTF-8}"
+---
+
+```{r setup, include=FALSE, message=FALSE, warning=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+require(Btrait)
+Rpacks <- c(citation(package="base"), 
+  citation(package="plot3D"), 
+  citation(package="Btrait"))
+```
+
+# Introduction. 
+
+The R-package *Btrait* facilitates working with a combination of biological density, trait, and taxonomic data. It contains:
+
+* functions for working with density and trait data (*getDensity*, *getTraits*, *getTraitDensity*, ...),
+* two data sets with macrobenthos species density and biomass data from the Northsea (*MWTL*, *NSBS*),
+* data sets with functional trait data (*Traits_nioz*, *Traits_cefas*, *Traits_Db*, *Traits_irr*).
+
+The main vignette *Btrait* demonstrates how to use the functions in the package using a small data set. 
+
+This vignette introduces the benthic databases.
+
+# The Northsea macrobenthos density data
+
+The macrobenthos are animals living in the sediment and that are retained on a sieve with mesh size of 1mm. 
+They are important for the ecosystem services they deliver, i.e. by their impact on biogeochemistry (nutrient dynamics), and as they are an important food source to fishes.
+
+*Btrait* contains two data sets that contain Northsea macrobenthos density and biomass: 
+
+* the MWTL data, (one or three-) yearly data from the Dutch part of the North Sea, and 
+* the NSBS (Northsea Benthos Survey) data, a one-time survey that covers the entire North Sea.
+
+## The MWTL dataset
+
+```{r, echo=FALSE}
+DTS <- unique(MWTL$density[,c("station", "year")])
+yy <- table(DTS$year)
+ss <- table(DTS$station)
+```
+
+The Dutch Rijkswaterstaat (RWS) has performed regular macrobenthos sampling in the Dutch part of the Northsea, from 1995 till 2018.  This activity is called "MWTL monitoring" \footnote{MWTL: Monitoring Waterstaatkundige Toestand des Lands}. 
+
+The monitoring was done on a yearly basis from 1995 till 2010, after which sampling was less frequent, occurring in 2012, 2015, 2018. Not all stations were always sampled though; `r length(which(ss==18))` stations were sampled 18 rather than 19 times; another `r length(which(ss<18))` stations were sampled less or equal than 12 times.
+
+The sampling region extends inbetween (`r range(MWTL$stations$x)`) dg East and (`r range(MWTL$stations$y)`) dg North, with water depths varying in between (`r range(MWTL$abiotics$depth)`) m.
+
+There are `r nrow(MWTL$density)` records in this macrofauna data set for `r length(unique(MWTL$density$station))` stations. 
+
+Sampling started in `r min(MWTL$density$date)`; the last sample taken in `r max(MWTL$density$date)`. 
+
+Taxonomy was adjusted to account for rare taxa, determined on a high taxonomic level.
+
+The sampled organisms belonged to `r length(unique(MWTL$density$taxon))` different taxa (after adjustment); before adjustment `r length(unique(MWTL$density$taxon.original))` taxa were distinguished.
+
+Biomass, expressed in ash-free dry weight per square m ([gDWT/m2]), was estimated at similar taxonomic level as density estimates.
+
+The data from these monitoring campaigns are available from RWS; they have been and made available in the framework of the EMODNET biology project. 
+
+Note that this database is atypical in the sense that sometimes the station x sampling date x taxon can be present multiple times. This is because sometimes organisms of the same taxon but very different sizes were weighed separately, or because taxa were later reclassified to another taxon that was already available. One example of such double occurrence is:
+
+```{r}
+DOUBLE <- subset(MWTL$density, 
+   subset=(station=="TERHDE1" & year==2018 & taxon == "Donax vittatus"))
+
+knitr::kable(DOUBLE, caption = "example of a double occurrence in the MWTL dataset",
+             row.names=FALSE)
+```
+
+## The NSBS dataset
+
+In 1986, a large macrofauna survey took place covering the entire Northsea (Heip et al., 1992). 
+Benthic samples were taken in a standardised way, on a regular grid covering the whole of the North Sea, and analysed by scientists from 10 laboratories. 
+Extensive work was done to standardise taxonomy and identifications across the different laboratories.
+
+The sampling region for these data extends inbetween (`r range(NSBS$stations$x)`) dg East and (`r range(NSBS$stations$y)`) dg North, depths varying inbetween (`r range(NSBS$abiotics$depth, na.rm=TRUE)`) m.
+
+There are `r nrow(NSBS$density)` records in this macrofauna data set for `r length(unique(NSBS$density$station))` stations. 
+
+Sampling took place in `r min(NSBS$density$date)`; the actual sampling time was not recorded. 
+
+The sampled organisms belonged to `r length(unique(NSBS$density$taxon))` different taxa.
+
+Biomass, expressed in ash-free dry weight per square m ([gDWT/m2]), was estimated at low taxonomic level, distinguishing between Polychaeta (class), Mollusca, Echinodermata, Crustacea (phylum) or even at higher level (Animalia). 
+As this is at much lower resulution as density estimates, biomass is stored in a separate data.frame.
+
+## Structure of the density data sets
+
+The density data have been gathered in a list called *MWTL* and *NSBS* that contains a number of data.frames:
+
+* *MWTL\$density*, *NSBS\$density*, *NSBS\$biomass*: the species (taxon) density and biomass data, in long format. The *MWTL\$density* data.frame, provides stations, date, taxon, density (ind/m2) and biomass (ashfree dry weight/m2). The column "taxon.original" refers to the original taxon, and "taxon" the selected taxon after 'taxonomic adjustment' (see help file, *help("MWTL\$density")*, for how taxa were adjusted). Density and biomass data are in separate dataframes for the NSBS data.
+* *MWTL\$stations*, *NSBS\$stations*: coordinates of the stations referred to in *MWTL\$density* and *NSBS\$density*, in WGS84 format. 
+* *MWTL\$sediment*, *MWTL\$abiotics*, *MWTL\$types*, *NSBS\$abiotics*: abiotic conditions from various sources (Wilson et al., 2018; MWTL, Deltares).
+* *MWTL\$contours*: bathymetric contour lines for quick plotting of the data. Contours were generated by applying the *contourLines* function from base R (R core team 2021), and are based on high-resolution GEBCO bathymetry data from the Northsea.
+
+The taxonomic relationships between taxa is in a data.frame called  *Taxonomy*, as generated with the *worms* package (Holstein, 2018).
+
+The positions and names of the MWTL and NSBS stations is in the following figures, where the colors either denote the area (MWTL) or water depths (NSBS). 
+
+Each of these data.frames, has a *description* in its attributes, which can be extracted with the function *metadata*. 
+
+```{r}
+metadata(MWTL$density)
+```
+
+## Station positions
+
+We use function *mapBtrait* to generate figures with station positions, passing the respective contours for each dataset. 
+The R-function *merge* is used to augment the data.frame *types* (that contains the area to which each station belongs), with the longitudes (x) and latitudes (y) in the *stations* data.frame. 
+
+```{r, fig.height=14, fig.width=12}
+MWTLab   <- merge(MWTL$stations, 
+                  MWTL$types, by="station")
+
+MWTLab$area <- factor(MWTLab$area)
+
+par(las=1, oma=c(0,0,1,0), cex.axis=1.2, cex.main=2, cex.lab=1.2)
+with(MWTLab, 
+  mapBtrait(contours=MWTL$contours, x=x, y=y, col=c(1:4)[area], 
+            pch=c(15:18)[area], cex=2, main="MWTL station positions", 
+            clab="m", draw.levels=TRUE))
+with(MWTL$stations, text(x, y+0.05, label=station, cex=0.8, adj=0))
+legend ("bottomright", legend=levels(MWTLab$area), col=1:4, pch=15:18, cex=2)
+```
+
+```{r, fig.height=14, fig.width=12}
+NSBSabio <- merge(NSBS$stations, NSBS$abiotics, by="station")
+
+par(las=1, oma=c(0,0,1,0), cex.axis=1.2, cex.main=2, cex.lab=1.2)
+with(NSBSabio, 
+  mapBtrait(contours=NSBS$contours, x=x, y=y, colvar=depth, 
+            pch=16, cex=2, main="NSBS station positions", 
+            clab="m", draw.levels=TRUE))
+# remove the "ICES" from the station names
+with(NSBS$stations, text(x=x+0.05, y=y+0.08, 
+     label=substr(station, 5, 7), cex=0.9, adj=0))
+```
+
+## Consistency of the density databases
+
+We test the consistency of both data sets, by looking at the total density, biomass, and number of taxa of stations that were sampled in common.
+
+To find the common stations, we merge the station information of both datasets, by the coordinates (x, y):
+
+```{r}
+Common <- merge(MWTL$stations, 
+                NSBS$stations, 
+                by=c("x", "y"))
+colnames(Common)[3:4] <- c("MWTL", "NSBS")
+knitr::kable(Common, caption="stations in common by MWTL and NSBS dataset",
+             row.names=FALSE)
+```
+
+To test whether the density, biomass and number of taxa are comparable in both datasets,
+we estimate these quantities for the common stations and plot them versus one another, adding the 1:1 line.
+
+The biomass and density data are compatible. The total *number of taxa* found in the NSBS data set is much lower than in the MWTL data set, but this is not surprising, as the MWTL data were sampled on a regular basis over 19 years, whereas the NSBS data were gathered in a one-time event.  
+
+```{r, echo=FALSE}
+# density
+NSBScommon  <- with(NSBS$density, 
+      getSummary(subset     = station %in% Common$NSBS,   # need only common stations
+                 descriptor = list(station = station),
+                 taxon      = taxon,
+                 value      = density))
+
+MWTLcommon <- with(MWTL$density, 
+     getSummary(subset      = station %in% Common$MWTL,
+                descriptor  = list(station = station),
+                taxon       = taxon,
+                value       = density,
+                averageOver = year))
+
+ALLdens <- merge(merge(NSBS$stations, NSBScommon$density),
+                 merge(MWTL$stations, MWTLcommon$density), 
+                 by = c("x", "y"))
+names(ALLdens)[c(3:6)] <- c("NSBSstation", "NSBSdensity", "MWTLstation", "MWTLdensity")
+
+# taxonomy
+ALLtax <- merge(merge(NSBS$stations, NSBScommon$taxa),
+                merge(MWTL$stations, MWTLcommon$taxa), by=c("x", "y"))
+names(ALLtax)[c(3:6)] <- c("NSBSstation", "NSBSdiversity", "MWTLstation", "MWTLdiversity")
+
+# biomass
+NSBScommon.B  <- with(NSBS$biomass,     # biomass is in different dataframe
+      getSummary(subset     = station %in% Common$NSBS,
+                 descriptor = list(station = station),
+                 taxon      = taxon,
+                 value      = biomass))
+
+MWTLcommon.B <- with(MWTL$density, 
+     getSummary(subset      = station %in% Common$MWTL,
+                descriptor  = list(station = station),
+                taxon       = taxon,
+                value       = biomass,
+                averageOver = year))    # take the average over the years
+
+ALLbiom <- merge(merge(NSBS$stations, NSBScommon.B$density),
+                merge(MWTL$stations, MWTLcommon.B$density), by=c("x", "y"))
+names(ALLbiom)[c(3:6)] <- c("NSBSstation", "NSBSbiomass", "MWTLstation", "MWTLbiomass")
+```
+
+```{r, fig.height=9, fig.width=8, echo=FALSE}
+par(mfrow=c(2,2), oma=c(0,0,3,0))
+plot(ALLdens$NSBSdensity, ALLdens$MWTLdensity, main="Total density", 
+     xlab="NSBS density, ind/m2", ylab="MWTL density, ind/m2",type="n")
+text(ALLdens$NSBSdensity, ALLdens$MWTLdensity, pch=as.character(1:14), cex=2)
+abline(a=0,b=1)
+
+plot(ALLtax$NSBSdiversity, ALLtax$MWTLdiversity, main="Number of taxa", 
+     xlab="NSBS diversity, #taxa", ylab="MWTL diversity, # taxa", type="n")
+text(ALLtax$NSBSdiversity, ALLtax$MWTLdiversity, pch=as.character(1:14), cex=2)
+abline(a=0,b=1)
+plot(ALLbiom$NSBSbiomass, ALLbiom$MWTLbiomass, main="Total biomass", 
+     xlab="NSBS biomass, gAFDW/m2", ylab="MWTLbiomass, gAFDW/m2",type="n")
+text(ALLbiom$NSBSbiomass, ALLbiom$MWTLbiomass, pch=as.character(1:14), cex=2)
+abline(a=0,b=1)
+plot(c(0,1), c(0,1), xlab="", ylab="", axes=FALSE, type="n")
+legend (legend=paste(as.character(1:14), "  ", Common[,"NSBS"], 
+                     "  ", Common[,"MWTL"]), x="center")
+mtext(side=3, outer=TRUE, line=1, "MWTL versus NSBS comparison", cex=2)
+```
+
+In the figures below, maps of total density and number of taxa are created for both data sets. 
+
+```{r}
+MWTL.summ <-  with (MWTL$density, 
+    getSummary(descriptor  = station, 
+               averageOver = year, 
+               taxon       = taxon, 
+               value       = density))
+
+NSBS.summ <-  with (NSBS$density, 
+    getSummary(descriptor = station, 
+               taxon      = taxon, 
+               value      = density))
+```
+
+```{r, fig.width=11, fig.height=10}
+par(mfrow=c(2,2))
+par(las=1, oma=c(1,1,1,1), cex.main=2)
+
+with(merge(MWTL$stations, MWTL.summ$density, by=1), 
+  mapBtrait(contours=MWTL$contours, x=x, y=y, colvar=density, 
+            pch=18, cex=2, main="MWTL total density",  
+            clab="ind/m2", draw.levels=TRUE))
+with(merge(NSBS$stations, NSBS.summ$density, by=1), 
+  mapBtrait(contours=NSBS$contours, x=x, y=y, colvar=density, 
+            pch=18, cex=2, main="NSBS total density", 
+            clab="ind/m2", draw.levels=TRUE))
+
+with(merge(MWTL$stations, MWTL.summ$taxa, by=1), 
+  mapBtrait(contours=MWTL$contours, x=x, y=y, colvar=taxa, 
+            pch=18, cex=2, main="MWTL number of taxa", 
+            clab="/m2", draw.levels=TRUE))
+with(merge(NSBS$stations, NSBS.summ$taxa, by=1), 
+  mapBtrait(contours=NSBS$contours, x=x, y=y, colvar=taxa, 
+            pch=18, cex=2, main="NSBS number of taxa", 
+            clab="/m2", draw.levels=TRUE))
+```
+
+\newpage
+
+# Benthic trait databases
+
+Four benthic trait datasets are included in R-package *Btrait*:
+
+* Beauchard et al. (2021, in press) compiled `r length(unique(metadata(Traits_nioz)$trait))` traits from `r nrow(Traits_nioz)` taxa. The traits comprise both "functional effects" traits, which affect ecosystem properties, and "response" traits, which affect a species’ response from changes in the environment, such as disturbance. The traits are fuzzy coded; taxonomic level is mainly on species level. This extensive trait database is called *Traits_nioz*. 
+* Clare et al (2022) compiled `r length(unique(metadata(Traits_cefas)$trait))` traits from `r nrow(Traits_cefas)` taxa; mainly on genus level. These fuzzy coded traits are in *Traits_cefas*. 
+* Traits necessary to estimate the Bioturbation potential of `r nrow(Traits_Db)` taxa were compiled by Queiros et al 2013; these data were extended by data from ilvo (courtesy Gert van Hoey). The traits in this data set are numerical traits, i.e. a value is assigned to the reworking (*Ri*), mobility (*Mi*) and feeding type (*Fti*) traits. Many traits are recorded at species level. These traits are in *Traits_Db*. 
+* Traits necessary to estimate the Bio-irrigation potential  (as in Wrede et al., 2018) were derived from the nioz trait database; it contains numeric values for bottom traits (*BT*), for injection depth (*ID*), and for feeding type (*FT*), for `r nrow(Traits_irr)` taxa. The traits in this data set are numerical traits, i.e. a value is assigned to them.  These traits are in *Traits_Irr*. 
+
+## Species groups
+
+The data.frame *Groups* contains 11 typological species groups representing sea floor functions, as derived from a cluster analysis on species traits by Beauchard et al. (in press).
+
+## Structure of the trait databases
+
+The trait information is stored in a ($taxa \times traits$) data.frame, where the first column represents the taxon name, and subsequent columns have the trait scores for the various trait modalities; the column names represent the trait modalities. 
+
+For example, the first part of the NIOZ trait data is:
+
+```{r}
+head(Traits_nioz, n=c(3,3))
+```
+
+where *ET1.M1* is shorthand for modality 1 of the effect trait 1.
+
+For each trait database, the meaning of the traits and the modalities is explained in the attribute *description* of the data.frame, which can be extracted with the function *metadata*. Below are the first two rows from the description in the *Traits_nioz*:
+
+```{r}
+head(metadata(Traits_nioz), n=2)
+```
+
+The *description* attribute is a data.frame with the following columns: 
+*colname*, *trait*, *modality*, *indic*, *value*, *score* and *units*. 
+
+Here 
+\itemize{
+ \item{colname} refers to the column name in the main database, 
+ \item{trait} refers to the trait class, 
+ \item{modality} describes the modality for the trait class, 
+ \item{indic} assigns a number for each trait class, 
+ \item{score} is a number between 0 and 1, denoting the vulnerability of the taxon to fishing for response traits (RT), or that relate to the complexity or size for effect traits (ET). 
+ \item{value} represents an average value for the modality class; for unitless modalities, it is equal to *score*. For motility: a score from 0 (sessile) to 1 (swimmer) is given;  the higher the score, the more mobile the taxon. For feeding type, the score relates to complexity, and ranges from 0 (depositfeeding) to 1 (carnivore/scavenger) - this is somewhat arbitrary,
+ \item{units} units for each trait value.
+}
+
+Finding traits for macrofauna taxa is a lot of work, and many of the taxa that are recorded in the benthos databases are not represented in the trait databases.
+
+With respect to the northsea data sets (MWTL and NSBS) for instance, the percentage of taxa not represented in the trait databases is:
+
+```{r, echo=FALSE}
+NR <- data.frame(
+  MWTL = c(nioz  = sum(ii <- !unique(MWTL$density$taxon) %in% Traits_nioz$taxon )/length(ii),
+           cefas = sum(ii <- !unique(MWTL$density$taxon) %in% Traits_cefas$taxon)/length(ii),
+           Db    = sum(ii <- !unique(MWTL$density$taxon) %in% Traits_Db$taxon   )/length(ii))*100,
+  NSBS = c(nioz  = sum(ii <- !unique(NSBS$density$taxon) %in% Traits_nioz$taxon )/length(ii),
+           cefas = sum(ii <- !unique(NSBS$density$taxon) %in% Traits_cefas$taxon)/length(ii),
+           Db    = sum(ii <- !unique(NSBS$density$taxon) %in% Traits_Db$taxon   )/length(ii))*100)
+knitr::kable(NR,
+             row.names=FALSE)
+```
+
+Note that the low presence of the species in the cefas Trait dataset is due to the fact that this dataset has the traits recorded on *genus* level, while the MWTL and NSBS datasets provide data mainly at *species* level.
+
+## Taxonomy
+
+A taxonomic tree that comprises the taxonomic information for all taxa in the trait databases and in the density databases is included in database *Taxonomy*.
+
+The names of the taxa in all databases has been checked with the worms database, using R-package *worms* (Holstein, 2018).
+
+## Consistency of the trait databases
+
+A number of traits are present in both the cefas and nioz datasets; they are 
+
+* Body Length (nioz) and Maximum size (cefas).
+* Life span (nioz) and Lifespan (cefas).
+* Substratum depth distribution (nioz) and Sediment position (cefas).
+
+Both trait datasets also record the feeding type/feeding modes. 
+
+These data are represented by:
+
+```{r}
+cefas_select <- subset(metadata(Traits_cefas), 
+     trait %in% c("Maximum size", "Lifespan", "Sediment position"))
+nioz_select <- subset(metadata(Traits_nioz), 
+     trait %in% c("Body length", "Life span", "Substratum depth distribution"))
+
+knitr::kable(cefas_select[,c(1,2,3,5,7)], caption="CEFAS traits in common",
+             row.names=FALSE)
+knitr::kable(nioz_select [,c(1,2,3,5,7)], caption="NIOZ traits in common",
+             row.names=FALSE)
+```
+
+The traits in the cefas database are now matched with those in the nioz database, with function *getTrait*. 
+The species data in the nioz database are calculated on genus level, so that they can be compared with the cefas data. 
+This is done by passing the taxonomic tree up to genus level. For a large number of genera in the cefas database, the traits could not be found; they are removed (they are NA in the returned data).
+
+```{r}
+# Select nioz traits for the taxa in the cefas database
+TR_nioz <- getTrait(
+  taxon    = Traits_cefas$taxon,   
+  trait    = Traits_nioz[,c("taxon", nioz_select$colname)],
+  taxonomy = Taxonomy[,c("taxon", "genus")]
+  )
+TR_nioz <- na.omit(TR_nioz)
+TR_nioz <- TR_nioz[order(TR_nioz$taxon),]
+```
+
+Of the `r nrow(Traits_cefas)` taxa in the cefas data set, the traits of only `r nrow(TR_nioz)` taxa could be calculated from the nioz data.
+
+The data are converted to crisp format, and merged with the crisp cefas data. 
+
+```{r}
+trnioz <- fuzzy2crisp(
+  trait       = TR_nioz,
+  trait.class = nioz_select$trait,
+  trait.score = nioz_select$value
+)
+trcefas <- fuzzy2crisp(  
+  trait       = Traits_cefas[,c("taxon", cefas_select$colname)],
+  trait.class = cefas_select$trait,
+  trait.score = cefas_select$value
+)
+trall <- merge(trnioz, trcefas, by=1)
+dim(trall)
+trall[1:2,]
+```
+
+The feeding type in the nioz data and the feeding mode from cefas are extracted and made consistent. 
+
+```{r, echo=FALSE}
+nioz_FT  <- subset(metadata(Traits_nioz), 
+                   trait == "Feeding type")
+cefas_FT <- subset(metadata(Traits_cefas), 
+                   trait == "Feeding mode")
+knitr::kable(cefas_FT, caption="CEFAS feeding types",
+             row.names=FALSE)
+knitr::kable(nioz_FT, caption="NIOZ feeding types",
+             row.names=FALSE)
+
+FT_nioz <- getTrait(
+  taxon    = Traits_cefas$taxon,   
+  trait    = Traits_nioz[,c("taxon", nioz_FT$colname)],
+  taxonomy = Taxonomy[,c("taxon", "genus")]
+  )
+FT_nioz <- na.omit(FT_nioz)
+FT_nioz <- FT_nioz[order(FT_nioz$taxon),]
+#head(FT_nioz,n=c(2,4))
+colnames(FT_nioz)[-1] <- paste(nioz_FT$modality, "nioz", sep="")
+FT_cefas <- Traits_cefas[,c("taxon", cefas_FT$colname)]
+FT <- merge(FT_nioz, FT_cefas, by=1)
+FT$'Deposit feedercefas'      <- FT$f_Surface_deposit + FT$f_Subsurface_deposit
+FT$'Suspension feedercefas'   <- FT$f_Suspension
+FT$'Carnivore/Scavengercefas' <- FT$f_Scavenger+ FT$f_Predator
+```
+
+The consistency of the trait databases is shown by plotting the deviation between both datasets. 
+These deviations are very close to 0, showing that both datasets are comparable.
+
+```{r, fig.width=8, fig.height=8, echo=FALSE, fig.cap="Comparison of common traits in the nioz and cefas database"}
+par(mfrow=c(2,3))
+hist(FT$'Deposit feedercefas'- FT$'Deposit feedernioz', n=30, 
+  main=c("Depositfeeder mismatch", "(cefas-nioz)"))
+hist(FT$'Suspension feedercefas'- FT$'Suspension feedernioz', n=30,
+  main=c("Suspensionfeeder mismatch", "(cefas-nioz)"))
+hist(FT$'Carnivore/Scavengercefas'- FT$'Carnivore/Scavengernioz',n=30, 
+  main=c("Carnivore+Scavenger mismatch", "(cefas-nioz)"))
+with(trall, plot(Body.length, Maximum.size/10, pch=16, cex=2,
+  xlab="(nioz)", ylab="(cefas)", main="maximum size, cm"))
+abline(coef=c(0,1))
+with(trall, plot(Life.span, Lifespan, pch=16, cex=2,
+  xlab="(nioz)", ylab="(cefas)", main="life span, years"))
+abline(coef=c(0,1))
+with(trall, plot(Substratum.depth.distribution, Sediment.position, pch=16, cex=2,
+  xlab="(nioz)", ylab="(cefas)", main="depth distribution, cm"))
+abline(coef=c(0,1))
+```
+
+```{r, echo=FALSE}
+SUMM <- rbind(
+  DepositF  =summary(FT$'Deposit feedercefas'      - FT$'Deposit feedernioz'),
+  SuspF     =summary(FT$'Suspension feedercefas'   - FT$'Suspension feedernioz'),
+  Carniv    =summary(FT$'Carnivore/Scavengercefas' - FT$'Carnivore/Scavengernioz'),
+  Bodylength=summary(trall$Body.length - trall$Maximum.size/10),
+  Lifespan  =summary(trall$Life.span   - trall$Lifespan),
+  Bodylength=summary(trall$Substratum.depth.distribution - trall$Sediment.position)
+  )
+knitr::kable(SUMM, caption="statistics of deviations between cefas and nioz trait data",
+             row.names=FALSE)
+```
+
+\newpage
+
+# Combining density and trait data
+
+## Community Weighted Mean (CWM) of MWTL Northsea data based on cefas traits. 
+
+The Community Weighted Mean (CWM) of traits is estimated, based on the (stations x taxon density) and (taxon x traits) matrix; we use the cefas data.
+In the function *getTraitDensity*, we pass the value of the modalities (trait.score) of the trait classes, so that the average modality value will be calculated. 
+We also pass the taxonomy table, so that the traits for unknown taxa will be generated, based on their taxonomic relationship.
+
+```{r}
+Tcefas.lab <- metadata(Traits_cefas)
+
+MWTL.cwm <- getTraitDensity(
+                descriptor  = MWTL$density$station, 
+                taxon       = MWTL$density$taxon, 
+                averageOver = MWTL$density$year,
+                value       = MWTL$density$density, 
+
+                trait       = Traits_cefas, 
+                trait.class = Tcefas.lab$trait, 
+                trait.score = Tcefas.lab$value, 
+                taxonomy    = Taxonomy)  
+```
+
+The mean trait values per station are plotted for the sediment position, the maximum size and the lifespan.
+
+```{r}
+Station.traits <- merge(MWTL$stations, MWTL.cwm, by=1) 
+```
+
+```{r, fig.height=5, fig.width=8, fig.cap="Community weighed trait values based on the MWTL density and cefas trait data"}
+par(mfrow=c(1,2), mar=c(3,3,3,2), oma=c(2,2,0,0))
+units          <-  rbind(unique(Tcefas.lab[,c("trait", "units")]))
+units$colnames <- make.names(units$trait)
+
+ii <- which(units$trait %in% c("Sediment position", "Lifespan"))
+for (i in ii)
+ mapBtrait(x=Station.traits$x, y=Station.traits$y, contours=MWTL$contours,
+      colvar= Station.traits[,units$colnames[i]], 
+      cex=2, clab=units[i,2], main=units[i,1], pch=18)
+```
+
+## Estimating the bioturbation and bio-irrigation potential
+
+We use the data from the Dutch part of the Northsea, in 1995, to estimate the bioturbation potential index sensu Solan et al., 2004 and Queiros et al., 2013.
+
+The contribution of a species, $i$ to the *bioturbation potential* ($BPc$) is based on its mean individual weight ($W_i$), the abundance ($A_i$), and its mobility ($M_i$) and sediment reworking mode ($R_i$); the station BPc is then simply the sum of the species bioturbation potential.
+
+$$BPc = \sum_i \sqrt{W_i} \times A_i \times M_i \times R_i$$
+
+* Mobility scales, $M_i$ have a value of $1$ for organisms living in a fixed tube, $2$ indicates limited movement; $3$ indicates slow, free movement through the sediment matrix; $4$ indicates free movement, via burrow system. 
+
+* sediment reworking ($R_i$) takes on the value $1$ for epifauna that bioturbate at the sediment–water interface, $2$ for surficial modifiers; $3$ for upward and downward conveyors; $4$ for biodiffusors; and $5$ for regenerators that excavate holes, transferring sediment at depth to the surface.
+
+The contribution of a species, $i$ to the *bio-irrigation potential* ($IPc$) (sensu Wrede et al., 2018.), is based on its mean individual weight ($W_i$), the abundance ($A_i$), the burrow type ($BT_i$), feeding TYPE ($FT_i$) and the depth of the injection pocket, in centimeter ($ID_i$); the station $IPc$ is then simply the sum of the species bio-irrigation potential.
+
+$$IPc = \sum_i {W_i}^{3/4} \times A_i \times BT_i \times FT_i \times ID_i$$
+
+* Scores for the burrowtype, $BT_i$ are $1$ for epifauna, and species with internal irrigation (e.g. using siphons), $2$ for open irrigation (e.g. U- or Y- shaped burrows), and $3$ for blind ended irrigation (e.g. blind ended burrows, no burrow systems). 
+* Scores for feeding types, $FT_i$ are $1$ for surface filter feeders, $2$ for predators, $3$ for deposit feeders and $4$ for sub surface filter feeders. 
+* Injection pockets, $IP_i$, at depths of 0-2, 2-5, 5-10 and >10 cm depth get an ID score of $1$, $2$, $3$ and $4$ respectively.
+
+The bioturbation index can easily be estimated from the function *getDbIndex*, and the database *Traits_Db*.
+The bioirrigation index can be estimated from the function *getIrrIndex*, and the database *Traits_Irr*.
+
+As not all MWTL taxa are represented in *Traits_Db* or *Traits_irr*, we use information on closely related species at the nearest taxonomic level, to also provide values for those taxa that are not represented. It suffices to pass the taxonomic information to function *getDbIndex* or *getIrrIndex* to achieve this. 
+
+The functions return the total bioturbation or bioirrigation index for all stations, and the average BPc or IPC for all taxa.
+
+In the code below, first the Northsea data are selected; we select the data for 1995 only. Then the bioturbation and bioirrigation index are estimated based on these data. 
+
+```{r}
+MWTL1995 <- with (MWTL$density, 
+     getDensity(descriptor = list(station=station),
+                subset     = (year == 1995),
+                taxon      = taxon,
+                value      = data.frame(density, biomass))) 
+
+MWTLDb <- with(MWTL1995, 
+  getDbIndex (descriptor = station, 
+              taxon      = taxon, 
+              density    = density, 
+              biomass    = biomass, 
+              trait      = Traits_Db, 
+              taxonomy   = Taxonomy))
+
+MWTLIrr <- with(MWTL1995, 
+  getIrrIndex(descriptor = station, 
+              taxon      = taxon, 
+              density    = density, 
+              biomass    = biomass, 
+              trait      = Traits_irr, 
+              taxonomy   = Taxonomy))
+```
+
+Both functions return a list with several data.frames:
+
+* *descriptor* gives the total BPc or IPc value for the descriptor here stations.
+* *taxon* gives the average BPc or IPc value for the taxa
+
+```{r}
+MWTLbpc            <- MWTLDb$descriptor
+row.names(MWTLbpc) <- NULL
+knitr::kable(head(MWTLbpc[order(MWTLbpc$BPc, decreasing=TRUE),], n=10),
+             caption="10 stations with largest bioturbation potential",
+             row.names=FALSE)
+
+TAXbpc             <- MWTLDb$taxon
+row.names(TAXbpc)  <- NULL
+knitr::kable(head(TAXbpc[order(TAXbpc$BPc, decreasing=TRUE),], n=10),
+             caption="10 taxa with average largest bioturbation potential",
+             row.names=FALSE)
+
+MWTLipc            <- MWTLIrr$descriptor
+row.names(MWTLipc) <- NULL
+knitr::kable(head(MWTLipc[order(MWTLipc$IPc, decreasing=TRUE),], n=10),
+             caption="10 stations with largest bioirrigation potential",
+             row.names=FALSE)
+
+TAXipc             <- MWTLIrr$taxon
+row.names(TAXipc)  <- NULL
+knitr::kable(head(TAXipc[order(TAXipc$IPc, decreasing=TRUE),], n=10),
+             caption="10 taxa with average largest bioirrigation potential",
+             row.names=FALSE)
+```
+
+There is one taxon for which NO bioturbation trait could be derived, and 3 taxa for which no bio-irrigation could be calculated  
+
+```{r}
+attributes(MWTLDb )$notrait  
+attributes(MWTLIrr)$notrait  
+```
+
+After adding the coordinates for each station, (present in *MWTL\$stations*), a map can be generated, where the BPc and IPc is used to color the dots.
+
+```{r, fig.width=10, fig.height=6}
+par(mfrow=c(1,2))
+BPCMWTL <- merge(MWTL$stations, 
+                 MWTLbpc      , 
+                 by          = 1)
+IPCMWTL <- merge(MWTL$stations, 
+                 MWTLipc      , 
+                 by          = 1)
+with (BPCMWTL, 
+  mapBtrait(x=x, y=y, colvar=BPc, cex=2, main="BPc for 1995",
+            pch=18, contours=MWTL$contours, draw.levels=TRUE))
+with (IPCMWTL, 
+  mapBtrait(x=x, y=y, colvar=IPc, cex=2, main="IPc for 1995",
+            pch=18, contours=MWTL$contours, draw.levels=TRUE))
+```
+
+\newpage
+
+# References
+
+## R-packages and data sources
+
+```{r, results='asis', echo=FALSE}
+print(Rpacks, style="text")
+```
+
+Holstein Jan (2018). worms: Retrieving Aphia Information from World Register of
+Marine Species. R package version 0.2.2.
+https://CRAN.R-project.org/package=worms
+
+EMODnet Biology (2022) Full Occurrence Data and Parameters downloaded from the EMODnet Biology project,
+consulted on 2022-08-05.
+
+Beauchard O, Brind’Amour A, Schratzberger M, Laffargue P, Hintzen NT, Somerfield PJ, Piet G (2021) A generic approach to develop a trait-based indicator of trawling-induced disturbance. Mar Ecol Prog Ser 675:35-52. https://doi.org/10.3354/meps13840 
+
+Olivier Beauchard, Kari Elsa Ellingsen, Murray S.A. Thompson, Gerjan Piet, Pascal Laffargue, Karline Soetaert, in press. Assessing sea floor functional diversity and vulnerability. Marine Ecology Progress Series
+
+Clare, David S. / Bolam, Stefan G. / McIlwaine, Paul S.O. / Garcia, Clement / Murray, Joanna M. / Eggleton, Jacqueline D.  (2022). Ten key biological traits of marine benthic invertebrates surveyed in Northwest Europe. Cefas, UK. V2. doi: https://doi.org/10.14466/CefasDataHub.123
+
+Heip, C.H.R.; Basford, D.; Craeymeersch, J.A.; Dewarumez, J.-M.; Dorjes, J.; de Wilde, P.; Duineveld, G.; Eleftheriou, A.; Herman, P.M.J.; Kingston, K.; Niermann, U.; Kunitzer, A.; Rachor, E.; Rumohr, H.; Soetaert, K.; Soltwedel, T. (1992). Trends in biomass, density and diversity of North Sea macrofauna. ICES J. Mar. Sci./J. Cons. int. Explor. Mer 49: 13-22
+
+L. Leewis, E.C. Verduin, R. Stolk, 2017. Eurofins AquaSense Macrozoobenthosonderzoek in de Rijkswateren met boxcorer, jaarrapportage MWTL 2015 : waterlichaam: Noordzee. Publicatiedatum:	31-03-2017, 75 p.
+Projectnummer Eurofins AquaSense: J00002105, Revisie 2;
+In opdracht van Ministerie van Infrastructuur en Milieu, Rijkswaterstaat Centrale Informatievoorziening (RWS, CIV)
+
+Queiros, Ana M., Silvana N. R. Birchenough, Julie Bremner, Jasmin A. Godbold, Ruth E. Parker,  Alicia Romero-Ramirez, Henning Reiss, Martin Solan, Paul J. Somerfield, Carl Van Colen,  Gert Van Hoey, Stephen Widdicombe, 2013.  A bioturbation classification of European marine infaunal invertebrates.  Ecology and Evolution 3 (11), 3958-3985
+
+Solan M, Cardinale BJ, Downing AL, Engelhardt KAM, Ruesink JL, Srivastava DS. 2004. Extinction and ecosystem function in the marine benthos. Science 306:1177–80.
+
+Wilson, R. J., Speirs, D. C., Sabatino, A., and Heath, M. R. (2018). A synthetic map of the north-west European Shelf sedimentary environment for applications in marine science. Earth Sys. Sci. Data 10, 109–130. doi: 10.5194/essd-10-109-2018
+
+A. Wrede, J.Beermann, J.Dannheim, L.Gutow, T.Brey, 2018. Organism functional traits and ecosystem supporting services – A novel approach to predict bioirrigation. Ecological indicators, 91, 737-743.
+
+\newpage
+
+# Appendix
+
+## Description of the MWTL dataset
+
+```{r, echo=FALSE}
+ST <- metadata(MWTL$stations)
+DD <- metadata(MWTL$density)
+AB <- metadata(MWTL$abiotics)
+TY <- metadata(MWTL$types)
+SD <- metadata(MWTL$sediment)
+FS <- metadata(MWTL$fishing)
+
+row.names(ST) <- row.names(DD) <- row.names(AB) <- NULL
+row.names(TY) <- row.names(SD) <- row.names(FS) <- NULL
+
+knitr::kable(ST, digits=2, align="c", row.names=FALSE,
+  caption="contents of data.frame 'stations' from the MWTL data")
+knitr::kable(DD, digits=2, align="c", row.names=FALSE,
+  caption="contents of data.frame 'density' from the MWTL data")
+knitr::kable(AB, digits=2, align="c", row.names=FALSE,
+  caption="contents of data.frame 'abiotics' from the MWTL data")
+knitr::kable(SD, digits=2, align="c", row.names=FALSE,
+  caption="contents of data.frame 'sediment' from the MWTL data")
+knitr::kable(FS, digits=2, align="c", row.names=FALSE,
+  caption="contents of data.frame 'fishing' from the MWTL data")
+```
+
+## Description of the NSBS dataset
+
+```{r, echo=FALSE}
+ST <- metadata(NSBS$stations)
+DD <- metadata(NSBS$density)
+AB <- metadata(NSBS$abiotics)
+FS <- metadata(NSBS$fishing)
+
+row.names(ST) <- row.names(DD) <- row.names(AB) <- row.names(FS) <- NULL
+
+knitr::kable(ST, digits=2, align="c", row.names=FALSE,
+  caption="contents of data.frame 'stations' from the NSBS data")
+knitr::kable(DD, digits=2, align="c", row.names=FALSE,
+  caption="contents of data.frame 'density' from the NSBS data")
+knitr::kable(AB, digits=2, align="c", row.names=FALSE,
+  caption="contents of data.frame 'abiotics' from the NSBS data")
+knitr::kable(FS, digits=2, align="c", row.names=FALSE,
+  caption="contents of data.frame 'fishing' from the NSBS data")
+```
+
+## Traits and modalities in the NIOZ database Traits
+
+```{r, echo=FALSE}
+TR <- metadata(Traits_nioz)
+row.names(TR) <- NULL
+ii <- which(TR[,1] =="RT1.M1")-1
+knitr::kable(TR[1:ii,], digits=2, align="c", row.names=FALSE,
+  caption="Effect traits, modalities, values and scores in the NIOZ database")
+knitr::kable(TR[-(1:ii),], digits=2, align="c", row.names=FALSE,
+  caption="Response traits, modalities, values and scores in the NIOZ database")
+```
+
+## Traits and modalities in the CEFAS database Traits_cefas
+
+```{r, echo=FALSE}
+TR <- metadata(Traits_cefas)[, 1:6]
+row.names(TR) <- NULL
+knitr::kable(TR, digits=2, align="c", row.names=FALSE,
+  caption="Effect traits, modalities, values and scores in Traits_cefas")
+```
+
+## Traits and modalities in the bioturbation database Traits_Db
+
+```{r, echo=FALSE}
+TR <- metadata(Traits_Db)
+row.names(TR) <- NULL
+knitr::kable(TR, digits=2, align="c", row.names=FALSE,
+  caption="Effect traits, modalities, values and scores in Traits_Db")
+```
+
+## Traits and modalities in the bioirrigation database Traits_irr
+
+```{r, echo=FALSE}
+TR <- metadata(Traits_irr)
+row.names(TR) <- NULL
+knitr::kable(TR, digits=2, align="c", row.names=FALSE,
+  caption="Effect traits, modalities, values and scores in Traits_irr")
+```
