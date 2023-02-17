@@ -7,7 +7,7 @@ output:
   word_document: default
 vignette: >
   %\VignetteIndexEntry{Benthic density and trait databases in R-package Btrait} 
-  %\VignetteEngine{knitr::rmarkdown} 
+  %\VignetteEngine{knitr::knitr} 
   %\VignetteEncoding{UTF-8}"
 ---
 

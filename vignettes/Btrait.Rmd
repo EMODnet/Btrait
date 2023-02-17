@@ -5,7 +5,7 @@ date: "18 November 2022"
 output: pdf_document
 vignette: >
   %\VignetteIndexEntry{R-package Btrait: working with biological data and trait information}
-  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEngine{knitr::knitr}
   %\VignetteEncoding{UTF-8}
 ---
 

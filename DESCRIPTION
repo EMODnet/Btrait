@@ -1,16 +1,13 @@
 Package: Btrait
 Version: 0.0.0
-Title: Working with Biological density, taxonomy, and trait composition
-        data
+Title: Working with Biological density, taxonomy, and trait composition data
 Author: Karline Soetaert <karline.soetaert@nioz.nl>,
         Olivier Beauchard <olivier.beauchard@nioz.nl>
 Maintainer: Karline Soetaert <karline.soetaert@nioz.nl>
-Depends: R (>= 3.5.0), plot3D, shinydashboard
+Depends: R (>= 4.0.0), plot3D, shinydashboard
 Imports: shiny
 Suggests: worms, knitr, rmarkdown
 Description: Functions for combining density data, taxonomy, and trait compitions. Includes two density datasets from the North Sea, and three benthic trait composition data bases.
 VignetteBuilder: knitr
 License: GPL
 LazyData: yes
-NeedsCompilation: yes
-Packaged: 2023-02-07 15:18:52 UTC; karlines
