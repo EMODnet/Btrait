@@ -6,7 +6,9 @@
   Benthic fauna and trait characteristics
 }
 \description{
-  Trait-based analyses of macrofauna data.
+  Trait-based analyses of macrofauna data. 
+  \if{html}{\figure{Btrait.png}{options: width=80 alt="Btrait" align='right'}}
+\if{latex}{\figure{Btrait.png}{options: width=80  align='right'}}
 }
 
 \author{
