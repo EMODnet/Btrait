@@ -26,9 +26,9 @@ The package contains:
 * two data sets with density and biomass data of the macrobenthos\footnote{macrobenthos are animals that live in the sediment and that are generally larger than 1 mm} in the North Sea. 
 * several macrobenthos trait databases
 
-Here we explain how to work with the package functions using a small data set. 
+In this vignette ("Btrait") we explain how to work with the package functions using a small data set (to trigger this vignette in R, write: *vignette ("Btrait")*). 
 
-Another vignette deals with the density and trait databases in the package (*vignette ("BtraitData")*).   (to trigger this vignette in R, write: *vignette ("BtraitData")*). 
+Another vignette deals with the density and trait databases in the package (*vignette ("BtraitData")*).  
 
 # Density data
 
@@ -210,7 +210,7 @@ knitr::kable(FC, caption="Trait dataset in crisp format, based on the trait scor
 
 ## A crisp trait dataset
 
-While for traits that are fuzzy coded, one species can belong to different trait modalities, for traits in crisp (binary) format, a species can belong only to ONE modality within one trait. 
+While for traits that are *fuzzy* coded, one species can belong to different trait modalities (that should sum to 1 for each trait), for traits in *crisp* (binary) format, a species can belong only to ONE modality within one trait. 
 
 Thus, a crisp trait *data.frame* contains only $0$s or $1$s (or TRUE/FALSE) for 'binary' traits. 
 Traits can also have a value for 'numerical' traits, but they can also be a factor or character string for 'categorical' traits.
