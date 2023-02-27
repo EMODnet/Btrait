@@ -11,4 +11,4 @@ Description: Functions for combining density data, taxonomy, and trait compositi
 VignetteBuilder: knitr
 License: GPL
 LazyData: yes
-URL: https://emodnet.github.io/Btrait/
+URL: https://EMODnet.github.io/Btrait/

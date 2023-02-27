@@ -8,7 +8,7 @@
 \description{
   Trait-based analyses of macrofauna data. 
   \if{html}{\figure{Btrait.png}{options: width=80 alt="Btrait" align='right'}}
-\if{latex}{\figure{Btrait.png}{options: width=80  align='right'}}
+\if{latex}{\figure{Btrait.png}{options: width=0.5in  align='right'}}
 }
 
 \author{
