@@ -12,9 +12,13 @@
 }
 
 \author{
-  Karline Soetaert, Olivier Beauchard, Anna van der Kaaden
+  Karline Soetaert, Olivier Beauchard, Anna van der Kaaden (drawings)
 }
 \references{
+The package:
+Soetaert K, Beauchard O (2023). Btrait: Working with Biological density, taxonomy, and trait composition data. R package version x.x.x. 
+Data product created under the European Marine Observation Data Network (EMODnet) Biology Phase IV.
+
 For trait databases:
 
 Beauchard O, Brind Amour A, Schratzberger M, Laffargue P, Hintzen NT, 

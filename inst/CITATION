@@ -1,0 +1,14 @@
+citHeader("To cite package 'Btrait' in publications use:")
+
+citEntry(entry="manual",
+  title = "R-package Btrait: Working with Biological density, taxonomy, and trait composition data.",
+  author = personList(as.person("Karline Soetaert"),
+                      as.person("Olivier Beauchard")),
+  organization  =	"Netherlands Institute of Sea Research",
+  note = "Data product created under the European Marine Observation Data Network (EMODnet) Biology Phase IV.",
+  keywords =	"Density, taxonomy, traits, ecosystem functions",
+  textVersion =  paste("Karline Soetaert, Olivier Beauchard (2023).",
+                       "R-package Btrait: Working with Biological density, taxonomy, and trait composition data.",
+                       "Data product created under the European Marine Observation Data Network (EMODnet) Biology Phase IV.")
+)
+
