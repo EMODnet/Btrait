@@ -13,11 +13,16 @@
   The data contain:
   
   \itemize{
-    \item Macrofauna species density and biomass (\code{NSBS$density})
+    \item Macrofauna species density and biomass (\code{NSBS$density}, \code{NSBS$biomass})
   
     \item Abiotic conditions (\code{NSBS$abiotics}), and station positions (\code{NSBS$stations})
   
     \item \code{NSBS$contours}: contourlines for mapping.
+    
+    \item NSBS$fishing: species trait values that can be used to estimate fishing parameters.
+   
+    \item NSBS$sar: station-specific fishing intensities.
+    
   }
 }
 
@@ -28,21 +33,32 @@ data(NSBS)
 \format{
 ==================
 
-**\code{NSNS$density}**: 
+**\code{NSBS$density}**: 
+
 This is the main Northsea NSBS benthos data set, containing species 
 information for 234 stations sampled in 1985-1986.
  
 The data, in long format, are in a \code{data.frame} with the following columns: 
   \itemize{
-   \item \code{station}, the NSBS station name (details in NSBS$stations).    \item \code{date}, the sampling date. 
-   Note, this is a string; it can be converted to POSIXct by:
-    "as.POSIXct(NSBS$density$date, format='\%d-\%m-\%Y')".
-    The year can be extracted as 
-    \code{1900+as.POSIXlt(NSBS$density$date, format='\%d-\%m-\%Y')$year}.
-   \item \code{year}, the year of sampling
+   \item \code{station}, the NSBS station name (details in NSBS$stations).    \item \code{date}, the sampling date (year). 
    \item \code{taxon}, the taxon name to be used (usually species), and checked against the worms database (details in dataset \code{Taxonomy}).
    \item \code{density}, the number of individuals per m2.
-   \item \code{biomass}, the total biomass per m2, in AFDW/m2 (ash-free dry weight).
+  }
+
+==================
+
+**\code{NSBS$biomass}**: 
+
+This data set, contains biomass data  for 214 stations sampled in 1985-1986. 
+
+Biomass information is on higher taxonomic level.
+The distinction is made between Crustacea, Polychaeta, Animalia, Mollusca, Echinodermata.
+ 
+The data, in long format, are in a \code{data.frame} with the following columns: 
+  \itemize{
+   \item \code{station}, the NSBS station name (details in NSBS$stations).    \item \code{date}, the sampling date (year). 
+   \item \code{taxon}, the taxon name to be used (5 higher taxa).
+   \item \code{biomass}, the biomass, gAFDW/m2.
   }
 
 ==================
@@ -53,12 +69,38 @@ the abiotic conditions of sampling stations.
 NSBS$abiotics is a data.frame with the following columns:   
 \itemize{
   \item{station}, the NSBS station name
-  \item{depth}, water depth [m]
-  \item{mud}, mud content of sediment, fraction [-]
-  \item{porosity}, volumetric water content [-]
-  \item{permeability}, sediment permeability [m2]
-  \item{max.currentspeed}, maximum current speed [m/s]
+  \item{depth}, water depth, [m]
+  \item{D50}, Median grain size, [micrometer]
+  \item{mud}, mud content of sediment (<63 um), fraction, [-]
+  \item{sand},         sand fraction (64 -2000 um),          [-]
+  \item{gravel},          gravel fraction (>2000 um),          [-]
+  \item{salinity},                            salinity           
+  \item{porosity}, volumetric water content, [-]
+  \item{permeability}, sediment permeability, [m2]
+  \item{POC},   particulate organic C in sediment,          [percent]
+  \item{TN},                 total N in sediment,          [percent]
+  \item{surfaceCarbon},   particulate organic C in upper cm,          [percent]
+  \item{surfaceNitrogen},                 total N in upper cm,          [percent]
+  \item{orbitalVelMean},               mean orbital velocity,        [m/s]
+  \item{orbitalVelMax},            maximal orbital velocity,        [m/s]
+  \item{tidalVelMean},                 mean tidal velocity,        [m/s]
+  \item{tidalVelMax},              maximal tidal velocity,        [m/s]
+  \item{bedstress},                    bed shear stress,         [Pa]
+  \item{EUNIScode},                           EUNIScode,          [-]
+  \item{sar}, swept area ratio (fisheries) 0-2 cm,  [m2/m2/year]
+  \item{subsar},  swept area ratio (fisheries) > 2cm,  [m2/m2/year]
+  \item{gpd},              gear penetration depth,         [cm]  
  }
+ 
+ The fishing data (sar, subsar, gpd) were derived from ICES upon request by OSPAR.
+ 
+ They are averaged over (2009-2020). See also NSBS$sar.
+
+==================
+
+**\code{NSBS$fishing}**: 
+
+species trait values that can be used to estimate fishing parameters.
 
 ==================
 
@@ -73,7 +115,7 @@ The positions of the different stations, in WGS84 format
  
 ==================
 
- **\code{NSBS$contour}**: 
+ **\code{NSBS$contours}**: 
  
  The data for mapping the contours. The contourlines (x-, y) were derived from 
  GEBCO high-resolution bathymetry, by creating contourlines.
@@ -85,8 +127,24 @@ The positions of the different stations, in WGS84 format
       \item{y}: latitude, in [dgN]
       \item{z}: the corresponding depths, in [m]
     }
+
+==================
+
+ **\code{NSBS$sar}**: 
  
+ Fishing data for the NSBS stations, origin: ICES upon request by OSPAR.  
+ The NSBS stations nearest to the ICES data were selected.
+ 
+ A data.frame that contains:
+   \itemize{
+      \item{station}, the NSBS station name
+      \item{year}: the fishing year
+      \item{sar}: annual swept area ratios (m2/m2/yr) for the surface (0-2cm).
+      \item{subsar}: annual swept area ratios (m2/m2/yr) for the subsurface (>2cm).
+      \item{gpd}: stimated gear penetration depths ([cm]) ; calculated as (1*(sar-subsar)+3*subsar)/sar)
+    }
 }
+
 \note{
 The dataset **\code{Taxonomy}**: 
 contains taxonomic information of the original and adjusted taxon in NSBS$density, 
@@ -244,7 +302,13 @@ The taxonomic information was created using the \code{worms} package:
 
 Jan Holstein (2018). worms: Retrieving Aphia Information from World Register of Marine Species. R package version 0.2.2. https://CRAN.R-project.org/package=worms
 
+The NSBS data are described in:
+
 Heip, C.H.R.; Basford, D.; Craeymeersch, J.A.; Dewarumez, J.-M.; Dorjes, J.; de Wilde, P.; Duineveld, G.; Eleftheriou, A.; Herman, P.M.J.; Kingston, K.; Niermann, U.; Kunitzer, A.; Rachor, E.; Rumohr, H.; Soetaert, K.; Soltwedel, T. (1992). Trends in biomass, density and diversity of North Sea macrofauna. ICES J. Mar. Sci./J. Cons. int. Explor. Mer 49: 13-22
+
+The fishing data were derived from:
+
+ICES Technical Service, Greater North Sea and Celtic Seas Ecoregions, 29 August 2018 sr.2018.14 Version 2: 22 January 2019 https://doi.org/10.17895/ices.pub.4508 OSPAR request on the production of spatial data layers of fishing intensity/pressure.
 }
 
 \seealso{

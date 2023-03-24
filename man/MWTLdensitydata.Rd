@@ -16,7 +16,11 @@
   \item abiotic conditions (MWTL$abiotics), station types (MWTL$types), 
   sediment composition (MWTL$sediment) and station positions (MWTL$stations)
   
-  \item MWTL$contour: depth contourlines for mapping.
+  \item MWTL$contours: depth contourlines for mapping.
+
+  \item MWTL$fishing: species trait values that can be used to estimate fishing parameters.
+
+  \item MWTL$sar: station-specific fishing intensities.
  }
 }
 
@@ -49,38 +53,51 @@ The data, in long format, are in a \code{data.frame} with the following columns:
    \item \code{taxon.original}, the original taxon name in the data set (see details).
   }
 
-==================
-
-A \code{data.frame} with the following columns: 
-\code{taxon}, \code{genus}, \code{family}, \code{order}, \code{class}, 
-\code{phylum}, \code{AphiaID}.
-
 =========================================
 
-**\code{MWTL$abiotics} and \code{MWTL$types}**: 
-the abiotic conditions of sampling stations,
-numerical values (MWTL$abiotics) or typologies (MWTL$types), averaged over all years.
+**\code{MWTL$abiotics}**: 
+the abiotic conditions of sampling stations.
 
-MWTL$abiotics is a data.frame with the following columns:   CHECK IT!
+MWTL$abiotics is a data.frame with the following columns:   
 \itemize{
-  \item{station}, the MWTL station name.
-  \item{current}, the mean current speed, [m/s]
-  \item{wave},   wave energy              [Pa]
-  \item{disturb},           ???             [???]
-  \item{sal},      salinity                  [-]
-  \item{pelag.PP}, pelagic Primary Production (spring) [?? mg C m-2 d-1???]
-  \item{mud},                        mud             [-]
-  \item{gravel},                     gravel          [-]
-  \item{sand},                       sand            [-]
-  \item{PP},        pelagic PP (sping) [??  mg C m-2 d-1??]
-  \item{POM}, particulate organic matter               [\%]
-  \item{POC}, particulate organic carbon               [\%]
-  \item{Aspect},                     Aspect          [???]
-  \item{Curvature},                  Curvature       [???]
-  \item{Rugosity},                  Rugosity2       [???]
-  \item{Northing},                   Northing        [???]
-  \item{Slope},                      Slope           [???]
+  \item{station}, the NSBS station name
+  \item{depth}, water depth, [m]
+  \item{D50}, Median grain size, [micrometer]
+  \item{mud}, mud content of sediment (<63 um), fraction, [-]
+  \item{sand},         sand fraction (64 -2000 um),          [-]
+  \item{gravel},          gravel fraction (>2000 um),          [-]
+  \item{salinity},                            salinity           
+  \item{porosity}, volumetric water content, [-]
+  \item{permeability}, sediment permeability, [m2]
+  \item{POC},   particulate organic C in sediment,          [percent]
+  \item{TN},                 total N in sediment,          [percent]
+  \item{surfaceCarbon},   particulate organic C in upper cm,          [percent]
+  \item{surfaceNitrogen},                 total N in upper cm,          [percent]
+  \item{orbitalVelMean},               mean orbital velocity,        [m/s]
+  \item{orbitalVelMax},            maximal orbital velocity,        [m/s]
+  \item{tidalVelMean},                 mean tidal velocity,        [m/s]
+  \item{tidalVelMax},              maximal tidal velocity,        [m/s]
+  \item{bedstress},                    bed shear stress,         [Pa]
+  \item{EUNIScode},                           EUNIScode,          [-]
+  \item{sar}, swept area ratio (fisheries) 0-2 cm,  [m2/m2/year]
+  \item{subsar},  swept area ratio (fisheries) > 2cm,  [m2/m2/year]
+  \item{gpd},              gear penetration depth,         [cm]  
  }
+ 
+ The fishing data (sar, subsar, gpd) were derived from ICES upon request by OSPAR.
+ 
+ They are averaged over (2009-2020). See also MWTL$sar.
+
+==================
+
+**\code{MWTL$fishing}**: 
+
+species trait values that can be used to estimate fishing parameters.
+
+==================
+
+**\code{MWTL$types}**: 
+the abiotic conditions of sampling stations, typologies 
 
 MWTL$types categorizes the stations into a number of types:
 \itemize{
@@ -185,7 +202,23 @@ Values denote weight percentages dryweight of the total sediment sample, where b
       \item{z}: the corresponding depths, [m]
     }
  
+==================
+
+ **\code{MWTL$sar}**: 
+ 
+ Fishing intensity data for the MWTL stations, origin: ICES upon request by OSPAR.  
+ The NSBS stations nearest to the ICES data were selected.
+ 
+ A data.frame that contains:
+   \itemize{
+      \item{station}, the NSBS station name
+      \item{year}: the fishing year
+      \item{sar}: annual swept area ratios (m2/m2/yr) for the surface (0-2cm).
+      \item{subsar}: annual swept area ratios (m2/m2/yr) for the subsurface (>2cm).
+      \item{gpd}: stimated gear penetration depths ([cm]) ; calculated as (1*(sar-subsar)+3*subsar)/sar)
+    }
 }
+
 \note{
 The dataset **\code{Taxonomy}**: 
 contains taxonomic information of the original and adjusted taxon in MWTL$density, 
@@ -358,9 +391,15 @@ The taxonomic information was created using the \code{worms} package:
 
 Jan Holstein (2018). worms: Retrieving Aphia Information from World Register of Marine Species. R package version 0.2.2. https://CRAN.R-project.org/package=worms
 
+The MWTL data are described in:
+
 L. Leewis, E.C. Verduin, R. Stolk ; Eurofins AquaSense Macrozoobenthosonderzoek in de Rijkswateren met boxcorer, jaarrapportage MWTL 2015 : waterlichaam: Noordzee
 Publicatiedatum: 31-03-201775 p. Projectnummer Eurofins AquaSense: J00002105. 
 Revisie 2, In opdracht van Ministerie van Infrastructuur en Milieu,  Rijkswaterstaat Centrale Informatievoorziening (RWS, CIV)
+
+The fishing data were derived from:
+
+ICES Technical Service, Greater North Sea and Celtic Seas Ecoregions, 29 August 2018 sr.2018.14 Version 2: 22 January 2019 https://doi.org/10.17895/ices.pub.4508 OSPAR request on the production of spatial data layers of fishing intensity/pressure.
 }
 
 \seealso{
