@@ -82,7 +82,7 @@ l2wTrait(trait, taxon, value, averageOver = NULL,
 \seealso{
 \link{MWTL} for the data sets
 
-\link{mapBtrait} for simple plotting functions
+\link{mapKey} for simple plotting functions
 
 \link{getDensity} for functions working on density data
 

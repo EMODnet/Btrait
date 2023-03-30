@@ -8,7 +8,7 @@ importFrom("stats", "aggregate")
 importFrom("utils", "stack")
 importFrom("shiny", "runApp")
 
-export(mapBtrait)
+export(mapKey, mapLegend, mapMWTL, mapNSBS)
 export(metadata)
 export(fuzzy2crisp, crisp2fuzzy)
 export(long2wide, l2wDensity, l2wTrait)
@@ -22,3 +22,6 @@ export(getIrrIndex, getDbIndex)
 export(extendTrait)
 export(getTrait)
 export(webMWTL)
+
+
+                

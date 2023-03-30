@@ -51,12 +51,12 @@ getSummary(descriptor, taxon, value, averageOver = NULL, taxonomy = NULL,
 \seealso{.
 \link{MWTL} for the data sets
 
-\link{mapBtrait} for simple plotting functions.
+\link{mapKey} for simple plotting functions.
 
 \link{getDensity} for functions working with density data.
 
 \link{getTraitDensity} for functions combining density and traits.
-+++++
+ 
 \link{getDbIndex} for extracting bioturbation and bioirrigation indices.
 
 \link{extendTrait} for functions working with traits.

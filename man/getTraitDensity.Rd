@@ -62,7 +62,7 @@ Then, for each taxon that is not present in the trait database, the traits on th
 \seealso{
 \link{MWTL} for the data sets.
 
-\link{mapBtrait} for simple plotting functions.
+\link{mapKey} for simple plotting functions.
 
 \link{getDensity} for functions working with density data.
 

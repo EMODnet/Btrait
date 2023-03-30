@@ -9,7 +9,7 @@
 
 if (getRversion() >= "2.15.1")  
   utils::globalVariables(c("Traits_Db", "Traits_irr", "Traits_nioz", 
-       "Traits_cefas", "Taxonomy", "Groups"))
+       "Traits_cefas", "Taxonomy", "Groups", "NSBS", "MWTL"))
 
 
 ## ====================================================================

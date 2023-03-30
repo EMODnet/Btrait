@@ -236,7 +236,7 @@ shinyServer(function(input, output, session) {
        nc <- ncol(Data)
        cex <- 2
        
-       mapBtrait(contours=DAT$contour, x=Data$x, y=Data$y, 
+       mapKey(contours=DAT$contour, x=Data$x, y=Data$y, by.levels= 10,
                  colvar=Data[,nc], log=Log, pch=15, cex=cex, 
                  main=Main, clab=Clab, draw.levels=TRUE, col=Col,
                  colkey=list(length=0.2, width=0.5, 

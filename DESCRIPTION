@@ -1,6 +1,6 @@
 Package: Btrait
 Version: 0.0.0
-Title: Working with Biological density, taxonomy, and trait composition data
+Title: Working with biological density, taxonomy, and trait composition data
 Author: Karline Soetaert <karline.soetaert@nioz.nl>,
         Olivier Beauchard <olivier.beauchard@nioz.nl>
 Maintainer: Karline Soetaert <karline.soetaert@nioz.nl>

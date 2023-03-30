@@ -66,7 +66,7 @@ addAbsences(descriptor, taxon, value, averageOver = NULL)
 \seealso{
 \link{MWTL} for the data sets.
 
-\link{mapBtrait} for simple plotting functions.
+\link{mapKey} for simple plotting functions.
 
 \link{long2wide} for estimating converting data from long to wide format and vice versa.
 

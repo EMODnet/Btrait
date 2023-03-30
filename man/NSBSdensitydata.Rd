@@ -202,7 +202,7 @@ hist(densstat, n=30)
 summary(NSBS$abiotics)
 
 NSBSab <- merge(NSBS$stations, NSBS$abiotics)
-with(NSBSab, mapBtrait(x, y, colvar=mud, contours=NSBS$contours, 
+with(NSBSab, mapKey(x, y, colvar=mud, contours=NSBS$contours, 
                        pch=16, main="mud fraction"))
 
 metadata(NSBS$abiotics)
@@ -255,13 +255,13 @@ Stations.traits <- merge(NSBS$stations, trait.cwm,
 
 par(mfrow=c(2,2))
 
-with(Stations.traits, mapBtrait(x, y, colvar=Biodeposition,
+with(Stations.traits, mapKey(x, y, colvar=Biodeposition,
                                 main="Biodeposition"))
-with(Stations.traits, mapBtrait(x, y, colvar=Biodiffusion,
+with(Stations.traits, mapKey(x, y, colvar=Biodiffusion,
                                 main="Biodiffusion"))
-with(Stations.traits, mapBtrait(x, y, colvar=Biostabilisation,
+with(Stations.traits, mapKey(x, y, colvar=Biostabilisation,
                                 main="Biostabilisation"))
-with(Stations.traits, mapBtrait(x, y, colvar=Burrow.width,
+with(Stations.traits, mapKey(x, y, colvar=Burrow.width,
                                 main="Burrow width"))
 
 ##-----------------------------------------------------
@@ -287,12 +287,12 @@ summary(group.cwm)
 ## Show the depth contours
 ##-----------------------------------------------------
 
-mapBtrait(contours=NSBS$contours, draw.levels=TRUE, key.levels=TRUE)
+mapKey(contours=NSBS$contours, draw.levels=TRUE, key.levels=TRUE)
 
 # Use a different color scheme
 collev <- function(n) c("black", 
       ramp.col(col=c("darkgreen", "darkblue"), n=n-1))
-mapBtrait(contours=NSBS$contours, draw.levels=TRUE, col.levels=collev,
+mapKey(contours=NSBS$contours, draw.levels=TRUE, col.levels=collev,
   key.levels=TRUE)
 }
 
@@ -312,7 +312,7 @@ ICES Technical Service, Greater North Sea and Celtic Seas Ecoregions, 29 August 
 }
 
 \seealso{
-  \link{mapBtrait} for plotting.
+  \link{mapKey} for plotting.
 
   \link{Traits_nioz} for the trait datasets.
   

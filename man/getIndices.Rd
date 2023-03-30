@@ -72,7 +72,7 @@ Both return a \code{list} with the following elements:
 \seealso{
 \link{MWTL} for the data sets
 
-\link{mapBtrait} for simple plotting functions
+\link{mapKey} for simple plotting functions
 
 \link{getDensity} for functions working with density data
 
@@ -153,7 +153,7 @@ head(IrrAmp$descriptor)
 IRR.amphiura <- merge(MWTL$stations, IrrAmp$descriptor, by=1)
 
 # create a map
-with(IRR.amphiura, mapBtrait(x=x, y=y, colvar=IPc, pch=18,
+with(IRR.amphiura, mapKey(x=x, y=y, colvar=IPc, pch=18,
                      contours=MWTL$contours, draw.levels=TRUE))
                      
 IrrAmp$taxon  # average irrigation activity
@@ -185,7 +185,7 @@ head(BPC$taxon)
 # Plot the results (after adding the coordinates)
 BPC_MWTL <- merge(MWTL$stations, BPC$descriptor, by=1)
 
-with (BPC_MWTL, mapBtrait(x=x, y=y, colvar=BPc, pch=18, 
+with (BPC_MWTL, mapKey(x=x, y=y, colvar=BPc, pch=18, 
        contours=MWTL$contours, draw.levels=TRUE, main= "BPc"))
 
 # The 10 main bioturbators in the data set:

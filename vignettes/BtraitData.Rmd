@@ -115,7 +115,7 @@ metadata(MWTL$density)
 
 ## Station positions
 
-We use function *mapBtrait* to generate figures with station positions, passing the respective contours for each dataset. 
+We use function *mapKey* to generate figures with station positions, passing the respective contours for each dataset. 
 The R-function *merge* is used to augment the data.frame *types* (that contains the area to which each station belongs), with the longitudes (x) and latitudes (y) in the *stations* data.frame. 
 
 ```{r, fig.height=14, fig.width=12}
@@ -126,7 +126,7 @@ MWTLab$area <- factor(MWTLab$area)
 
 par(las=1, oma=c(0,0,1,0), cex.axis=1.2, cex.main=2, cex.lab=1.2)
 with(MWTLab, 
-  mapBtrait(contours=MWTL$contours, x=x, y=y, col=c(1:4)[area], 
+  mapKey(contours=MWTL$contours, x=x, y=y, col=c(1:4)[area], 
             pch=c(15:18)[area], cex=2, main="MWTL station positions", 
             clab="m", draw.levels=TRUE))
 with(MWTL$stations, text(x, y+0.05, label=station, cex=0.8, adj=0))
@@ -138,7 +138,7 @@ NSBSabio <- merge(NSBS$stations, NSBS$abiotics, by="station")
 
 par(las=1, oma=c(0,0,1,0), cex.axis=1.2, cex.main=2, cex.lab=1.2)
 with(NSBSabio, 
-  mapBtrait(contours=NSBS$contours, x=x, y=y, colvar=depth, 
+  mapKey(contours=NSBS$contours, x=x, y=y, colvar=depth, 
             pch=16, cex=2, main="NSBS station positions", 
             clab="m", draw.levels=TRUE))
 # remove the "ICES" from the station names
@@ -251,20 +251,20 @@ par(mfrow=c(2,2))
 par(las=1, oma=c(1,1,1,1), cex.main=2)
 
 with(merge(MWTL$stations, MWTL.summ$density, by=1), 
-  mapBtrait(contours=MWTL$contours, x=x, y=y, colvar=density, 
+  mapKey(contours=MWTL$contours, x=x, y=y, colvar=density, 
             pch=18, cex=2, main="MWTL total density",  
             clab="ind/m2", draw.levels=TRUE))
 with(merge(NSBS$stations, NSBS.summ$density, by=1), 
-  mapBtrait(contours=NSBS$contours, x=x, y=y, colvar=density, 
+  mapKey(contours=NSBS$contours, x=x, y=y, colvar=density, 
             pch=18, cex=2, main="NSBS total density", 
             clab="ind/m2", draw.levels=TRUE))
 
 with(merge(MWTL$stations, MWTL.summ$taxa, by=1), 
-  mapBtrait(contours=MWTL$contours, x=x, y=y, colvar=taxa, 
+  mapKey(contours=MWTL$contours, x=x, y=y, colvar=taxa, 
             pch=18, cex=2, main="MWTL number of taxa", 
             clab="/m2", draw.levels=TRUE))
 with(merge(NSBS$stations, NSBS.summ$taxa, by=1), 
-  mapBtrait(contours=NSBS$contours, x=x, y=y, colvar=taxa, 
+  mapKey(contours=NSBS$contours, x=x, y=y, colvar=taxa, 
             pch=18, cex=2, main="NSBS number of taxa", 
             clab="/m2", draw.levels=TRUE))
 ```
@@ -500,7 +500,7 @@ units$colnames <- make.names(units$trait)
 
 ii <- which(units$trait %in% c("Sediment position", "Lifespan"))
 for (i in ii)
- mapBtrait(x=Station.traits$x, y=Station.traits$y, contours=MWTL$contours,
+ mapKey(x=Station.traits$x, y=Station.traits$y, contours=MWTL$contours,
       colvar= Station.traits[,units$colnames[i]], 
       cex=2, clab=units[i,2], main=units[i,1], pch=18)
 ```
@@ -607,10 +607,10 @@ IPCMWTL <- merge(MWTL$stations,
                  MWTLipc      , 
                  by          = 1)
 with (BPCMWTL, 
-  mapBtrait(x=x, y=y, colvar=BPc, cex=2, main="BPc for 1995",
+  mapKey(x=x, y=y, colvar=BPc, cex=2, main="BPc for 1995",
             pch=18, contours=MWTL$contours, draw.levels=TRUE))
 with (IPCMWTL, 
-  mapBtrait(x=x, y=y, colvar=IPc, cex=2, main="IPc for 1995",
+  mapKey(x=x, y=y, colvar=IPc, cex=2, main="IPc for 1995",
             pch=18, contours=MWTL$contours, draw.levels=TRUE))
 ```
 

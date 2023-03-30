@@ -242,13 +242,13 @@ Stations.traits <- merge(MWTL$stations, cwm.weight.score,
 
 par(mfrow=c(2,2))
 
-with(Stations.traits, mapBtrait(x, y, colvar=Biodeposition,
+with(Stations.traits, mapKey(x, y, colvar=Biodeposition,
                                 main="Biodeposition"))
-with(Stations.traits, mapBtrait(x, y, colvar=Biodiffusion,
+with(Stations.traits, mapKey(x, y, colvar=Biodiffusion,
                                 main="Biodiffusion"))
-with(Stations.traits, mapBtrait(x, y, colvar=Biostabilisation,
+with(Stations.traits, mapKey(x, y, colvar=Biostabilisation,
                                 main="Biostabilisation"))
-with(Stations.traits, mapBtrait(x, y, colvar=Burrow.width,
+with(Stations.traits, mapKey(x, y, colvar=Burrow.width,
                                 main="Burrow width"))
 
 ##-----------------------------------------------------
@@ -317,7 +317,7 @@ A. Wrede, J.Beermann, J.Dannheim, L.Gutow, T.Brey, 2018. Organism functional tra
 
   \link{MWTL} for other data sets of the Northsea.
 
-  \link{mapBtrait} for plotting.
+  \link{mapKey} for plotting.
 
   \link{extendTrait} for functions operating on trait data.
 

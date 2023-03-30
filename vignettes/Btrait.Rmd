@@ -513,7 +513,7 @@ knitr::kable(S.stations, caption="Data.frame with station positions",
              align="c", row.names=FALSE)
 ```
 
-The mean trait values per station can be plotted using function *mapBtrait*. 
+The mean trait values per station can be plotted using functions *mapKey* or *mapLegend*. 
 
 For this function to work, we need to add the stations coordinates to the community weighted mean data. 
 We use R-function *merge* for this; the column on which to merge the station and cwm data is the first one for both datasets (here we do not specify the name of the common column but rather its position).
@@ -525,7 +525,7 @@ par(mfrow=c(1,2))
 nscore <- colnames(cwm)
 nunits <- c("cm", "-")
 for (i in 2:length(nscore))
- mapBtrait(x      = S.stations$x,    #x-positions
+    mapKey(x      = S.stations$x,    #x-positions
            y      = S.stations$y,    #y-positions
            colvar = cwm[,i],         #color-variable
            

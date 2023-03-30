@@ -87,8 +87,8 @@ Data <- with (MWTL.groups,
 head(Data)
 Data.st <- merge(MWTL$stations, Data, by.x="station", by.y="descriptor")
 
-with (Data.st, mapBtrait(x=x, y=y, colvar=Deep3D, main="deep 3D", 
-                         clab="ind/m2", log="c"))
+with (Data.st, mapKey(x=x, y=y, colvar=Deep3D, main="deep 3D", 
+                      clab="ind/m2", log="c"))
 }
 
 \references{
@@ -104,7 +104,7 @@ Assessing sea floor functional diversity and vulnerability. Marine Ecology Progr
 
   \link{MWTL} for other data sets of the Northsea.
 
-  \link{mapBtrait} for plotting.
+  \link{mapKey} for plotting.
 
   \link{extendTrait} for functions operating on trait data.
 
