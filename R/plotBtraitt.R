@@ -15,6 +15,7 @@ mapKey <- function(x=NULL, y=NULL, colvar=NULL, main=NULL, col=NULL, lwd=1,
                    by.levels=1, key.levels=FALSE, lwd.levels=1,
                    axes=TRUE, frame.plot=TRUE, asp=NULL, NApch=43, ...){
 
+  dot <- list(...)  
   hasContours <- TRUE
   if (is.logical(contours)){
     hasContours <- contours
@@ -30,17 +31,24 @@ mapKey <- function(x=NULL, y=NULL, colvar=NULL, main=NULL, col=NULL, lwd=1,
   
   if (is.null(xlim)) xlim <- range(contours$x, na.rm=TRUE)
   if (is.null(ylim)) ylim <- range(contours$y, na.rm=TRUE)
+  if (is.null(colvar)) colvar <- x
+  
+  xlab <- dot$xlab
+  ylab <- dot$ylab
+  if (is.null(xlab)) xlab <- expression(""^o~E)
+  if (is.null(ylab)) ylab <- expression(""^o~N)
+  dot$xlab <- dot$ylab <- NULL
   
   # open a plot, add contours
   plotContours(x=contours$x, y=contours$y, z=contours$z, 
                xlim=xlim, ylim=ylim, main=main, addCont=hasContours,
                colkey=key.levels, draw.levels=draw.levels, by=by.levels,
                col=col.levels, lwd=lwd.levels, hascv = ! is.null(colvar), 
-               axes=axes, frame.plot=frame.plot, asp=asp, clim=clim)
+               axes=axes, frame.plot=frame.plot, asp=asp, clim=clim, xlab=xlab,
+               ylab=ylab)
   
   # Now plot the data
   if (!is.null(x)) {
-     dot <- list(...)  
      cv  <- colvar
         if (!is.null(dot$log)){                   
           if (is.null(asp) & (length(grep("x", dot$log)) | length(grep("y", dot$log))))
@@ -70,7 +78,8 @@ plotContours <- function (x=NULL, y=NULL, z=NULL, addCont=TRUE,
                  colkey=list(dist=0.08,length=0.3, width=0.5,
                     cex.axis=0.6, cex.clab=par("cex.lab")), 
                  draw.levels=FALSE, by=4, col=NULL, lwd=1, hascv=TRUE,
-                 axes=TRUE, frame.plot=TRUE, asp=NULL, clim=NULL, ...) { 
+                 axes=TRUE, frame.plot=TRUE, asp=NULL, clim=NULL, 
+                 xlab=expression(""^o~E), ylab=expression(""^o~N), ...) { 
 
      type <- "n"
      cv   <- z
@@ -140,7 +149,7 @@ plotContours <- function (x=NULL, y=NULL, z=NULL, addCont=TRUE,
      
      points2D(x, y, colvar=cv,
               asp=asp, xlim=xlim, ylim=ylim, clim=clim, type=type, 
-              xlab=expression(""^o~E), ylab=expression(""^o~N), 
+              xlab=xlab, ylab=ylab, 
               col=col, lwd=lwd, main=main, cex.main=cex.main,
               las=1, colkey=ck, axes=axes, frame.plot=frame.plot) 
      
@@ -180,6 +189,12 @@ mapLegend <- function (x=NULL, y=NULL, colvar=NULL, main=NULL, col=NULL, lwd=1,
   if (is.null(y))  y <- contours$y
   if (is.null(colvar))  colvar <- 1:x     
 
+  xlab <- ell$xlab
+  ylab <- ell$ylab
+  if (is.null(xlab)) xlab <- expression(""^o~E)
+  if (is.null(ylab)) ylab <- expression(""^o~N)
+  ell$xlab <- ell$ylab <- NULL
+  
   # check for log transformation
   if (is.null(ell$log))
     islog <- FALSE
@@ -269,6 +284,7 @@ mapLegend <- function (x=NULL, y=NULL, colvar=NULL, main=NULL, col=NULL, lwd=1,
   
    legend$col <- createKey(pcv, col=col)
    legend$pt.lwd <- lwd
+   legend$title <- ell$clab
    
    legend$pch <- rep(pch[1], length=length(pcv))
    if (scale == "abs" & length(pch) == 2)  # pch has 2 values: for pos/neg
@@ -309,7 +325,7 @@ mapLegend <- function (x=NULL, y=NULL, colvar=NULL, main=NULL, col=NULL, lwd=1,
   if (is.null(asp)) asp <- 1/cos((mean(ylim) * pi)/180)
   sc <- list(method="scatter2D", x=x, y=y, colvar=colvar, colkey=FALSE, 
              main=main, legend=legend, col=col, lwd=lwd, pch=Pch, cex=Cex, 
-             xlim=xlim, ylim=ylim, clim=clim,
+             xlim=xlim, ylim=ylim, clim=clim, xlab=xlab, ylab=ylab, 
              frame.plot=frame.plot, axes=axes, legend.side=legend.side, 
              legend.cex=legend.cex, legend.pars=legend.pars)
   sc <- c(alist(...), sc)

@@ -32,10 +32,10 @@ getTraitDensity <- function(
   if (is.null(taxon.names))taxon.names <- colnames(wide)[-1]
   
   # KARLINE: CHECK IF THISIS WANTED...
-  if (! is.null(taxonomy)) {
-    taxonomy <- taxonomy[taxonomy[,1] %in% taxon.names,]
-    if (! nrow(taxonomy)) stop ("density data and taxonomy have nothing in common")
-  }
+#  if (! is.null(taxonomy)) {
+#    taxonomy <- taxonomy[taxonomy[,1] %in% taxon.names,]
+#    if (! nrow(taxonomy)) stop ("density data and taxonomy have nothing in common")
+#  }
   x  <- clearRows(wide, d.column, "wide") # remove descriptor columns
   
   DESCs <- wide[,d.column]

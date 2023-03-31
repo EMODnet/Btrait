@@ -21,7 +21,7 @@ extendTrait <- function(trait,       # data.frame with traits; 1st column:taxon
   LEVS   <- unique(c(rn, unlist(taxonomy)))  # levels from taxa (trait and taxonomy)
   TAX    <- sapply(as.data.frame(taxonomy),  # facotrize all columns of taxonomy  
                    FUN=function(x) as.integer(factor(x, levels=LEVS)))
-  TAX[is.na(TAX)] <- 0L    
+  TAX[is.na(TAX)] <- 0L   
 
 # factors in trait names  
   Tnames <- as.integer(factor(rn, levels=LEVS))
@@ -35,6 +35,7 @@ extendTrait <- function(trait,       # data.frame with traits; 1st column:taxon
   isna  <- which (ZZ > 0)
   if (length(isna)) trait[isna,] <- 0
   
+  if (is.null(nrow(TAX)) | is.null(nrow(trait))) stop ("cannot proceed: nothing to select from")
 # calculate traits for taxa not in trait database  
   RES <- .Fortran("extendtraitf", 
          as.integer(nrow(TAX)), as.integer(ncol(TAX)), taxonomy=as.integer(TAX),

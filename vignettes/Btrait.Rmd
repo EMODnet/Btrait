@@ -2,11 +2,13 @@
 title: "R-package Btrait: working with biological data and trait information"
 author: "Karline Soetaert and Olivier Beauchard"
 date: "18 November 2022"
-output: pdf_document
+output:
+  word_document: default
+  pdf_document: default
 vignette: >
-  %\VignetteIndexEntry{R-package Btrait: working with biological data and trait information}
-  %\VignetteEngine{knitr::knitr}
-  %\VignetteEncoding{UTF-8}
+  %\VignetteIndexEntry{R-package Btrait: working with biological data and trait information} 
+  %\VignetteEngine{knitr::knitr} 
+  %\VignetteEncoding{UTF-8}\n"
 ---
 
 ```{r setup, include=FALSE, warning=FALSE, message=FALSE}
@@ -537,6 +539,55 @@ for (i in 2:length(nscore))
            pch=16, cex=2)
 ```
 
+# A small example from the MWTL database
+
+The MWTL dataset contains density information from 
+`r length(unique(MWTL$density$station))` stations, sampled in between
+`r min(MWTL$density$date)`and `r max(MWTL$density$date)`. 
+
+Here we combine these data with the nioz trait database (*Traits_nioz*) 
+to calculate the density-averaged fraction of species that are swimmers.
+
+First the density data are merged with the trait database. 
+For each station (*descriptor  = station*), we average the *density* for each 
+*taxon*, averaging the data over the years (*averageOver = year*). 
+
+We use taxonomic closeness to estimate the traits for taxa that are not 
+accounted for in the trait database; the *taxonomy* used is from worms.
+
+
+```{r}
+MWTL_trait <- with(MWTL$density, 
+                   getTraitDensity(descriptor  = station,
+                                   averageOver = year,
+                                   taxon       = taxon,
+                                   value       = density,
+                                   taxonomy    = Taxonomy,
+                                   trait       = Traits_nioz))
+```
+
+Then we look up the column name for the trait that holds the fraction swimmers. 
+The data are restricted to hold the station name and this trait.
+
+```{r}
+TraitMeta <- metadata(Traits_nioz)
+swimName <- subset(TraitMeta, subset=modality == "Swimmer")$colname
+
+MWTLswim <- data.frame(station = MWTL_trait$descriptor, 
+                       pSwimmer = MWTL_trait[,swimName])
+head(MWTLswim)
+```
+
+Finally the results are plotted.
+
+```{r, fig.height=6, fig.width=5} 
+MWTLswim <- merge(MWTL$stations, MWTLswim)
+
+mapMWTL(x=MWTLswim$x, y=MWTLswim$y, colvar=MWTLswim$pSwimmer, 
+        main="fraction swimmers", type="Legend", clab="[0-1]",
+        col=ramp.col(c("lightgreen", "darkblue"), n=100))
+```
+
 # References
 
 Beauchard O, Brind’Amour A, Schratzberger M, Laffargue P, Hintzen NT, Somerfield PJ, Piet G (2021) A generic approach to develop a trait-based indicator of trawling-induced disturbance. Mar Ecol Prog Ser 675:35-52. https://doi.org/10.3354/meps13840 
@@ -546,3 +597,65 @@ Wilson, R. J., Speirs, D. C., Sabatino, A., and Heath, M. R. (2018). A synthetic
 ```{r, results='asis', echo=FALSE}
 print(Rpacks, style="text")
 ```
+
+# Appendix 1. 
+
+here, we show the long calculation of extracting trait information. We select station WADDKT08, as this does not have many species.
+
+```{r}
+subset(MWTLswim, subset=station=="WADDKT08")
+```
+
+* step 1. Extract the taxon density for this station.
+
+```{r}
+W8 <- subset(MWTL$density, subset=station=="WADDKT08")
+head (W8)
+```
+
+* step2. Sum the densities for all taxa and divide by the total sum. 
+
+This gives the proportional density of the taxa for this station in the data
+
+```{r}
+W8p <- tapply(W8$density, INDEX=W8$taxon, FUN=sum)
+W8p <- W8p/sum(W8p)
+```
+
+* step3. Merge this with the fraction swimmers for the taxa.
+
+```{r}
+W8s <- merge(data.frame(taxon=names(W8p), prop=W8p), 
+             Traits_nioz[,c("taxon", "RT4.M4")], 
+             all.x=TRUE)
+W8s
+```
+
+* step4. Find a suitable trait value for the unknown taxon "Ophelia limacina". 
+
+```{r}
+subset(Taxonomy, subset = taxon=="Ophelia limacina") 
+```
+
+The trait database is merged with the taxonomic composition and 
+the trait for the genus Ophelia are printed. 
+
+```{r}
+ET <-  merge(Traits_nioz[,c("taxon", swimName)], 
+             Taxonomy)
+subset(ET, subset=genus=="Ophelia")
+```
+
+There is a record for another Ophelia species in this database. 
+We use the value for the swimming fraction (0) from this species.
+
+```{r}
+W8s[W8s$taxon=="Ophelia limacina", "RT4.M4"] <- 0
+```
+
+* Step5. The average fraction swimmers (RT4.M5) can now be estimated, taking into account the proportional abundance of each species (prop).
+
+```{r}
+sum(W8s$RT4.M4 * W8s$prop)
+```
+
