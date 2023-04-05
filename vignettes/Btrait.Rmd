@@ -2,9 +2,6 @@
 title: "R-package Btrait: working with biological data and trait information"
 author: "Karline Soetaert and Olivier Beauchard"
 date: "18 November 2022"
-output:
-  word_document: default
-  pdf_document: default
 vignette: >
   %\VignetteIndexEntry{R-package Btrait: working with biological data and trait information} 
   %\VignetteEngine{knitr::knitr} 
@@ -580,7 +577,7 @@ head(MWTLswim)
 
 Finally the results are plotted.
 
-```{r, fig.height=6, fig.width=5} 
+```{r, fig.height=6, fig.width=4} 
 MWTLswim <- merge(MWTL$stations, MWTLswim)
 
 mapMWTL(x=MWTLswim$x, y=MWTLswim$y, colvar=MWTLswim$pSwimmer, 

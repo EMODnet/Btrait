@@ -41,8 +41,11 @@ During the creation, we made use of the R-package *worms*, for the taxonomic rel
 Once the above packages have been installed, type the following command in the R-console to install the *Btrait* package:
 
 ```
-devtools::install_github("EMODnet/Btrait", depend=TRUE)
+devtools::install_github("EMODnet/Btrait", depend=TRUE, build_vignettes=TRUE)
 ```
+
+If you do not want to install the vignettes, then you may delete the build_vignettes = TRUE part.
+
 Then, type ``require(Btrait)`` in the R-console to load the package in R. 
 
 That's it! After this step, you should be able to use the package. 
