@@ -44,7 +44,7 @@ Once the above packages have been installed, type the following command in the R
 devtools::install_github("EMODnet/Btrait", depend=TRUE, build_vignettes=TRUE)
 ```
 
-If you do not want to install the vignettes, then you may delete the build_vignettes = TRUE part.
+If you do not want to install the vignettes, then you may delete the *build_vignettes = TRUE* part.
 
 Then, type ``require(Btrait)`` in the R-console to load the package in R. 
 

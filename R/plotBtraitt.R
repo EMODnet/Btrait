@@ -40,12 +40,20 @@ mapKey <- function(x=NULL, y=NULL, colvar=NULL, main=NULL, col=NULL, lwd=1,
   dot$xlab <- dot$ylab <- NULL
   
   # open a plot, add contours
+  haskeylevels <- FALSE
+  if (is.list(key.levels))  
+    haskeylevels <- TRUE
+  else 
+    haskeylevels <- key.levels
+  Clim <- clim
+  if (length(colvar)) Clim <- NULL
   plotContours(x=contours$x, y=contours$y, z=contours$z, 
                xlim=xlim, ylim=ylim, main=main, addCont=hasContours,
                colkey=key.levels, draw.levels=draw.levels, by=by.levels,
                col=col.levels, lwd=lwd.levels, hascv = ! is.null(colvar), 
-               axes=axes, frame.plot=frame.plot, asp=asp, clim=clim, xlab=xlab,
+               axes=axes, frame.plot=frame.plot, asp=asp, clim=Clim, xlab=xlab,
                ylab=ylab)
+  if (draw.levels & haskeylevels) clim <- NULL
   
   # Now plot the data
   if (!is.null(x)) {
@@ -67,7 +75,7 @@ mapKey <- function(x=NULL, y=NULL, colvar=NULL, main=NULL, col=NULL, lwd=1,
      }  
        if (length(colvar))
        do.call("points2D",c(alist(x=x, y=y, colvar=colvar, add=TRUE, 
-             colkey=colkey, lwd=lwd, col=col), dot))
+             colkey=colkey, lwd=lwd, col=col, clim=clim), dot))
        if (length(isna))
           points2D(xisna, yisna, pch=NApch, add=TRUE, col=NAcol)
   }
