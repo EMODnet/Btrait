@@ -6,7 +6,7 @@ Author: Karline Soetaert <karline.soetaert@nioz.nl>,
 Maintainer: Karline Soetaert <karline.soetaert@nioz.nl>
 Depends: R (>= 4.0.0), plot3D, shinydashboard
 Imports: shiny
-Suggests: worms, knitr, rmarkdown
+Suggests: worrms, knitr, rmarkdown
 Description: Functions for combining density data, taxonomy, and trait composition data. Includes two density datasets from the North Sea, and three benthic trait composition data bases.
 VignetteBuilder: knitr
 License: GPL

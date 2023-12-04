@@ -47,7 +47,7 @@ The data, in long format, are in a \code{data.frame} with the following columns:
    \item \code{year}, the year of sampling
    \item \code{taxon}, the taxon name to be used (usually species); this has been derived from the original taxon in the MWTL data as follows: 
    The original taxon e.g. species is kept, if a minimum of 90\% of individual 
-   organisms of this taxon are at the species level, genus otherwise, if not family etc. The taxon name was checked against the worms database (details in dataset \code{Taxonomy}).
+   organisms of this taxon are at the species level, genus otherwise, if not family etc. The taxon name was checked against the WoRMS database (details in dataset \code{Taxonomy}).
    \item \code{density}, the number of individuals per m2.
    \item \code{biomass}, the total biomass per m2, in AFDW/m2 (ash-free dry weight)
    \item \code{taxon.original}, the original taxon name in the data set (see details).
@@ -222,7 +222,7 @@ Values denote weight percentages dryweight of the total sediment sample, where b
 \note{
 The dataset **\code{Taxonomy}**: 
 contains taxonomic information of the original and adjusted taxon in MWTL$density, 
-as derived from the World Register of Marine Species (WORMS), using R-package \code{worms}.
+as derived from the World Register of Marine Species (WoRMS), using R-package \code{worrms}.
 }
 \details{
  The macrobenthos data of the Northsea (MWTL) are commissioned by the 
@@ -387,9 +387,10 @@ mapKey(contours=MWTL$contours, draw.levels=TRUE, col.levels=collev,
 
 \references{
 
-The taxonomic information was created using the \code{worms} package:
+The taxonomic information was created using the \code{worrms} package:
 
-Jan Holstein (2018). worms: Retrieving Aphia Information from World Register of Marine Species. R package version 0.2.2. https://CRAN.R-project.org/package=worms
+Chamberlain S, Vanhoorne. B (2023). worrms: World Register of Marine Species (WoRMS) Client_. R package
+  version 0.4.3, <https://CRAN.R-project.org/package=worrms>.
 
 The MWTL data are described in:
 

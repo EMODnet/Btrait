@@ -11,8 +11,6 @@ vignette: >
 ```{r setup, include=FALSE, warning=FALSE, message=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 require(Btrait)
-Rpacks <- c(citation(package="base"), citation(package="plot3D"), 
-            citation(package="Btrait"), citation(package="worms"))
 ```
 
 # Package Btrait
@@ -116,7 +114,7 @@ Typically we order taxa in species, genus, family, order, class, and phylum leve
 For real marine data, this information can be extracted from the world register of marine species, conveniently abbreviated into WoRMS. 
 
 In the WoRMS database, each taxon is also assigned a unique identifier (AphiaID). 
-The R-package *worms* allows to access this database from R.
+The R-package *worrms* allows to access this database from R.
 
 In *Btrait*, the taxonomy can be used in several ways: 
 
@@ -550,7 +548,7 @@ For each station (*descriptor  = station*), we average the *density* for each
 *taxon*, averaging the data over the years (*averageOver = year*). 
 
 We use taxonomic closeness to estimate the traits for taxa that are not 
-accounted for in the trait database; the *taxonomy* used is from worms.
+accounted for in the trait database; the *taxonomy* used is from WoRMS
 
 
 ```{r}
@@ -588,12 +586,23 @@ mapMWTL(x=MWTLswim$x, y=MWTLswim$y, colvar=MWTLswim$pSwimmer,
 # References
 
 Beauchard O, Brind’Amour A, Schratzberger M, Laffargue P, Hintzen NT, Somerfield PJ, Piet G (2021) A generic approach to develop a trait-based indicator of trawling-induced disturbance. Mar Ecol Prog Ser 675:35-52. https://doi.org/10.3354/meps13840 
- 
+
+Olivier Beauchard, Murray S.A. Thompson, Kari Elsa Ellingsen, Gerjan Piet, Pascal Laffargue, Karline Soetaert, 2023. Assessing sea floor functional diversity and vulnerability. Marine Ecology Progress Serie v708, p21-43, https://www.int-res.com/abstracts/meps/v708/p21-43/
+
 Wilson, R. J., Speirs, D. C., Sabatino, A., and Heath, M. R. (2018). A synthetic map of the north-west European Shelf sedimentary environment for applications in marine science. Earth Sys. Sci. Data 10, 109–130. doi: 10.5194/essd-10-109-2018
 
-```{r, results='asis', echo=FALSE}
-print(Rpacks, style="text")
-```
+R Core Team (2022). R: A Language and Environment for Statistical Computing_. R Foundation for Statistical Computing,
+Vienna, Austria. <https://www.R-project.org/>.
+
+Soetaert K (2021). plot3D: Plotting Multi-Dimensional Data_. R package version 1.4,
+<https://CRAN.R-project.org/package=plot3D>.
+
+Soetaert K, Beauchard O (2024). R-package Btrait: Working with Biological density, taxonomy, and trait composition
+data. Netherlands Institute of Sea Research. Data product created under the European Marine Observation Data Network
+(EMODnet) Biology Phase IV.
+
+Chamberlain S, Vanhoorne. B (2023). worrms: World Register of Marine Species (WoRMS) Client_. R package
+  version 0.4.3, https://CRAN.R-project.org/package=worrms.
 
 # Appendix 1. 
 

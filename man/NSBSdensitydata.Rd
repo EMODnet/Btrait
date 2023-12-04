@@ -41,7 +41,7 @@ information for 234 stations sampled in 1985-1986.
 The data, in long format, are in a \code{data.frame} with the following columns: 
   \itemize{
    \item \code{station}, the NSBS station name (details in NSBS$stations).    \item \code{date}, the sampling date (year). 
-   \item \code{taxon}, the taxon name to be used (usually species), and checked against the worms database (details in dataset \code{Taxonomy}).
+   \item \code{taxon}, the taxon name to be used (usually species), and checked against the WoRMS database (details in dataset \code{Taxonomy}).
    \item \code{density}, the number of individuals per m2.
   }
 
@@ -148,7 +148,7 @@ The positions of the different stations, in WGS84 format
 \note{
 The dataset **\code{Taxonomy}**: 
 contains taxonomic information of the original and adjusted taxon in NSBS$density, 
-as derived from the World Register of Marine Species (WORMS), using R-package \code{worms}.
+as derived from the World Register of Marine Species (WoRMS), using R-package \code{worrms}.
 }
 
 \details{
@@ -298,9 +298,10 @@ mapKey(contours=NSBS$contours, draw.levels=TRUE, col.levels=collev,
 
 \references{
 
-The taxonomic information was created using the \code{worms} package:
+The taxonomic information was created using the \code{worrms} package:
 
-Jan Holstein (2018). worms: Retrieving Aphia Information from World Register of Marine Species. R package version 0.2.2. https://CRAN.R-project.org/package=worms
+Chamberlain S, Vanhoorne. B (2023). worrms: World Register of Marine Species (WoRMS) Client_. R package
+  version 0.4.3, <https://CRAN.R-project.org/package=worrms>.
 
 The NSBS data are described in:
 

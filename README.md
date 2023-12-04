@@ -35,7 +35,7 @@ Before installing the *Btrait* package, you need to first install the following 
 * *shinydashboard*, *shiny*, for the interactive visualisation tool;
 * *devtools*, required for a seamless installation of the Btrait package from this github repository. 
 
-During the creation, we made use of the R-package *worms*, for the taxonomic relationships;
+During the creation, we made use of the R-package *worms* (now superseded by package *worrms*), for the taxonomic relationships;
 
 <br><br>
 Once the above packages have been installed, type the following command in the R-console to install the *Btrait* package:
