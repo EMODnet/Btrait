@@ -548,7 +548,7 @@ For each station (*descriptor  = station*), we average the *density* for each
 *taxon*, averaging the data over the years (*averageOver = year*). 
 
 We use taxonomic closeness to estimate the traits for taxa that are not 
-accounted for in the trait database; the *taxonomy* used is from WoRMS
+accounted for in the trait database; the *taxonomy* used is from WoRMS.
 
 
 ```{r}
@@ -583,11 +583,16 @@ mapMWTL(x=MWTLswim$x, y=MWTLswim$y, colvar=MWTLswim$pSwimmer,
         col=ramp.col(c("lightgreen", "darkblue"), n=100))
 ```
 
+# Acknowledgements
+
+This product was created under the European Marine Observation Data Network
+(EMODnet) Biology Phase IV. Additional support came from the NWO-funded project BFIAT (NWO 18523).
+
 # References
 
 Beauchard O, Brind’Amour A, Schratzberger M, Laffargue P, Hintzen NT, Somerfield PJ, Piet G (2021) A generic approach to develop a trait-based indicator of trawling-induced disturbance. Mar Ecol Prog Ser 675:35-52. https://doi.org/10.3354/meps13840 
 
-Olivier Beauchard, Murray S.A. Thompson, Kari Elsa Ellingsen, Gerjan Piet, Pascal Laffargue, Karline Soetaert, 2023. Assessing sea floor functional diversity and vulnerability. Marine Ecology Progress Serie v708, p21-43, https://www.int-res.com/abstracts/meps/v708/p21-43/
+Beauchard, O., Murray S.A. Thompson, Kari Elsa Ellingsen, Gerjan Piet, Pascal Laffargue, Karline Soetaert, 2023. Assessing sea floor functional diversity and vulnerability. Marine Ecology Progress Serie v708, p21-43, https://www.int-res.com/abstracts/meps/v708/p21-43/
 
 Wilson, R. J., Speirs, D. C., Sabatino, A., and Heath, M. R. (2018). A synthetic map of the north-west European Shelf sedimentary environment for applications in marine science. Earth Sys. Sci. Data 10, 109–130. doi: 10.5194/essd-10-109-2018
 
@@ -601,7 +606,7 @@ Soetaert K, Beauchard O (2024). R-package Btrait: Working with Biological densit
 data. Netherlands Institute of Sea Research. Data product created under the European Marine Observation Data Network
 (EMODnet) Biology Phase IV.
 
-Chamberlain S, Vanhoorne. B (2023). worrms: World Register of Marine Species (WoRMS) Client_. R package
+Chamberlain S, Vanhoorne. B (2023). worrms: World Register of Marine Species (WoRMS) Client. R package
   version 0.4.3, https://CRAN.R-project.org/package=worrms.
 
 # Appendix 1. 

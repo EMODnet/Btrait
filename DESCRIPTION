@@ -4,8 +4,7 @@ Title: Working with biological density, taxonomy, and trait composition data
 Author: Karline Soetaert <karline.soetaert@nioz.nl>,
         Olivier Beauchard <olivier.beauchard@nioz.nl>
 Maintainer: Karline Soetaert <karline.soetaert@nioz.nl>
-Depends: R (>= 4.0.0), plot3D, shinydashboard
-Imports: shiny
+Depends: R (>= 4.0.0), plot3D
 Suggests: worrms, knitr, rmarkdown
 Description: Functions for combining density data, taxonomy, and trait composition data. Includes two density datasets from the North Sea, and three benthic trait composition data bases.
 VignetteBuilder: knitr

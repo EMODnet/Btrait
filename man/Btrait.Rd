@@ -40,10 +40,4 @@ L. Leewis, E.C. Verduin, R. Stolk ; Eurofins AquaSense Macrozoobenthosonderzoek 
 %
 %}
 
-\examples{
-\dontrun{
-  Bweb()   # an interactive application
-}  
-}
-
 \keyword{ package }

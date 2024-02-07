@@ -1,12 +1,11 @@
 useDynLib(Btrait)
-import(plot3D, shinydashboard)
+import(plot3D)
 importFrom("stats", "na.omit")
 importFrom("graphics", "par", "abline", "axis", "boxplot", "points", "rug")
 importFrom("stats", "reshape", "quantile")
 importFrom("grDevices", "grey.colors")
 importFrom("stats", "aggregate")
 importFrom("utils", "stack")
-importFrom("shiny", "runApp")
 
 export(mapKey, mapLegend, mapMWTL, mapNSBS)
 export(metadata)
@@ -21,7 +20,5 @@ export(getTaxonomy, getTaxonInfo)
 export(getIrrIndex, getDbIndex)
 export(extendTrait)
 export(getTrait)
-export(webMWTL)
-
 
                 
