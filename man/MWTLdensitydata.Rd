@@ -79,14 +79,18 @@ MWTL$abiotics is a data.frame with the following columns:
   \item{tidalVelMax},              maximal tidal velocity,        [m/s]
   \item{bedstress},                    bed shear stress,         [Pa]
   \item{EUNIScode},                           EUNIScode,          [-]
-  \item{sar}, swept area ratio (fisheries) 0-2 cm,  [m2/m2/year]
+  \item{DRB},                    swept area ratio for dredge, [m2/m2/year]
+  \item{OT},               swept area ratio for otter trawl, [m2/m2/year]
+  \item{SN},                    swept area ratio for seines, [m2/m2/year]
+  \item{TBB},                swept area ratio for beam trawl, [m2/m2/year]
+  \item{sar}, total swept area ratio , DRB +OT +SN +TBB, [m2/m2/year]
   \item{subsar},  swept area ratio (fisheries) > 2cm,  [m2/m2/year]
   \item{gpd},              gear penetration depth,         [cm]  
  }
  
  The fishing data (sar, subsar, gpd) were derived from ICES upon request by OSPAR.
  
- They are averaged over (2009-2020). See also MWTL$sar.
+ They are averaged over (2009-2018). See also MWTL$sar.
 
 ==================
 
@@ -213,9 +217,10 @@ Values denote weight percentages dryweight of the total sediment sample, where b
    \itemize{
       \item{station}, the NSBS station name
       \item{year}: the fishing year
+      \item{gear}: metier; TBB, OT: beam, otter trawl; DRB: dredge, SN: seine.
       \item{sar}: annual swept area ratios (m2/m2/yr) for the surface (0-2cm).
       \item{subsar}: annual swept area ratios (m2/m2/yr) for the subsurface (>2cm).
-      \item{gpd}: stimated gear penetration depths ([cm]) ; calculated as (1*(sar-subsar)+3*subsar)/sar)
+      \item{gpd}: estimated gear penetration depths ([cm]), based on metier
     }
 }
 
@@ -225,7 +230,7 @@ contains taxonomic information of the original and adjusted taxon in MWTL$densit
 as derived from the World Register of Marine Species (WoRMS), using R-package \code{worrms}.
 }
 \details{
- The macrobenthos data of the Northsea (MWTL) are commissioned by the 
+ The *macrobenthos data* of the Northsea (MWTL) are commissioned by the 
  "Ministerie van Infrastructuur en Milieu, Rijkswaterstaat Centrale 
  Informatievoorziening (RWS, CIV)". 
 
@@ -245,6 +250,26 @@ an exsiccator. Bivalvia and Gastropoda =7 mm were ashed without shell, but when
 smaller than 7 mm the shell was not removed. 
 
 AFDW = (dryweight + weight cup) ? (ash weight + weight cup).
+
+=====================================================================
+
+The *fishing data* (in abiotics and sar) were derived from ICES upon request by OSPAR.
+ 
+They are averaged over (2009-2018). 
+
+The metiers are Aggregated into beam trawl (TBB), dredge (DRB), demersal seine (SN), and otter trawl (OT), based on the 
+metier layers: OT_CRU, OT_DMF, OT_MIX, OT_MIX_CRU, OT_MIX_DMF_BEN, OT_MIX_DMF_PEL, OT_MIX_CRU_DMF,
+OT_SPF, TBB_CRU, TBB_DMF, TBB_MOL, DRB_MOL, SDN_DMF, SSC_DMF
+
+The gear penetration depths used were: 
+
+\itemize{
+ \item in sand: 3.5, 1.1, 1.1, 1.9 cm for DRB, OT, SN, TBB respectively
+ \item in mud : 5.4, 2.0, 2.0, 3.2 cm for DRB, OT, SN, TBB respectively
+}
+
+The sediment was assumed to be "mud" when the type "sediment" was "Muddy"
+
 }
 \author{
   Karline Soetaert <karline.soetaert@nioz.nl>
@@ -260,6 +285,7 @@ metadata(MWTL$sediment)
 metadata(MWTL$abiotics)
 metadata(MWTL$types)
 metadata(MWTL$density)
+metadata(MWTL$sar)
 
 ##-----------------------------------------------------
 ## SPECIES data
@@ -301,12 +327,16 @@ boxplot(densyear, log="y")
 summary(MWTL$abiotics)
 
 MWTLabiot <- merge(MWTL$stations, MWTL$abiotics)
-with(MWTLabiot, mapKey(x, y, colvar=sand, 
-                          pch=16, main="sand fraction"))
+
+with(MWTLabiot, map_key(x, y, colvar = sand, 
+                        main = "sand fraction", 
+                        pch = 16))
 
 # mud, plotted on large Northsea map
-with(MWTLabiot, mapKey(x, y, colvar=mud, contours=NSBS$contours, 
-                          pch=16, main="mud fraction"))
+with(MWTLabiot, map_key(x, y, colvar = mud, 
+                        contours = NSBS$contours, 
+                        main = "mud fraction", 
+                        pch = 16))
 
 # show the different abiotic data sets
 metadata(MWTL$abiotics)
@@ -316,9 +346,11 @@ metadata(MWTL$abiotics)
 ##-----------------------------------------------------
 
 NSsp_abi <- merge(MWTL$density, MWTL$sediment)
-ECH      <- subset(NSsp_abi, subset=taxon=="Echinocardium")
+ECH      <- subset(NSsp_abi, 
+                   subset = taxon=="Echinocardium")
 
-with(ECH, points2D(D50, density, log="xc", colvar=density, pch=16))
+with(ECH, points2D(D50, density, colvar = density, 
+                   log = "xc", pch = 16))
 
 # add station coordinates
 ECH <- merge(ECH, MWTL$stations)
@@ -328,10 +360,10 @@ ECH <- merge(ECH, MWTL$stations)
 ##-----------------------------------------------------
 
 NSwide <- with (MWTL$density, 
-     l2wDensity(descriptor  = station, 
-                taxon       = taxon, 
-                value       = density, 
-                averageOver = year))
+     l2w_density(descriptor  = station, 
+                 taxon       = taxon, 
+                 value       = density, 
+                 averageOver = year))
 
 PP <- princomp(t(NSwide[,-1]))
 \dontrun{
@@ -345,17 +377,17 @@ PP <- princomp(t(NSwide[,-1]))
 # Traits estimated for absences, by including taxonomy 
 
 NStrait.lab <- metadata(Traits_nioz)
-trait.cwm <- getTraitDensity (wide           = NSwide, 
-                              trait          = Traits_nioz, 
-                              taxonomy       = Taxonomy,
-                              trait.class    = NStrait.lab$trait, 
-                              trait.score    = NStrait.lab$score, 
-                              scalewithvalue = TRUE)
+trait.cwm <- get_trait_density (wide           = NSwide, 
+                               trait          = Traits_nioz, 
+                               taxonomy       = Taxonomy,
+                               trait.class    = NStrait.lab$trait, 
+                               trait.score    = NStrait.lab$score, 
+                               scalewithvalue = TRUE)
 
 head(trait.cwm, n=c(3,4))  
 
 Stations.traits <- merge(MWTL$stations,  trait.cwm, 
-                         by.x="station", by.y="descriptor")
+                         by.x = "station", by.y = "descriptor")
 
 ##-----------------------------------------------------
 ## Maps
@@ -363,26 +395,58 @@ Stations.traits <- merge(MWTL$stations,  trait.cwm,
 
 par(mfrow=c(2,2))
 
-with(Stations.traits, mapKey(x, y, colvar=Biodeposition,
-                                main="Biodeposition", pch=16))
-with(Stations.traits, mapKey(x, y, colvar=Biodiffusion,
-                                main="Biodiffusion", pch=16))
-with(Stations.traits, mapKey(x, y, colvar=Biostabilisation,
-                                main="Biostabilisation", pch=16))
-with(Stations.traits, mapKey(x, y, colvar=Burrow.width,
-                                main="Burrow width", pch=16))
+with(Stations.traits, 
+  map_key(x, y, colvar = Biodeposition,
+          main = "Biodeposition", 
+          pch = 16))
+          
+with(Stations.traits, 
+  map_key(x, y, colvar = Biodiffusion,
+          main = "Biodiffusion", 
+          pch = 16))
+          
+with(Stations.traits, 
+  map_key(x, y, colvar = Biostabilisation,
+          main = "Biostabilisation", 
+          pch = 16))
+with(Stations.traits, 
+  map_key(x, y, colvar = Burrow.width,
+          main = "Burrow width", 
+          pch = 16))
 
 ##-----------------------------------------------------
 ## Show the depth contours
 ##-----------------------------------------------------
 
-mapKey(contours=MWTL$contours, draw.levels=TRUE, key.levels=TRUE)
+map_key(contours = MWTL$contours, draw.levels = TRUE, key.levels = TRUE)
 
 # Use a different color scheme
-collev <- function(n) c("black", 
-  ramp.col(col=c("darkgreen", "darkblue"), n=n-1))
-mapKey(contours=MWTL$contours, draw.levels=TRUE, col.levels=collev,
-  key.levels=TRUE)
+collev <- function(n) 
+   c("black",  ramp.col(col = c("darkgreen", "darkblue"), 
+                        n = n-1))
+           
+map_key(contours = MWTL$contours, 
+        draw.levels = TRUE, col.levels = collev,
+        key.levels = TRUE)
+        
+
+##-----------------------------------------------------
+## Fishing data
+##-----------------------------------------------------
+
+metadata(MWTL$sar)
+
+# Sum fishing per year, per station
+
+MWTLfish <- tapply(X    = MWTL$sar$sar, 
+                  INDEX = list(MWTL$sar$station, MWTL$sar$year), 
+                  FUN   = sum)
+
+matplot(x = as.double(colnames(MWTLfish)), 
+        y = t(MWTLfish), 
+        xlab = "year", ylab = "m2/m2/yr", 
+        main = "fishing intensity MWTL stations",
+        type = "l", log= "y")
 }
 
 \references{
@@ -404,15 +468,15 @@ ICES Technical Service, Greater North Sea and Celtic Seas Ecoregions, 29 August 
 }
 
 \seealso{
-  \link{mapKey} for plotting.
+  \link{map_key} for plotting.
 
   \link{Traits_nioz} for the trait datasets.
   
-  \link{getDensity} for functions operating on these data.
+  \link{get_density} for functions operating on these data.
 
   \link{long2wide} for functions changing the appearance on these data.
 
-  \link{getDbIndex} for extracting bioturbation and bioirrigation indices.
+  \link{get_Db_index} for extracting bioturbation and bioirrigation indices.
 }
 
 \keyword{datasets}

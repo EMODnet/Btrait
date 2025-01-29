@@ -67,43 +67,53 @@ Note that not all species are present in all stations. For a certain station, ab
 A complete representation of the data would be:
 
 ```{r, echo=FALSE}
-SD.full <- with (S.density, 
-  addAbsences(
-    taxon      = data.frame(species=species), 
-    descriptor = cbind(station,year), 
-    value      = data.frame(density=density)))
+SD.full <- 
+  add_absences(data = S.density, 
+               taxon      = data.frame(species = species), 
+               descriptor = cbind(station, year), 
+               value      = data.frame(density = density))
 ```
 
 ```{r, echo=FALSE}
 SD.full <- SD.full[order(SD.full$station),]
-  knitr::kable(SD.full, caption="Species density with added absences", 
-             align="c", row.names=FALSE)
+
+knitr::kable(SD.full, 
+             caption = "Species density with added absences", 
+             align = "c", row.names = FALSE)
 ```
 
 The same data, in *wide* format is:
 
 ```{r, echo=FALSE}
-SD.wide <- with (S.density, 
-   l2wDensity(taxon=species, descriptor=cbind(station,year), value=density)
-)
+SD.wide <- 
+   l2w_density(data       = S.density, 
+               taxon      = species, 
+               descriptor = cbind(station, year), 
+               value      = density)
+
 ```
 
 ```{r, echo=FALSE}
-knitr::kable(SD.wide, caption="Species density in wide format", 
-             align="c", row.names=FALSE)
+knitr::kable(SD.wide, 
+             caption = "Species density in wide format", 
+             align = "c", row.names = FALSE)
 ```
 
 and, averaged over years:
 
 ```{r, echo=FALSE}
 SDW <- with (S.density, 
-  l2wDensity(taxon=species, descriptor=station, averageOver=year, value=density)
+  l2w_density(taxon       = species, 
+              descriptor  = station, 
+              averageOver = year, 
+              value       = density)
 )
 ```
 
 ```{r, echo=FALSE}
-knitr::kable(SDW, caption="Species density in wide format, averaged over years", 
-             align="c", row.names=FALSE)
+knitr::kable(SDW, 
+             caption = "Species density in wide format, averaged over years", 
+             align = "c", row.names = FALSE)
 ```
 
 # Taxonomic data
@@ -134,8 +144,9 @@ S.taxonomy <- data.frame(
 ```
 
 ```{r, echo=FALSE}
-knitr::kable(S.taxonomy, caption="Data.frame with taxonomic information", 
-             row.names=FALSE)
+knitr::kable(S.taxonomy, 
+             caption = "Data.frame with taxonomic information", 
+             row.names = FALSE)
 ```
 
 
@@ -250,34 +261,34 @@ We now demonstrate how to use the functions from the R-package Btrait to work wi
 
 ## Generating density summaries
 
-We first make two tables, recasting the density data from *long* into *wide* format, using function *l2wDensity*, and where we either keep the years (first example), or we average over the years (2nd example). 
+We first make two tables, recasting the density data from *long* into *wide* format, using function *l2w_density*, and where we either keep the years (first example), or we average over the years (2nd example). 
 
 ```{r}
 with(S.density,   # data in long format
-     l2wDensity(descriptor = data.frame(station, year), 
-                taxon      = species, 
-                value      = density)
+     l2w_density(descriptor = data.frame(station, year), 
+                 taxon      = species, 
+                 value      = density)
     )
 
 with(S.density, 
-     l2wDensity(descriptor  = station, 
-                averageOver = year, 
-                taxon       = species, 
-                value       = density)
+     l2w_density(descriptor  = station, 
+                 averageOver = year, 
+                 taxon       = species, 
+                 value       = density)
     )
 ```
 
-The same can be done, but now returning the summaries in long format using the function *getDensity*:
+The same can be done, but now returning the summaries in long format using the function *get_density*:
 
 ```{r}
 with(S.density, 
-     getDensity(descriptor = data.frame(station, year), 
+    get_density(descriptor = data.frame(station, year), 
                 taxon      = species, 
                 value      = density)
     )
 
 with(S.density, 
-     getDensity(descriptor  = station, 
+    get_density(descriptor  = station, 
                 averageOver = year, 
                 taxon       = species, 
                 value       = density)
@@ -312,7 +323,7 @@ As an example, we create density at family level, taking yearly averages:
 
 ```{r}
 with(S.density.tax, 
-     getDensity(descriptor  = station, 
+    get_density(descriptor  = station, 
                 averageOver = year, 
                 taxon       = family, 
                 value       = density)
@@ -324,7 +335,7 @@ Below we request the summed densities, on family level, for all taxa belonging t
 
 ```{r}
 with(S.density.tax, 
-     getDensity(descriptor  = station, 
+    get_density(descriptor  = station, 
                 averageOver = year, 
                 taxon       = family, 
                 subset      = (order == "o.2"),
@@ -336,10 +347,10 @@ Often we want to keep the names of the input data in the output, which we can ac
 
 ```{r}
 with (S.density.tax, 
-  getDensity(descriptor  = list(station=station), 
-             taxon       = list(family =family), 
-             averageOver = year, 
-             value       = list(density=density))
+  get_density(descriptor  = list(station = station), 
+              taxon       = list(family  = family), 
+              averageOver = year, 
+              value       = list(density = density))
 )
 ```
 
@@ -351,9 +362,10 @@ While trait data are conveniently stored in wide format, sometimes it may be eas
 This format can easily be generated from the wide format:
 
 ```{r}
-S.traits.long <- w2lTrait(
+S.traits.long <- w2l_trait(
             wide        = S.traits, 
             trait.names = S.traits.lab[,c("trait", "modality")])
+
 S.traits.long[order(S.traits.long$species),]
 ```
 
@@ -389,30 +401,30 @@ The trait database has information for species "sp.1", "sp.2", "sp.3" that are p
 
 If we need traits for each species, we can use the taxonomic relationships of the species. For instance "sp.4" belongs to the same genus as "sp.3" and "sp.5", so "plausible" values for the traits of species "sp.4" can be calculated as the mean of the two other members of the genus. 
 
-Using function *getTrait*, it suffices to pass the taxonomy to do this.
+Using function *get_trait*, it suffices to pass the taxonomy to do this.
 
 ```{r}
 taxaList <- unique(S.density$species)
-getTrait(   taxon    = taxaList,
+get_trait(  taxon    = taxaList,
             trait    = S.traits,  
             taxonomy = S.taxonomy)
 ```
 
 This function proceeds in two steps: 
 
-* first the traits are extended with information on higher taxonomic levels (using function *extendTrait*), provided that information is not yet in the trait database,
+* first the traits are extended with information on higher taxonomic levels (using function *extend_trait*), provided that information is not yet in the trait database,
 * then, for each taxon that is not present in the trait database, the traits on the closest taxonomic level are used. 
 For instance, for an  unrecorded species, it is first checked if the trait is known on genus level, if not, family level and so on.
 
 In our case, species "sp.4" belongs to genus "g.3", so in lack of trait information for "sp.4", the traits from "g.3" will be used; the latter estimated as the average of traits for species "sp.3" and "sp.5", for which trait information is known.
 
 ```{r}
-S.traits.extended <- extendTrait(
+S.traits.extended <- extend_trait(
             trait    = S.traits, 
             taxonomy = S.taxonomy)
 S.traits.extended
 
-getTrait(   taxon    = unique(S.density$species),
+get_trait(  taxon    = unique(S.density$species),
             trait    = rbind(S.traits, S.traits.extended), 
             taxonomy = S.taxonomy)
 ```
@@ -421,10 +433,10 @@ We can also use the taxonomy to generate mean trait modalities on higher taxonom
 
 ```{r}
 # This does not work, as these genera are not in the traits database
-getTrait( taxon    = c("g.1", "g.2", "g.3"),
+get_trait(taxon    = c("g.1", "g.2", "g.3"),
           trait    = S.traits)
 
-getTrait( taxon    = c("g.1", "g.2", "g.3"),
+get_trait(taxon    = c("g.1", "g.2", "g.3"),
           trait    = S.traits,
           taxonomy = S.taxonomy)
 
@@ -440,7 +452,7 @@ Often we want to combine the density with the trait information, to find the mea
 
 These *community weighted mean* trait scores for each station are estimated by combining the density, taxonomy, and trait data. 
 
-This can be done in one step, using function *getTraitDensity*.
+This can be done in one step, using function *get_trait_density*.
 
 * When, for fuzzy-coded traits, we also pass the trait *classes* and trait *scores*, then the fuzzy traits will be cast in crisp format; when we do NOT pass this information, then the result will remain in fuzzy format. 
 * If we pass taxonomical information of the taxa, then the trait scores for unknown species are estimated based on taxonomic closeness.
@@ -448,7 +460,7 @@ This can be done in one step, using function *getTraitDensity*.
 In the next example, we combine the yearly-averaged density data in *S.density*, with the fuzzy-coded trait database *S.traits*. This trait database records 5 modalities of 2 traits (as columns). The data.frame *S.traits.lab* describes to which trait these modalities belong. By passing this information, the result will be in crisp format. 
 
 ```{r}
-cwm <- getTraitDensity(
+cwm <- get_trait_density(
         descriptor  = S.density$station, 
         taxon       = S.density$species,
         averageOver = S.density$year,
@@ -464,7 +476,7 @@ Without the taxonomy, the trait scores for station "st.c" cannot be calculated, 
 Also the scores for the other stations will differ, as they are estimated without "sp.4".
 
 ```{r}
-cwm2 <- getTraitDensity(
+cwm2 <- get_trait_density(
          descriptor  = S.density$station, 
          averageOver = S.density$year,
          taxon       = S.density$species, 
@@ -475,11 +487,11 @@ cwm2 <- getTraitDensity(
 knitr::kable(cwm2, row.names=FALSE)
 ```
 
-If we do not pass the trait classes and scores, then the function *getTraitDensity* will return the trait scores in fuzzy format. 
+If we do not pass the trait classes and scores, then the function *get_trait_density* will return the trait scores in fuzzy format. 
 These fuzzy traits can then later be recast in crisp format, which gives the stations trait scores as before.
 
 ```{r}
-cwm.fuz <- getTraitDensity(
+cwm.fuz <- get_trait_density(
             descriptor  = S.density$station, 
             averageOver = S.density$year,
             taxon       = S.density$species, 
@@ -510,7 +522,7 @@ knitr::kable(S.stations, caption="Data.frame with station positions",
              align="c", row.names=FALSE)
 ```
 
-The mean trait values per station can be plotted using functions *mapKey* or *mapLegend*. 
+The mean trait values per station can be plotted using functions *map_key* or *map_legend*. 
 
 For this function to work, we need to add the stations coordinates to the community weighted mean data. 
 We use R-function *merge* for this; the column on which to merge the station and cwm data is the first one for both datasets (here we do not specify the name of the common column but rather its position).
@@ -522,16 +534,16 @@ par(mfrow=c(1,2))
 nscore <- colnames(cwm)
 nunits <- c("cm", "-")
 for (i in 2:length(nscore))
-    mapKey(x      = S.stations$x,    #x-positions
-           y      = S.stations$y,    #y-positions
-           colvar = cwm[,i],         #color-variable
+    map_key(x      = S.stations$x,    #x-positions
+            y      = S.stations$y,    #y-positions
+            colvar = cwm[,i],         #color-variable
            
-           contours=MWTL$contours,   #contourlines
-           draw.levels=TRUE,
+            contours = MWTL$contours, #contourlines
+            draw.levels = TRUE,
            
-           main    =nscore[i],       #main title
-           clab    =nunits[i],       #title above color bar
-           pch=16, cex=2)
+            main    = nscore[i],       #main title
+            clab    = nunits[i],       #title above color bar
+            pch = 16, cex = 2)
 ```
 
 # A small example from the MWTL database
@@ -548,12 +560,12 @@ For each station (*descriptor  = station*), we average the *density* for each
 *taxon*, averaging the data over the years (*averageOver = year*). 
 
 We use taxonomic closeness to estimate the traits for taxa that are not 
-accounted for in the trait database; the *taxonomy* used is from WoRMS
+accounted for in the trait database; the *taxonomy* used is from WoRMS.
 
 
 ```{r}
 MWTL_trait <- with(MWTL$density, 
-                   getTraitDensity(descriptor  = station,
+                 get_trait_density(descriptor  = station,
                                    averageOver = year,
                                    taxon       = taxon,
                                    value       = density,
@@ -578,16 +590,22 @@ Finally the results are plotted.
 ```{r, fig.height=6, fig.width=4} 
 MWTLswim <- merge(MWTL$stations, MWTLswim)
 
-mapMWTL(x=MWTLswim$x, y=MWTLswim$y, colvar=MWTLswim$pSwimmer, 
-        main="fraction swimmers", type="Legend", clab="[0-1]",
-        col=ramp.col(c("lightgreen", "darkblue"), n=100))
+map_MWTL(x = MWTLswim$x, y = MWTLswim$y, colvar = MWTLswim$pSwimmer, 
+         type = "Legend", 
+         main = "fraction swimmers", clab = "[0-1]",
+         col = ramp.col(c("lightgreen", "darkblue"), n=100))
 ```
+
+# Acknowledgements
+
+This product was created under the European Marine Observation Data Network
+(EMODnet) Biology Phase IV. Additional support came from the NWO-funded project BFIAT (NWO 18523).
 
 # References
 
 Beauchard O, Brind’Amour A, Schratzberger M, Laffargue P, Hintzen NT, Somerfield PJ, Piet G (2021) A generic approach to develop a trait-based indicator of trawling-induced disturbance. Mar Ecol Prog Ser 675:35-52. https://doi.org/10.3354/meps13840 
 
-Olivier Beauchard, Murray S.A. Thompson, Kari Elsa Ellingsen, Gerjan Piet, Pascal Laffargue, Karline Soetaert, 2023. Assessing sea floor functional diversity and vulnerability. Marine Ecology Progress Serie v708, p21-43, https://www.int-res.com/abstracts/meps/v708/p21-43/
+Beauchard, O., Murray S.A. Thompson, Kari Elsa Ellingsen, Gerjan Piet, Pascal Laffargue, Karline Soetaert, 2023. Assessing sea floor functional diversity and vulnerability. Marine Ecology Progress Serie v708, p21-43, https://www.int-res.com/abstracts/meps/v708/p21-43/
 
 Wilson, R. J., Speirs, D. C., Sabatino, A., and Heath, M. R. (2018). A synthetic map of the north-west European Shelf sedimentary environment for applications in marine science. Earth Sys. Sci. Data 10, 109–130. doi: 10.5194/essd-10-109-2018
 
@@ -601,7 +619,7 @@ Soetaert K, Beauchard O (2024). R-package Btrait: Working with Biological densit
 data. Netherlands Institute of Sea Research. Data product created under the European Marine Observation Data Network
 (EMODnet) Biology Phase IV.
 
-Chamberlain S, Vanhoorne. B (2023). worrms: World Register of Marine Species (WoRMS) Client_. R package
+Chamberlain S, Vanhoorne. B (2023). worrms: World Register of Marine Species (WoRMS) Client. R package
   version 0.4.3, https://CRAN.R-project.org/package=worrms.
 
 # Appendix 1. 

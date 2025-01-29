@@ -26,9 +26,9 @@ Somerfield PJ, Piet G (2021) A generic approach to develop a trait-based
 indicator of trawling-induced disturbance. Mar Ecol Prog Ser 675:35-52. 
 https://doi.org/10.3354/meps13840 
 
-Olivier Beauchard, Kari Elsa Ellingsen, Murray S.A. Thompson, Gerjan Piet, 
-Pascal Laffargue, Karline Soetaert, subm. 
-Assessing sea floor functional diversity and vulnerability. Marine Ecology Progress Series
+Beauchard, O., Murray S.A. Thompson, Kari Elsa Ellingsen, Gerjan Piet, Pascal Laffargue, 
+Karline Soetaert, 2023. Assessing sea floor functional diversity and vulnerability. 
+Marine Ecology Progress Serie v708, p21-43, https://www.int-res.com/abstracts/meps/v708/p21-43/
 
 For density data sets:
 
@@ -39,11 +39,5 @@ L. Leewis, E.C. Verduin, R. Stolk ; Eurofins AquaSense Macrozoobenthosonderzoek 
 %\seealso{
 %
 %}
-
-\examples{
-\dontrun{
-  Bweb()   # an interactive application
-}  
-}
 
 \keyword{ package }

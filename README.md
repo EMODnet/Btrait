@@ -16,7 +16,10 @@ Apart from several R-functions, it also contains:
 
 - Several species density data sets (northsea macrobenthos)
 - Several trait databases (macrobenthos)
-- an interactive shiny to visualise these data
+
+<br>
+
+An interactive shiny to visualise these data is in the accompanying package BtraitWeb
 
 <br>
 The R- package is created in the framework of the EMODnet biology project.
@@ -32,7 +35,6 @@ The R- package is created in the framework of the EMODnet biology project.
 Before installing the *Btrait* package, you need to first install the following R-packages and their dependencies:
 
 * *plot3D*, for the simple plotting functions;
-* *shinydashboard*, *shiny*, for the interactive visualisation tool;
 * *devtools*, required for a seamless installation of the Btrait package from this github repository. 
 
 During the creation, we made use of the R-package *worms* (now superseded by package *worrms*), for the taxonomic relationships;
@@ -50,9 +52,10 @@ Then, type ``require(Btrait)`` in the R-console to load the package in R.
 
 That's it! After this step, you should be able to use the package. 
 
-You may want to try the interactive tool. This can be triggered with:
+You may want to try the interactive tool, which is included in the BtraitWeb package (You need to install this first). 
 
 ```
+require(BtraitWeb)
 webMWTL()
 ```
 <br>
@@ -82,4 +85,9 @@ To uninstall the package manually, type the following command in the R-console (
   ```
 
 ---
-Last updates: 2023-02-18
+
+During the transition from version 0.01 to version 1.0.1 the names of functions have changed. For instance, the function getTrait is now called get_trait. This means that any code that uses the old version will need to be adapted.
+
+Starting from version 1.0.1, backward compatibility will be ensured.
+
+Last updates: 2025-01-29

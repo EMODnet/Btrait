@@ -16,13 +16,13 @@ metadata <- function(object){
 ## Traits of a taxon
 ## ====================================================================
 
-getTaxonInfo <- function(taxon, trait=Traits_nioz, taxonomy=Taxonomy){
+get_taxon_info <- function(taxon, trait=Traits_nioz, taxonomy=Taxonomy){
   
-  wide <- getTrait(taxon    = taxon, 
-                   trait    = trait, 
-                   taxonomy = taxonomy)
+  wide <- get_trait(taxon    = taxon, 
+                    trait    = trait, 
+                    taxonomy = taxonomy)
   meta <- metadata(trait)
-  long <- w2lTrait(wide, trait.names = meta)
+  long <- w2l_trait(wide, trait.names = meta)
   SUB <- subset(long, subset = !long$modality%in%c("Null", "NULL", "None", "NONE"))
   colnames(SUB)[ncol(SUB)] <- "proportion"
   SUB <- SUB[order(SUB[,1]),]
@@ -34,7 +34,7 @@ getTaxonInfo <- function(taxon, trait=Traits_nioz, taxonomy=Taxonomy){
 ## Taxonomic position of a taxon
 ## ====================================================================
 
-getTaxonomy <- function(taxon, taxonomy=Taxonomy){
+get_taxonomy <- function(taxon, taxonomy=Taxonomy){
   lapply(taxon, FUN = function(tx)
   Taxonomy[unique(which(taxonomy==tx, arr.ind=TRUE)[,1]),])
 }

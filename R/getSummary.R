@@ -4,110 +4,101 @@
 ## ====================================================================
 ## ====================================================================
 
-getSummary <- function(descriptor, taxon, value, averageOver = NULL, 
-                       taxonomy = NULL, subset, what=c("density", "taxa", "occurrence"), 
-                       wide.output = FALSE){
-  
-# value cannot have multiple columns
-  if (is.matrix(value) | is.data.frame(value)){
-    if (ncol(value) > 1) stop ("'value' should be a vector for 'getSummary'")
-    value <- as.vector(value)
-  }
-  
-  descriptor <- checkDescriptor(descriptor, length(taxon))
 
-  # Check if all inputs are the same length
-  if (is.list(taxon)) 
-    taxon <- unlist(taxon)
-  
-  nr <- checklength(descriptor, taxon, value, averageOver)
+get_summary <- function(data,
+                        descriptor, taxon, value, averageOver, 
+                        taxonomy = NULL, 
+                        subset, 
+                        what=c("density", "taxa", "occurrence"), 
+                        wide.output = FALSE){
 
-  cnDesc     <- getname(descriptor)
-  colnames(descriptor) <- cnDesc
-  nc         <- ncol(descriptor)
-
-   # take subset
-  if (! missing(subset)) {
-    if (! is.null(averageOver))
-      x <- data.frame(descriptor, taxon=taxon, averageOver=averageOver, value)
-    else
-      x <- data.frame(descriptor, taxon=taxon, value)
-     
-     if (! is.null(taxonomy)) {
-      nr <- nrow(x)
-      x <- cbind(x, 1:nrow(x))
-      nc <- ncol(x)
-      x <- merge(x, taxonomy, by.x="taxon", by.y=1)
-      if (nrow(x) != nr) stop("cannot merge taxonomy with data: not all taxa present")
-      x <- x[order(x[,nc]),]
-      x <- x[,-nc]
-     }
-    e <- substitute(subset)
-    r <- eval(e, x, parent.frame())
-    if (!is.logical(r)) stop("'subset' must be logical")
-    r <- r & !is.na(r)
-    if (length(r) != nr) stop ("'subset' evaluation did not provide a selection?")
-
-    x <- x[r,]    # take subset
+  if (! missing(data)){
+    if (! missing(descriptor))
+      descriptor  <- eval(substitute(data.frame(descriptor)), 
+                          envir = data, enclos = parent.frame())
+    if (! missing(taxon))
+      taxon       <- eval(substitute(data.frame(taxon)), 
+                          envir = data, enclos = parent.frame())
+    if (! missing(value))
+      value       <- eval(substitute(data.frame(value)), 
+                          envir = data, enclos = parent.frame())
+    if (! missing(averageOver))
+      averageOver <- eval(substitute(data.frame(averageOver)), 
+                          envir = data, enclos = parent.frame())
     
-    # value can only be one number
-    nV    <- ncol(x)
-    value <- as.data.frame(x[,nV])
+    data_name <- substitute(data)
+  } else data_name <- NA
 
-    taxon     <- x$taxon
-    averageOver <- x$averageOver
-
-    # descriptor can have multiple columns
-    nD <- which(colnames(x) %in% cnDesc)
-    if (is.null(nD)) nD <- 1
-    descriptor <- as.data.frame(x[,nD])  
-    nr <- length(taxon)
-   }
-    
    if (pmatch("den", what, nomatch = FALSE)) {
-    density.total <- getDensity(
-                         descriptor  = descriptor, 
-                         averageOver = averageOver, 
-                         taxon       = rep(1, times=nr), # all the same taxon
-                         value       = value)
-   
+     if(missing(subset))
+       density.total <- get_density(
+                          descriptor  = descriptor, 
+                          averageOver = averageOver, 
+                          value       = value)
+     else
+       density.total <- get_density(
+                          descriptor  = descriptor, 
+                          averageOver = averageOver, 
+                          subset = substitute(subset),
+                          value       = value)
+     
     density.total <- density.total[, -which(colnames(density.total)=="taxon")]
-    colnames(density.total) <- c(cnDesc, "density")
-  
-  # second column removed
-    if (nc > 1 & wide.output) 
-      density.total <- long2wide(
-        row    =density.total[,1:(nc-1)], 
-        column =density.total[,nc], 
-        value  =density.total$density)
+
     } else density.total <- NULL
   
+   DD <- NULL
+   
+   if (any(pmatch(c("tax", "occ"), what, nomatch = FALSE)) &  ! missing(taxon)) {
+     if(missing(subset))
+       DD <- get_density(
+                         descriptor  = descriptor, 
+                         averageOver = averageOver, 
+                         taxon       = taxon, 
+                         value       = value)
+     else
+       DD <- get_density(
+                         descriptor  = descriptor, 
+                         averageOver = averageOver, 
+                         taxon       = taxon, 
+                         subset = substitute(subset),
+                         value       = value)
+     # number of taxa
+     Att   <- attributes(DD)
+     Tname <- Att$names_taxon
+     Dname <- Att$names_descriptor
+     
+     nc <- length(Dname)
+     
+   }
+   
    if (pmatch("tax", what, nomatch = FALSE) &  ! missing(taxon)) {
-    # number of taxa
-      density.numtax <- aggregate(taxon, 
-                by  = as.data.frame(descriptor[,nc:1]),  # reverse the order to have same output as for density
-                FUN = function(x) length(unique(x)))
-      density.numtax[,1:nc] <-     density.numtax[,nc:1]  
-      colnames(density.numtax) <-  c(cnDesc, "taxa")
+     
+     density.numtax <- aggregate(
+                DD[, Tname], 
+                by  = as.data.frame(DD[, rev(Dname)]),  # reverse the order to have same output as for density
+                   FUN = function(x) length(unique(x)))
+      
+      density.numtax[,1:nc]    <-  density.numtax[,nc:1]  
+      colnames(density.numtax) <-  c(Dname, Tname)
 
       if (nc > 1 & wide.output) 
         density.numtax <- long2wide(
               row    = density.numtax[,1:(nc-1)], 
               column = density.numtax[,nc], 
-              value  = density.numtax$taxa)
+              value  = density.numtax[,Tname])
     } else 
-    density.numtax <- NA
+       density.numtax <- NA
 
   # for all species: number of descriptors over which it is found. 
 
    if (pmatch("occ", what, nomatch = FALSE) &  ! missing(taxon)) {
     # Combine multiple columns in descriptor and replicates to average
-    Desc   <- OneFactor(descriptor)   # returns factor for each row of descriptor (data.frame)
+    Desc   <- data.frame(OneFactor(data.frame(DD[, Dname])))
     species.numdescriptor <- aggregate(
-               Desc, 
-               by  = as.data.frame(taxon),  
+               x   = Desc, 
+               by  = as.data.frame(DD[, Tname]),  
                FUN = function(x) length(unique(x)))
-    colnames(species.numdescriptor)[2] <-  "occurrence"
+    colnames(species.numdescriptor) <-  c(Tname, "occurrence")
     
   } else 
     species.numdescriptor <- NA
@@ -119,131 +110,4 @@ getSummary <- function(descriptor, taxon, value, averageOver = NULL,
        occurrence = species.numdescriptor)
 }
 
-## ====================================================================
-## Summary statistics: total (summed) values -- TO DO!!!!!!!!!!!
-## ====================================================================
-
-getSum <- function(descriptor, value, averageOver = NULL, 
-                   subset, wide.output = FALSE){
-
-# value cannot have multiple columns
-  if (is.matrix(value) | is.data.frame(value)){
-    if (ncol(value) > 1) stop ("'value' should be a vector for 'getTotal'")
-    value <- as.vector(value)
-  }
- 
-  descriptor <- checkDescriptor(descriptor, length(value))
-
-  # Check if all inputs are the same length
-  nr <- checklength(descriptor, value, value, averageOver)
-
-  cnDesc     <- getname(descriptor)
-  colnames(descriptor) <- cnDesc
-  nc         <- ncol(descriptor)
-
-   # take subset
-  if (! missing(subset)) {
-    if (! is.null(averageOver))
-      x <- data.frame(descriptor, averageOver=averageOver, value)
-    else
-      x <- data.frame(descriptor, value)
-    e <- substitute(subset)
-    r <- eval(e, x, parent.frame())
-    if (!is.logical(r)) stop("'subset' must be logical")
-    r <- r & !is.na(r)
-    if (length(r) != nr) stop ("'subset' evaluation did not provide a selection?")
-
-    x <- x[r,]    # take subset
-    
-    # value can only be one number
-    nV    <- ncol(x)
-    value <- as.data.frame(x[,nV])
-    averageOver <- x$averageOver
-
-    # descriptor can have multiple columns
-    nD <- which(colnames(x) %in% cnDesc)
-    if (is.null(nD)) nD <- 1
-    descriptor <- as.data.frame(x[,nD])  
-    nr <- length(value)
-   }
-    
-  density.total <- getDensity(
-               descriptor  = descriptor, 
-               averageOver = averageOver, 
-               taxon       = rep(1, times=nr), # treat taxa as if all the same
-               value       = value)
-  density.total <- density.total[, -which(colnames(density.total)=="taxon")]
-  colnames(density.total) <- c(cnDesc, "density")
-  
-  # second column removed
-  if (nc > 1 & wide.output) 
-    density.total <- long2wide(
-        row    =density.total[,1:(nc-1)], 
-        column =density.total[,nc], 
-        value  =density.total$density)
-
-  return(density.total)
-}
-
-## ====================================================================
-## Summary statistics: weighted mean values -- TO DO!!!!!!!!!!!
-## ====================================================================
-
-getMean <- function(descriptor, value, weight=NULL,
-                     subset, wide.output = FALSE){
-
-# value cannot have multiple columns
-  if (is.matrix(value) | is.data.frame(value)){
-    if (ncol(value) > 1) stop ("'value' should be a vector for 'getTotal'")
-    value <- as.vector(value)
-  }
- 
-  descriptor <- checkDescriptor(descriptor, length(value))
-
-  # Check if all inputs are the same length
-  nr <- checklength(descriptor, value, weight, value)
-
-  cnDesc     <- getname(descriptor)
-  colnames(descriptor) <- cnDesc
-  nc         <- ncol(descriptor)
-
-   # take subset
-  if (! missing(subset)) {
-    x <- data.frame(descriptor, value, weight)
-    e <- substitute(subset)
-    r <- eval(e, x, parent.frame())
-    if (!is.logical(r)) stop("'subset' must be logical")
-    r <- r & !is.na(r)
-    if (length(r) != nr) stop ("'subset' evaluation did not provide a selection?")
-
-    x <- x[r,]    # take subset
-    
-    # value can only be one number
-    nV    <- ncol(x)
-    value <- as.data.frame(x[,nV])
-    weight <- x$weight
-
-    # descriptor can have multiple columns
-    nD <- which(colnames(x) %in% cnDesc)
-    if (is.null(nD)) nD <- 1
-    descriptor <- as.data.frame(x[,nD])  
-    nr <- length(value)
-   }
-    
-  density.total <- getDensity(
-               descriptor = descriptor, 
-               taxon      = rep(1, times=nr), # treat taxa as if all the same
-               value      = value)
-  density.total <- density.total[, -which(colnames(density.total)=="taxon")]
-  colnames(density.total) <- c(cnDesc, "density")
-  
-  # second column removed
-  if (nc > 1 & wide.output) 
-    density.total <- long2wide(
-        row    =density.total[,1:(nc-1)], 
-        column =density.total[,nc], 
-        value  =density.total$density)
-
-  return(density.total)
-}
 

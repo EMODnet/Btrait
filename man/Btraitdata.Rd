@@ -13,7 +13,7 @@
   Macrofauna species trait information datasets.
   
   \itemize{
-   \item{Traits_nioz}: 32 effect and response traits for benthic macrofauna (Beauchard et al, 2021)
+   \item{Traits_nioz}: 32 effect and response traits for benthic macrofauna (Beauchard et al, 2021, Beauchard et al., 2023)
    \item{Traits_cefas}: 10 effect and response traist for benthic macrofauna (Clare et al, 2022) 
    \item{Traits_Db}: traits to estimate bioturbation potential index (Queiros et al., 2013)
    \item{Traits_irr}: traits to estimate bioirrigation potential index as in (Wrede et al., 2018)
@@ -24,7 +24,7 @@
 \details{
 
  \itemize{
- \item{**\code{Traits_nioz}**} contains 15 \code{effect} and 15 \code{response} traits of 281 macrobenthos taxa (as in Beauchard et al., 2021), mainly on species level. Traits are fuzzy coded, i.e. modalities can range inbetween 0 and 1, and a taxon can be attributed a score for several modalities. Within a trait, and for a taxon, the scores sum to 1.  
+ \item{**\code{Traits_nioz}**} contains 15 \code{effect} and 15 \code{response} traits of 281 macrobenthos taxa (as in Beauchard et al., 2021, 2023), mainly on species level. Traits are fuzzy coded, i.e. modalities can range inbetween 0 and 1, and a taxon can be attributed a score for several modalities. Within a trait, and for a taxon, the scores sum to 1.  
 
  \item{**\code{Traits_cefas}**} contains 10 traits for 1025 macrobenthos taxa (as in Beauchard et al., 2021), mainly on genus level. Traits are fuzzy coded.  
 
@@ -150,10 +150,12 @@ head  (traits.lab)
 unique(traits.lab$trait)
 
 # types of burrows
-subset(traits.lab, subset = (trait=="Endo-3D structure type"))
+subset(traits.lab, 
+       subset = (trait == "Endo-3D structure type"))
 
 # taxa with U- or Y-shaped burrows (ET9M5):
-subset(Traits_nioz, subset = ET11.M5 > 0)$taxon
+subset(Traits_nioz, 
+       subset = ET11.M5 > 0)$taxon
 
 ##-----------------------------------------------------
 ## Show contents of the trait data sets - CEFAS data
@@ -165,16 +167,19 @@ head  (traits_cefas.lab)
 unique(traits_cefas.lab$trait)
 
 # Living habit
-subset(traits_cefas.lab, subset = (trait=="Living habit"))
+subset(traits_cefas.lab, 
+       subset = (trait=="Living habit"))
 
 # taxa that live predominantly in a tube (lh_Tube_dwelling):
-subset(Traits_cefas, subset = lh_Tube_dwelling > 0.5)$taxon  # more than 50%
+subset(Traits_cefas, 
+       subset = lh_Tube_dwelling > 0.5)$taxon  # more than 50%
 
 ##-----------------------------------------------------
 ## Feeding type - NIOZ data
 ##-----------------------------------------------------
 
-FT <- subset(traits.lab, trait=="Feeding type")
+FT <- subset(traits.lab, 
+             trait == "Feeding type")
 FT
 head(Traits_nioz[,c("taxon", FT$colname)])
 
@@ -197,20 +202,21 @@ data.frame(FT$modality, numberOfOccurrences = FTtable)
 ## Feeding type - CEFAS data
 ##-----------------------------------------------------
 
-FT_cefas <- subset(traits_cefas.lab, trait== "Feeding mode")
+FT_cefas <- subset(traits_cefas.lab, 
+                   trait== "Feeding mode")
 FT_cefas
 
 FT_cefasSpec <- apply(Traits_cefas[ ,FT_cefas$colname], 
-                MARGIN = 2,             # apply on columns
-                FUN    = function(x) Traits_cefas$taxon[x>0])
+                      MARGIN = 2,             # apply on columns
+                      FUN    = function(x) Traits_cefas$taxon[x>0])
                 
 names(FT_cefasSpec) <- FT_cefas$modality
 FT_cefasSpec$"Parasite"
 
 ## number of occurrences
 FTtable_cefas <- apply(Traits_cefas[,FT_cefas$colname], 
-                 MARGIN = 2, 
-                 FUN    = function(x) sum(x>0))
+                       MARGIN = 2, 
+                       FUN    = function(x) sum(x>0))
 
 data.frame(FT_cefas$modality, numberOfOccurrences = FTtable_cefas)
 
@@ -224,8 +230,9 @@ trait.lab <- attributes(Traits_nioz)$description
 # traits are extended with taxonomic information (via taxonomy), 
 # and converted to crisp values (by passing trait.class, trait.score)
 
-cwm.weight.score <- with (MWTL$density, 
-      getTraitDensity(descriptor     = station, 
+cwm.weight.score <- 
+    get_trait_density(data           = MWTL$density, 
+                      descriptor     = station, 
                       taxon          = taxon, 
                       value          = density, 
                       averageOver    = year, 
@@ -233,23 +240,30 @@ cwm.weight.score <- with (MWTL$density,
                       taxonomy       = Taxonomy,
                       trait.class    = trait.lab$trait, 
                       trait.score    = trait.lab$score, 
-                      scalewithvalue = TRUE))
+                      scalewithvalue = TRUE)
 
-head(cwm.weight.score, n=c(3,4))  
+head(cwm.weight.score, n = c(3,4))  
 
 Stations.traits <- merge(MWTL$stations, cwm.weight.score, 
-                         by.x="station", by.y="descriptor")
+                         by = "station")
 
 par(mfrow=c(2,2))
 
-with(Stations.traits, mapKey(x, y, colvar=Biodeposition,
-                                main="Biodeposition"))
-with(Stations.traits, mapKey(x, y, colvar=Biodiffusion,
-                                main="Biodiffusion"))
-with(Stations.traits, mapKey(x, y, colvar=Biostabilisation,
-                                main="Biostabilisation"))
-with(Stations.traits, mapKey(x, y, colvar=Burrow.width,
-                                main="Burrow width"))
+with(Stations.traits, 
+     map_key(x, y, colvar = Biodeposition,
+             main = "Biodeposition"))
+             
+with(Stations.traits, 
+     map_key(x, y, colvar = Biodiffusion,
+             main = "Biodiffusion"))
+             
+with(Stations.traits, 
+     map_key(x, y, colvar = Biostabilisation,
+             main = "Biostabilisation"))
+             
+with(Stations.traits, 
+     map_key(x, y, colvar = Burrow.width,
+             main = "Burrow width"))
 
 ##-----------------------------------------------------
 ## Deriving the bio-irrigation traits from the NIOZ dataset
@@ -260,14 +274,21 @@ with(Stations.traits, mapKey(x, y, colvar=Burrow.width,
 # the feeding type is derived from the nioz traits "Feeding type". 
 
 # traits and modalities in Traits_nioz usable for bio-irrigation estimates
+
 Irr.meta <- rbind(
-  subset(metadata(Traits_nioz), subset = trait == "Endo-3D structure type"),  #BT
-  subset(metadata(Traits_nioz), subset = trait == "Endo-3D structure depth"), #ID
-  subset(metadata(Traits_nioz), subset = trait == "Feeding type"))            #FT
+  subset(metadata(Traits_nioz), 
+         subset = trait == "Endo-3D structure type"),  #BT
+  subset(metadata(Traits_nioz), 
+         subset = trait == "Endo-3D structure depth"), #ID
+  subset(metadata(Traits_nioz), 
+         subset = trait == "Feeding type"))            #FT
 
 # Add irrigation scores
-Irr.meta$IR.type  <- c(rep("BT", times=7),  rep("ID", times=5), rep("FT", times=4))
-Irr.meta$IR.value <- c(1, 1, 1, 2, 2, 3, 3,     1, 2, 3, 4, 4,    3, 2, 1, 1)
+Irr.meta$IR.type  <- c(rep("BT", times=7),  
+                       rep("ID", times=5), 
+                       rep("FT", times=4))
+Irr.meta$IR.value <- c(1, 1, 1, 2, 2, 3, 3,     
+             1, 2, 3, 4, 4,    3, 2, 1, 1)
 
 # Show the metadata usable together with Traits_nioz
 Irr.meta[, c(1:3,8:9)]
@@ -298,6 +319,8 @@ The NIOZ trait database is described in the following paper:
 
 Beauchard O, Brind'Amour A, Schratzberger M, Laffargue P, Hintzen NT, Somerfield PJ, Piet G (2021) A generic approach to develop a trait-based indicator of trawling-induced disturbance. Mar Ecol Prog Ser 675:35-52. https://doi.org/10.3354/meps13840 
 
+Beauchard, O., Murray S.A. Thompson, Kari Elsa Ellingsen, Gerjan Piet, Pascal Laffargue, Karline Soetaert, 2023. Assessing sea floor functional diversity and vulnerability. Marine Ecology Progress Serie v708, p21-43, https://www.int-res.com/abstracts/meps/v708/p21-43/
+
 The CEFAS trait dataset:
 
 Clare, David S. Bolam, Stefan G. McIlwaine, Paul S.O. Garcia, Clement Murray, Joanna M. Eggleton, Jacqueline D.  (2022). Ten key biological traits of marine benthic invertebrates surveyed in Northwest Europe. Cefas, UK. V2. doi: https://doi.org/10.14466/CefasDataHub.123
@@ -317,15 +340,15 @@ A. Wrede, J.Beermann, J.Dannheim, L.Gutow, T.Brey, 2018. Organism functional tra
 
   \link{MWTL} for other data sets of the Northsea.
 
-  \link{mapKey} for plotting.
+  \link{map_key} for plotting.
 
-  \link{extendTrait} for functions operating on trait data.
+  \link{extend_trait} for functions operating on trait data.
 
-  \link{getDensity} for functions operating on density data.
+  \link{get_density} for functions operating on density data.
 
-  \link{getTraitDensity} for functions operating on density and trait data.
+  \link{get_trait_density} for functions operating on density and trait data.
 
-  \link{getDbIndex} for extracting bioturbation and bioirrigation indices.
+  \link{get_Db_index} for extracting bioturbation and bioirrigation indices.
 }
 
 \keyword{datasets}

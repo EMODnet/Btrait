@@ -4,26 +4,48 @@
 ## ====================================================================
 ## ====================================================================
 
-getDensity <- function(descriptor,      # descriptor of sample, (vector or data.frame) 
+get_density <- function(data,           # data.frame/tibble with data
+                       descriptor,      # descriptor of sample, (vector or data.frame) 
                        taxon,           # vector with taxon names 
                        value,           # density value (vector or matrix/data.frame)
-                       averageOver=NULL,# replicate name (vector or data.frame)
+                       averageOver,     # replicate name (vector or data.frame)
                        taxonomy=NULL,   # taxonomic relationships to 'taxon'
                        subset,          # logical expression which to include
                        wide.output=FALSE,  # if true, recasts result in wide format
                        full.output=FALSE,  
                        verbose=FALSE  ){ # if true: adds descriptors with 0 value
   
+
+  if (! missing(data)){
+    if (! missing(descriptor))
+      descriptor  <- eval(substitute(data.frame(descriptor)), 
+                          envir = data, enclos = parent.frame())
+    if (! missing(taxon))
+      taxon       <- eval(substitute(data.frame(taxon)), 
+                          envir = data, enclos = parent.frame())
+    if (! missing(value))
+      value       <- eval(substitute(data.frame(value)), 
+                          envir = data, enclos = parent.frame())
+    if (! missing(averageOver))
+      averageOver <- eval(substitute(data.frame(averageOver)), 
+                          envir = data, enclos = parent.frame())
+    
+    data_name <- substitute(data)
+  } else data_name <- NA
+  
+  if (missing(averageOver))
+    averageOver <- NULL
+  
   # value can be a list...
   if (!is.data.frame(value)) 
     value <- as.data.frame(value)
- 
  
   nr <- nrow(value)
   
   if (missing(taxon)) 
     taxon <- rep("NA", times=nr)
   cnTaxon <- getname(taxon)
+  
   if (is.list(taxon)) 
     taxon <- unlist(taxon)
 
@@ -60,35 +82,53 @@ getDensity <- function(descriptor,      # descriptor of sample, (vector or data.
   
   # number of replicates per descriptor  
   if (! is.null(averageOver)) {
+     cnAvg <- colnames(averageOver)
      averageOver  <- OneFactor(as.data.frame(averageOver))
      nAvg <- aggregate(x   = averageOver, 
                        by  = list(desc=Desc), 
                        FUN = function(x) length(unique(x)))
   } else { # one replicate
-     averageOver <- rep(1, times=nr)
+    cnAvg <- NA
+    averageOver <- rep(1, times=nr)
      nAvg <- data.frame(desc=Desc, x=rep(1, times=nr))
   }
 
   # take subset
+  nSubset <- NA
   if (! missing(subset)) {
-     x <- data.frame(descriptor, taxon=taxon, 
-               averageOver=averageOver, Desc=Desc, value)
+     x <- data.frame(descriptor, 
+                     taxon = taxon, 
+                     averageOver = averageOver, 
+                     Desc=Desc, value)
+     
+     if (! missing(data))
+        x <- data.frame(x, data)
      
      if (! is.null(taxonomy)) {
-      nr <- nrow(x)
-      x <- cbind(x, 1:nrow(x))
-      nc <- ncol(x)
-      x <- merge(x, taxonomy, by.x="taxon", by.y=1)
-      if (nrow(x) != nr) stop("cannot merge taxonomy with data: not all taxa present")
-      x <- x[order(x[,nc]),]
-      x <- x[,-nc]
+       nr <- nrow(x)
+       x  <- cbind(x, 1:nrow(x))
+       nc <- ncol(x)
+       x  <- merge(x, taxonomy, by.x="taxon", by.y=1)
+       
+       if (nrow(x) != nr) 
+         stop("cannot merge taxonomy with data: not all taxa present")
+       
+       x <- x[order(x[,nc]),]
+       x <- x[,-nc]
     }
+    
     e <- substitute(subset)
-    r <- eval(e, x, parent.frame())
-    if (!is.logical(r)) stop("'subset' must be logical")
+   
+    r <- eval(e, x, parent.frame()) 
+    if (! is.logical(r)){
+      r <- eval(subset, x, parent.frame(n=2)) # not sure if this is needed
+    }
+    if (!is.logical(r)) stop("'subset' must be logical or a string")
     r <- r & !is.na(r)
     if (length(r) != nr) stop ("'subset' evaluation did not provide a selection?")
     if (sum(r) == 0) stop ("'subset' evaluation did not provide a selection?")
+    
+    nSubset <- e
 
     x <- x[r,]    # take subset
     
@@ -97,9 +137,9 @@ getDensity <- function(descriptor,      # descriptor of sample, (vector or data.
     if (is.null(nV)) nV <- ncol(x)
     value <- as.data.frame(x[,nV])
 
-    taxon     <- x$taxon
+    taxon       <- x$taxon
     averageOver <- x$averageOver
-    Desc      <- droplevels(x$Desc)
+    Desc        <- droplevels(x$Desc)
     
     # descriptor can have multiple columns
     nD <- which(colnames(x) %in% cnDesc)
@@ -170,6 +210,14 @@ getDensity <- function(descriptor,      # descriptor of sample, (vector or data.
         value    =AVG[,ncol(AVG)])
      colnames(AVG)[1:ndesc] <- cnDesc
    }
+   
+   attributes(AVG)$dataset           <- data_name
+   attributes(AVG)$names_descriptor  <- cnDesc
+   attributes(AVG)$names_taxon       <- cnTaxon
+   attributes(AVG)$names_value       <- cnValue
+   attributes(AVG)$names_averageOver <- cnAvg
+   attributes(AVG)$subset            <- nSubset
+
    AVG
 }
 
@@ -216,12 +264,32 @@ density.select.list <- function(descriptor, taxon, value, averageOver, nAvg){
 ## ====================================================================
 ## ====================================================================
 
- getProportion <- function (descriptor, taxon, value, 
-                            averageOver = NULL, 
+get_proportion <- function (data,              # data.frame/tibble with data
+                            descriptor, 
+                            taxon, 
+                            value, 
+                            averageOver, 
                             taxonomy    = NULL, 
                             verbose     = FALSE) {
-
-   if (!is.data.frame(value))                                           
+  if (! missing(data)){
+    if (! missing(descriptor))
+      descriptor  <- eval(substitute(data.frame(descriptor)), 
+                          envir = data, enclos = parent.frame())
+    if (! missing(taxon))
+      taxon       <- eval(substitute(data.frame(taxon)), 
+                          envir = data, enclos = parent.frame())
+    if (! missing(value))
+      value       <- eval(substitute(data.frame(value)), 
+                          envir = data, enclos = parent.frame())
+    if (! missing(averageOver))
+      averageOver <- eval(substitute(data.frame(averageOver)), 
+                          envir = data, enclos = parent.frame())
+  }
+  
+  if (missing(averageOver))
+    averageOver <- NULL
+  
+  if (!is.data.frame(value))                                           
        value <- as.data.frame(value)                                    
    
    nr <- nrow(value)
@@ -237,7 +305,7 @@ density.select.list <- function(descriptor, taxon, value, averageOver, nAvg){
    cnDesc     <- getname(descriptor) 
    NN         <- length(cnDesc)
       
-   Mean <- getDensity(descriptor  = descriptor, 
+   Mean <- get_density(descriptor  = descriptor, 
                       value       = value, 
                       taxon       = taxon,
                       averageOver = averageOver, 
@@ -246,6 +314,8 @@ density.select.list <- function(descriptor, taxon, value, averageOver, nAvg){
                       verbose     = verbose)
    cn <- ncol(Mean)
  
+   Att <- attributes(Mean)
+   
  # total density             
    Desc  <- Mean[,1:NN]
    Total <- aggregate(Mean[,cn], by =data.frame(Desc), FUN=sum) 
@@ -254,5 +324,13 @@ density.select.list <- function(descriptor, taxon, value, averageOver, nAvg){
    Mean   <- merge(Mean, Total, by=1:NN) # add total density
    Mean$p <- Mean[,cn]/Mean[,ncol(Mean)]        # estimate fraction
    Mean   <- Mean[,-(cn:(cn+1))]
+   
+   attributes(Mean)$dataset           <- Att$dataset 
+   attributes(Mean)$names_descriptor  <- Att$names_descriptor
+   attributes(Mean)$names_taxon       <- Att$names_taxon
+   attributes(Mean)$names_value       <- Att$names_value
+   attributes(Mean)$names_averageOver <- Att$names_averageOver
+   attributes(Mean)$subset            <- Att$subset 
+   
    Mean
  }

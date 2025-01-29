@@ -3,7 +3,7 @@
 ## Extracting trait data 
 ## ====================================================================
 
-getTrait <- function(taxon,            # taxon name (vector)
+get_trait <- function(taxon,            # taxon name (vector)
                      trait,            # data.frame with traits
                      trait.class=NULL, # to obtain crisp values
                      trait.score=NULL,
@@ -27,7 +27,7 @@ getTrait <- function(taxon,            # taxon name (vector)
     stop("'trait' should be a data.frame with species traits")
   if (! is.null(taxonomy)){  # expand trait with trait at higher taxonomic level
     trait <- rbind(trait, 
-                   extendTrait(trait, taxonomy, t.column=t.column) )
+                   extend_trait(trait, taxonomy, t.column=t.column) )
   } 
   
   taxon <- unique(taxon)

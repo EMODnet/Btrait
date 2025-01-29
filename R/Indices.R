@@ -4,83 +4,153 @@
 ## ====================================================================
 ## ====================================================================
 
-getDbIndex <- function(descriptor, 
+get_Db_index <- function(data,
+                       descriptor, 
                        taxon, 
                        density, 
                        biomass,
-                       averageOver=NULL, 
+                       averageOver, 
                        subset,
                        trait=Traits_Db,  # species x trait data, Mi and Ri    
                        taxonomy=NULL,    # if !NULL, trait will be expanded at higher levels
                        full.output=FALSE,
-                       verbose=FALSE)  
-  getPotential(descriptor = descriptor, 
-               taxon      = taxon, 
-               density    = density, 
-               biomass    = biomass, 
-               averageOver= averageOver, 
-               subset     = subset,
-               trait      = trait, 
-               taxonomy   = taxonomy, 
-               full.output= full.output,
-               verbose    = verbose, 
-               type       = "BPc")  
+                       verbose=FALSE)  {
+  if (! missing(data)){
+    if (! missing(descriptor))
+      descriptor  <- eval(substitute(data.frame(descriptor)), 
+                          envir = data, enclos = parent.frame())
+    if (! missing(taxon))
+      taxon       <- eval(substitute(data.frame(taxon)), 
+                          envir = data, enclos = parent.frame())
+    if (! missing(density))
+      density       <- eval(substitute(data.frame(density)), 
+                          envir = data, enclos = parent.frame())
+    if (! missing(biomass))
+      biomass       <- eval(substitute(data.frame(biomass)), 
+                            envir = data, enclos = parent.frame())
+    if (! missing(averageOver))
+      averageOver <- eval(substitute(data.frame(averageOver)), 
+                          envir = data, enclos = parent.frame())
+    data_name <- substitute(data)
+  } else data_name <- NA
+  
+  if (missing(averageOver))
+    averageOver <- NULL
 
+  if (missing(descriptor)) descriptor <- NA
+  
+  isnaDesc <- all(is.na(descriptor))
+  
+  if (isnaDesc) descriptor <- 1:length(taxon)  # to prevent summation over taxon
+  
+  if (missing(subset))
+    BioDens <- get_density(descriptor  = descriptor,
+                           averageOver = averageOver, 
+                           taxon       = taxon,
+                           value       = data.frame(density = density, 
+                                                    biomass = biomass),
+                           taxonomy    = taxonomy,
+                           verbose     = verbose) 
+  else 
+    BioDens <- get_density(descriptor  = descriptor,
+                           averageOver = averageOver, 
+                           taxon       = taxon,
+                           value       = data.frame(density = density, 
+                                                    biomass = biomass),
+                           subset     = substitute(subset),
+                           taxonomy    = taxonomy,
+                           verbose     = verbose) 
+  Db <- getPotential(BioDens, trait = trait, taxonomy = taxonomy , 
+                      isnaDesc = isnaDesc, 
+                      full.output = full.output, type       = "BPc")  
+  
+  attributes(Db) <- c(attributes(Db), attributes(BioDens)[-(1:3)])
+  attributes(Db)$dataset <- data_name
+  Db
+}
 ## ====================================================================
 
-getIrrIndex <- function(descriptor, 
+get_irr_index <- function(
+                         data,
+                         descriptor, 
                          taxon, 
                          density, 
                          biomass,
-                         averageOver=NULL, 
+                         averageOver, 
                          subset,
                          trait=Traits_irr,  # species x trait data, FT, BT, ID    
                          taxonomy=NULL,     # if !NULL, trait will be expanded at higher levels
                          full.output=FALSE,
-                         verbose=FALSE)  
-  getPotential(descriptor = descriptor, 
-               taxon      = taxon, 
-               density    = density, 
-               biomass    = biomass, 
-               averageOver= averageOver, 
-               subset     = subset,
-               trait      = trait, 
-               taxonomy   = taxonomy, 
-               full.output= full.output,
-               verbose    = verbose,
-               type       = "IPc")  
-
-## ====================================================================
-## General function
-## ====================================================================
-  getPotential <- function(descriptor, 
-                         taxon, 
-                         density, 
-                         biomass,
-                         averageOver=NULL, 
-                         subset,
-                         trait,         # species x trait data    
-                         taxonomy=NULL, # if !NULL, trait will be expanded at higher levels
-                         full.output=FALSE,
-                         verbose=FALSE, 
-                         type="BPc")  
-
-{ 
+                         verbose=FALSE)  {
+  if (! missing(data)){
+    if (! missing(descriptor))
+      descriptor  <- eval(substitute(data.frame(descriptor)), 
+                          envir = data, enclos = parent.frame())
+    if (! missing(taxon))
+      taxon       <- eval(substitute(data.frame(taxon)), 
+                          envir = data, enclos = parent.frame())
+    if (! missing(density))
+      density       <- eval(substitute(data.frame(density)), 
+                            envir = data, enclos = parent.frame())
+    if (! missing(biomass))
+      biomass       <- eval(substitute(data.frame(biomass)), 
+                            envir = data, enclos = parent.frame())
+    if (! missing(averageOver))
+      averageOver <- eval(substitute(data.frame(averageOver)), 
+                          envir = data, enclos = parent.frame())
+    data_name <- substitute(data)
+  } else data_name <- NA
+  
+  if (missing(averageOver))
+    averageOver <- NULL
+  
   if (missing(descriptor)) descriptor <- NA
   
   isnaDesc <- all(is.na(descriptor))
-  cnDesc   <- getname(descriptor)
-  cnTaxon  <- getname(taxon)
-  
+
   if (isnaDesc) descriptor <- 1:length(taxon)  # to prevent summation over taxon
-  BioDens <- getDensity(descriptor  = descriptor,
-                        subset      = subset,
-                        averageOver = averageOver, 
-                        taxon       = taxon,
-                        value       = data.frame(density=density, biomass=biomass),
-                        taxonomy    = taxonomy,
-                        verbose     = verbose) 
   
+  if (missing(subset))
+    BioDens <- get_density(descriptor  = descriptor,
+                           averageOver = averageOver, 
+                           taxon       = taxon,
+                           value       = data.frame(density = density, 
+                                                  biomass = biomass),
+                           taxonomy    = taxonomy,
+                           verbose     = verbose) 
+   else 
+     BioDens <- get_density(descriptor  = descriptor,
+                            averageOver = averageOver, 
+                            taxon       = taxon,
+                            value       = data.frame(density = density, 
+                                                     biomass = biomass),
+                            subset     = substitute(subset),
+                            taxonomy    = taxonomy,
+                            verbose     = verbose) 
+   Irr <- getPotential(BioDens, trait = trait, taxonomy = taxonomy , 
+                       isnaDesc = isnaDesc, 
+                       full.output = full.output, type       = "IPc")  
+
+  attributes(Irr) <- c(attributes(Irr), attributes(BioDens)[-(1:3)])
+  attributes(Irr)$dataset <- data_name
+  Irr
+  
+}
+## ====================================================================
+## General function
+## ====================================================================
+  getPotential <- function(BioDens,  
+                           trait=Traits_Db,  # species x trait data, FT, BT, ID   
+                           taxonomy = NULL,
+                           isnaDesc = NULL,
+                           full.output = FALSE,
+                           type="BPc")  
+
+{ 
+    
+  Att <- attributes(BioDens)
+  cnDesc <- Att$names_descriptor
+  cnTaxon <- Att$names_taxon
   names(BioDens)[(1:3)+length(cnDesc)] <- c("taxon", "density", "biomass") 
   
 # estimate mean weight of taxa (=biomass/density)
@@ -94,7 +164,7 @@ getIrrIndex <- function(descriptor,
   else if (type == "IPc")
     traitnames <- c(taxname, "BT", "FT", "ID")
 
-  Pot.traits <- getTrait(
+  Pot.traits <- get_trait(
                      taxon    = unique(BioDens$taxon), 
                      trait    = trait[,traitnames], 
                      taxonomy = taxonomy)
@@ -129,6 +199,7 @@ getIrrIndex <- function(descriptor,
                        by  = list(BioDens$taxon),  # for each station
                        FUN = mean            )     # take the sum
 
+  
   colnames(PC$taxon) <- c(cnTaxon, type)
   PC$all <- NA
   if (full.output) {

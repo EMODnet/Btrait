@@ -5,9 +5,13 @@
 ## ====================================================================
 ## ====================================================================
 
-getTraitDensity <- function(
-                      descriptor, taxon, value, 
-                      averageOver=NULL, 
+
+get_trait_density <- function(data,         # density data
+                      descriptor, 
+                      taxon, 
+                      value, 
+                      averageOver, 
+                      
                       wide=NULL,         # density data, WIDE format (descriptor x taxon) 
                       d.column=1,        # nr/name of column with descriptor names in wide
                       trait,             # species x trait data, WIDE format    
@@ -20,7 +24,26 @@ getTraitDensity <- function(
 
 { 
 
-# cast the density data in wide format, if not provided  
+  if (! missing(data)){
+    if (! missing(descriptor))
+      descriptor  <- eval(substitute(data.frame(descriptor)), 
+                          envir = data, enclos = parent.frame())
+    if (! missing(taxon))
+      taxon       <- eval(substitute(data.frame(taxon)), 
+                          envir = data, enclos = parent.frame())
+    if (! missing(value))
+      value       <- eval(substitute(data.frame(value)), 
+                          envir = data, enclos = parent.frame())
+    if (! missing(averageOver))
+      averageOver <- eval(substitute(data.frame(averageOver)), 
+                          envir = data, enclos = parent.frame())
+    data_name <- substitute(data)
+  } else data_name <- NA
+  
+  if (missing(averageOver))
+    averageOver <- NULL
+
+  # cast the density data in wide format, if not provided  
   if (is.null(wide)) {
     wide <- long2wide(row         = descriptor, 
                       column      = taxon, 
@@ -28,6 +51,8 @@ getTraitDensity <- function(
                       averageOver = averageOver)
     d.column <- attributes(wide)$d.column
   }
+  Att         <- attributes(wide)
+  
   taxon.names <- attributes(wide)$taxon.names
   if (is.null(taxon.names))taxon.names <- colnames(wide)[-1]
   
@@ -47,9 +72,9 @@ getTraitDensity <- function(
   row.names.trait <- row.names(trait)
   
   # trait information for the taxa in the data
-  trait <- getTrait (taxon    = taxon.names, 
-                     trait    = data.frame(taxon=row.names.trait, trait), 
-                     taxonomy = taxonomy)
+  trait <- get_trait (taxon    = taxon.names, 
+                      trait    = data.frame(taxon=row.names.trait, trait), 
+                      taxonomy = taxonomy)
   
   if (any (iun <- which(is.na(trait[,2]))))
     notrait <- trait$taxon[iun]  # species not in trait database
@@ -105,6 +130,12 @@ getTraitDensity <- function(
   
   row.names(cwm) <- NULL
   cwm <- as.data.frame(cwm)
+  attributes(cwm)$names_descriptor  <- Att$names_row
+  attributes(cwm)$names_taxon       <- Att$names_column
+  attributes(cwm)$names_value       <- Att$names_value
+  attributes(cwm)$names_averageOver <- Att$names_averageOver
+  attributes(cwm)$subset            <- NA
+  
   attributes(cwm)$notrait <- notrait
   cwm
 }  

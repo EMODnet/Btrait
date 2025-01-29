@@ -1,27 +1,30 @@
 \name{Summary statistics for density}
-\alias{getSummary}
+\alias{get_summary}
 \title{
-  get Summary for station x taxon data (getSummary)
+  get Summary for station x taxon data 
 }
 
 \description{
- \code{getSummary} calculates summaries of density data, i.e. total densities and number of taxa.
+ \code{get_summary} calculates summaries of density data, i.e. total densities and number of taxa.
 }
 
 \usage{
-getSummary(descriptor, taxon, value, averageOver = NULL, taxonomy = NULL, 
-        subset, what=c("density", "taxa", "occurrence"), 
-        wide.output = FALSE)
+get_summary(data, descriptor, taxon, value, averageOver, taxonomy = NULL, 
+            subset, what=c("density", "taxa", "occurrence"), 
+            wide.output = FALSE)
 }
 
 \arguments{
-  \item{descriptor }{name(s) of the descriptor, i.e. *where* the data were taken, e.g. station names. Either a vector, a list, a data.frame or matrix (and with multiple columns). It can be of type numerical, character, or a factor. When a data.frame or a list the "names" will be used in the output; when a vector, the argument name will be used in the output.
-}    
-  \item{taxon }{vector describing *what* the data are; it gives the taxonomic name (e.g. species). Should be of the same length as (the number of rows of) \code{descriptor}. Can be a list (or data.frame with one column), or a vector. When a data.frame or a list the "name" will be used in the output; when a vector, the argument name will be used.
-}
-  \item{value }{vector or list that contains the *values* of the data, usually density. Should be of the same length as (the number of rows of) \code{descriptor} and \code{taxon}. For function \code{getDensity}, \code{value} can also be a multi-column data.frame or matrix. 
+  \item{data }{data.frame to use for extracting the arguments \code{descriptor}, \code{taxon}, \code{value}, \code{averageOver}. Can be missing. 
   }
-  \item{averageOver }{vector with *replicates* over which averages need to be taken. Should be of the same length as (the number of rows of) \code{descriptor}.
+  \item{descriptor }{ variable(s) *where* the data were taken, e.g. sampling stations. If \code{data} is not missing: one or more column(s) from \code{data}; use \code{cbind} or \code{data.frame} to select more columns. If \code{data} is missing: a vector, a list, a data.frame or a matrix (with one or multiple columns). It can be of type numerical, character, or a factor. In theory, descriptor can also be one number, \code{NA} or missing; however, care needs to be taken in case this combined with \code{subset} and \code{averageOver}.
+}    
+  \item{taxon }{variables describing *what* the data are;  it gives the taxonomic name (e.g. species). If \code{data} is not missing:  one column from \code{data}.
+If \code{data} is missing:  a list (or data.frame with one column), or a vector. When a data.frame or a list the "name" will be used in the output; when a vector, the argument name will be used.
+}
+  \item{value }{variable that contains the *values* of the data, usually density. If \code{data} is not missing:  one or more column(s) from \code{data}; use \code{cbind} or \code{data.frame} to select more columns. If \code{data} is missing: a vector, a list, a data.frame or a matrix (with one or multiple columns). it should be of the same length (or have the same number of rows) as (the number of rows of) \code{descriptor} and \code{taxon}. Should contain numerical values. Should always be present.
+  }
+  \item{averageOver }{*replicates* over which averages need to be taken. If \code{data} is not missing:  one or more column(s) from \code{data}; use \code{cbind} or \code{data.frame} to select more columns. Else a vector, a list, a data.frame or a matrix (with one or multiple columns). It can be of type numerical, character, or a factor. Can be absent.
   }
   \item{taxonomy }{taxonomic information; first column will be matched with \code{taxon}, regardless of its name.
   }
@@ -34,7 +37,7 @@ getSummary(descriptor, taxon, value, averageOver = NULL, taxonomy = NULL,
 }
 
 \value{
- \code{getSummary} returns a list, containing the mean densities (\code{density}) 
+ \code{get_summary} returns a list, containing the mean densities (\code{density}) 
  and the number of taxa (\code{taxa}) for each descriptor, and the number of descriptors in which the 
  taxa were found (\code{occurrence}).
  
@@ -51,17 +54,17 @@ getSummary(descriptor, taxon, value, averageOver = NULL, taxonomy = NULL,
 \seealso{.
 \link{MWTL} for the data sets
 
-\link{mapKey} for simple plotting functions.
+\link{map_key} for simple plotting functions.
 
-\link{getDensity} for functions working with density data.
+\link{get_density} for functions working with density data.
 
-\link{getTraitDensity} for functions combining density and traits.
+\link{get_trait_density} for functions combining density and traits.
  
-\link{getDbIndex} for extracting bioturbation and bioirrigation indices.
+\link{get_Db_index} for extracting bioturbation and bioirrigation indices.
 
-\link{extendTrait} for functions working with traits.
+\link{extend_trait} for functions working with traits.
 
-\link{getTrait} 
+\link{get_trait} 
 }
 
 \keyword{manip}
@@ -85,28 +88,30 @@ Bdata.rep
 ## Summary statistics
 ##-----------------------------------------------------
 
-with (Bdata.rep,  
-  getSummary(descriptor  = cbind(station, replicate), 
-             value       = density, 
-             taxon       = species, 
-             wide.output = FALSE))
+# keep replicates
+  get_summary(data        = Bdata.rep, 
+              descriptor  = cbind(station, replicate), 
+              value       = density, 
+              taxon       = species, 
+              wide.output = FALSE)
 
-with (Bdata.rep,  
-  getSummary(descriptor  = station, 
-             averageOver = replicate,
-             value       = density, 
-             taxon       = species, 
-             wide.output = FALSE))
+# average over replicates (uses pipe |> to pass data)
+  Bdata.rep |>  
+   get_summary(descriptor  = station, 
+               averageOver = replicate,
+               value       = density, 
+               taxon       = species, 
+               wide.output = FALSE)
 
 ## ====================================================
 ## Northsea dataset
 ## ====================================================
 
 NSsumm <- with(MWTL$density, 
-   getSummary(descriptor  = station,
-              averageOver = year,
-              taxon       = taxon,
-              value       = density))
+   get_summary(descriptor  = station,
+               averageOver = year,
+               taxon       = taxon,
+               value       = density))
 head(NSsumm$density)
 head(NSsumm$taxa)
 head(NSsumm$occurrence)

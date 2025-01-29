@@ -1,38 +1,42 @@
 \name{Btrait plotting}
-\alias{mapKey}
-\alias{mapLegend}
-\alias{mapMWTL}
-\alias{mapNSBS}
+\alias{map_key}
+\alias{map_legend}
+\alias{map_MWTL}
+\alias{map_NSBS}
 \title{
  Simple plotting function for trait or density data
 }
 
 \description{
- mapKey: plots contourlines of the dataset with colored data as points superimposed; 
+ map_key: plots contourlines of the dataset with colored data as points superimposed; 
  a colorkey explains the colors
 
- maplegend: plots contourlines of the dataset with colored data superimposed; 
+ map_legend: plots contourlines of the dataset with colored data superimposed; 
  point size depends on data value; a legend explains the colors and sizes
  
- mapMWTL and mapNSBS are convenience functions for plotting the MWTL and NSBS data sets.
+ map_MWTL and map_NSBS are convenience functions for plotting the MWTL and NSBS data sets.
 }
 
 \usage{
-mapKey (x = NULL, y = NULL, colvar = NULL, main = NULL, col = NULL, lwd = 1,
-       colkey = list(), xlim = NULL, ylim = NULL, clim = NULL, 
+map_key (x = NULL, y = NULL, colvar = NULL, 
+         main = NULL, col = NULL, lwd = 1,
+         colkey = list(), xlim = NULL, ylim = NULL, clim = NULL, 
          contours = NULL, draw.levels = FALSE, col.levels = "black",
          by.levels=1, key.levels = FALSE, lwd.levels = 1, axes = TRUE, 
          frame.plot = TRUE, asp = NULL, NApch = 43, ...)
-mapLegend (x = NULL, y = NULL, colvar = NULL, main = NULL, col = NULL, lwd = 1,
-       legend = list(), xlim = NULL, ylim = NULL, clim = NULL, 
+map_legend (x = NULL, y = NULL, colvar = NULL, 
+         main = NULL, col = NULL, lwd = 1,
+         legend = list(), xlim = NULL, ylim = NULL, clim = NULL, 
          scale = "simple", pch = 18, cex = 3, cex.min = cex/20,  
          contours = NULL, draw.levels = FALSE, col.levels = "black",
          by.levels=1, key.levels = FALSE, lwd.levels = 1, axes = TRUE, 
          frame.plot = TRUE, asp = NULL, NApch = 43, NAtext = "NA", ...)
          
-mapMWTL(x=NULL, y=NULL, colvar=NULL, draw.levels=TRUE, type="key", ...)
+map_MWTL(x = NULL, y = NULL, colvar = NULL, 
+         draw.levels = TRUE, type = "key", ...)
 
-mapNSBS(x=NULL, y=NULL, colvar=NULL, draw.levels=TRUE, type="key", ...)
+map_NSBS(x = NULL, y = NULL, colvar = NULL, 
+         draw.levels = TRUE, type = "key", ...)
          
 }
 
@@ -82,9 +86,9 @@ mapNSBS(x=NULL, y=NULL, colvar=NULL, draw.levels=TRUE, type="key", ...)
   }  
   \item{axes, frame.plot }{arguments to the main plotting function (that opens a window).
   }
-  \item{... }{additional arguments passed to - for mapKey- the plot function *points2D*, e.g. the type of symbol to use (pch, cex, ...), or whether to use log-transformed color variables (log="c").
+  \item{... }{additional arguments passed to - for map_key- the plot function *points2D*, e.g. the type of symbol to use (pch, cex, ...), or whether to use log-transformed color variables (log="c").
   }
-  \item{type }{either "key" of "legend", so as to calle mapKey or mapLegend.
+  \item{type }{either "key" of "legend", so as to calle map_key or map_legend.
   }  
   \item{NApch, NAtext }{pch of the NA colvar, and the text in the legend. Note that, if pch is numeric, then also NApch should be numeric; NApch = 43 will draw a "+"","
   }  
@@ -115,109 +119,144 @@ MWTLabiotics <- merge(MWTL$stations, MWTL$abiotics)
 
 par (mfrow=c(2,2))
 with (MWTLabiotics, 
-  mapKey(x, y, colvar=depth, pch=18, cex=2, 
-    contours=MWTL$contours, clab="m", main="Water depth"))
+  map_key(x, y, colvar = depth, 
+          contours = MWTL$contours, 
+          clab = "m", main = "Water depth", 
+          pch = 18, cex = 2))
 
 with (MWTLabiotics, 
-  mapMWTL(x, y, colvar=depth, pch=18, cex=2,
-     clab="m", main="Water depth"))
+  map_MWTL(x, y, colvar = depth,
+           clab = "m", main = "Water depth", 
+           pch = 18, cex = 2))
 
 with (MWTLabiotics, 
-  mapLegend(x, y, colvar=depth, pch=18, cex=2, 
-    contours=MWTL$contours, clab="m", main="Water depth"))
+  map_legend(x, y, colvar = depth, 
+             contours = MWTL$contours, 
+             clab = "m", main = "Water depth", 
+             pch = 18, cex = 2))
 
 with (MWTLabiotics, 
-  mapMWTL(x, y, colvar=depth, pch=18, cex=2,
-     clab="m", main="Water depth", type="legend"))
+  map_MWTL(x, y, colvar = depth,
+           clab = "m", main = "Water depth", 
+           type = "legend", pch = 18, cex = 2))
 
 # =========================================
 # Change the colorkey and the contours 
 # =========================================
 with (MWTLabiotics, 
-  mapKey(x, y , colvar=depth, pch=18, cex=2, 
-    clab="m", main="Water depth", contours=NSBS$contours,
-    colkey = list(dist=-0.05, length=0.5, width=0.5, cex.axis=0.6)))
+  map_key(x, y, colvar = depth, contours = NSBS$contours, 
+          clab = "m", main = "Water depth",
+          colkey = list(dist = -0.05, length = 0.5, 
+                        width = 0.5, cex.axis = 0.6), 
+          pch = 18, cex=2))
 
 # zoom in on an area (not full control due to the overruling aspect ratio)
 with (MWTLabiotics, 
-  mapKey(x, y , colvar=depth, pch=18, cex=2, 
-    clab="m", main="Water depth", ylim=c(51, 54), xlim=c(3,5),
-    colkey = list(dist=-0.08, length=0.5, width=0.5, cex.axis=0.6)))
+  map_key(x, y , colvar = depth, 
+          clab = "m", main = "Water depth", 
+          ylim = c(51, 54), xlim = c(3,5),
+          colkey = list(dist = -0.08, length = 0.5, 
+                        width = 0.5, cex.axis = 0.6), 
+          pch = 18, cex = 2))
 
 # adding also the contours 
-with (MWTLabiotics, mapKey(x, y, colvar=D50, contours=MWTL$contours,
-        pch=18, cex=2, clab="micrometer", main="Median grain", 
-        draw.levels=TRUE, 
-        colkey = list(dist=-0.08, length=0.5, 
-                      width=0.5, cex.axis=0.6)))
+with (MWTLabiotics, 
+  map_key(x, y, colvar = D50, contours = MWTL$contours, 
+          clab = "micrometer", main = "Median grain", 
+          draw.levels = TRUE, 
+          colkey = list(dist = -0.08, length = 0.5, 
+                        width = 0.5, cex.axis = 0.6),
+          pch = 18, cex = 2))
 
 # adding also the contours with color key
 # note: - main color key then positioned elsewhere (side=1)
 
 # Use a different color scheme 
-collev <- function(n) ramp.col(col=c("darkorange", "darkblue"), n=n)
+collev <- function(n) 
+    ramp.col(col = c("darkorange", "darkblue"), n = n)
 
 # Change the appearance of the colorkey for levels: 
-with (MWTLabiotics, mapKey(x, y, colvar=D50, contours=MWTL$contours,
-    pch=18, cex=1.5, clab=c("grain size","micrometer"), 
-    main="Median grain",  
-    draw.levels=TRUE, key.levels=list(length=0.5, width=0.5), 
-    col.levels=collev, colkey = list(side=1, dist=-0.08, length=0.25, 
-                  width=0.5, cex.axis=0.6)))
+with (MWTLabiotics, 
+   map_key(x, y, colvar = D50, contours=MWTL$contours, 
+           clab = c("grain size", "micrometer"), main = "Median grain",  
+           draw.levels = TRUE, key.levels = list(length = 0.5, width = 0.5), 
+           col.levels = collev, 
+           colkey = list(side = 1, dist = -0.08, length = 0.25, 
+                         width = 0.5, cex.axis = 0.6),
+           pch = 18, cex = 1.5))
 
 # =========================================
 # Show the depth contours only
 # =========================================
 
-mapKey(contours=NSBS$contours, draw.levels=TRUE, key.levels=TRUE, col.levels=collev)
+map_key(contours = NSBS$contours, 
+        draw.levels = TRUE, key.levels = TRUE, col.levels = collev)
 
 # less detail
-mapKey(contours=NSBS$contours, draw.levels=TRUE, key.levels=FALSE, by.levels=10)
+map_key(contours = NSBS$contours, 
+        draw.levels = TRUE, key.levels = FALSE, by.levels = 10)
 
 # depth contours with station postions
-with (MWTLabiotics, mapLegend(x, y, colvar=rep(NA, times=length(x)), 
-     contours=MWTL$contours, draw.levels=TRUE,
-     main="MWTL",  NApch="+", NAtext="station positions", 
-     legend=list(side=0, x="bottomright")))
+with (MWTLabiotics, 
+  map_legend(x, y, colvar = rep(NA, times = length(x)), 
+             contours = MWTL$contours, draw.levels = TRUE,
+             main = "MWTL",  NApch = "+", NAtext = "station positions", 
+            legend = list(side=0, x = "bottomright")))
 
 #------------------------------
 # log-transformed color variables
 #------------------------------
 
 # average densities of Abra alba in the MWTL data.
-A.alba <- getDensity(descriptor  = MWTL$density$station,
-                     averageOver = MWTL$density$year,
-                     taxon       = MWTL$density$taxon, 
-                     value       = MWTL$density$density,
-                     subset      = MWTL$density$taxon == "Abra alba")
+A.alba <- get_density(data        = MWTL$density,
+                      descriptor  = station,
+                      averageOver = year,
+                      taxon       = taxon, 
+                      value       = density,
+                      subset      = taxon == "Abra alba")
                      
 # add positions of stations 
 # all.x=TRUE: also stations without A.alba are selected
 # the NAs are converted to 0
 
-A.alba <- merge(MWTL$stations, A.alba, by=1, all.x=TRUE) 
-A.alba$value[which(is.na(A.alba$value))] <- 0
+A.alba <- merge(MWTL$stations, A.alba, 
+                by = 1, all.x = TRUE) 
+
+A.alba$value[which(is.na(A.alba$density))] <- 0
 
 # plot with density values log-transfored
-# 0-values will be transformed to NAs in mapKey; 
+# 0-values will be transformed to NAs in map_key; 
 # we set the NA color="grey"
 
-par(mfrow=c(2,2))
-mapKey(A.alba$x, A.alba$y, colvar=A.alba$value, pch=18, main="Abra alba",
-          cex=2, contours=MWTL$contours)
-mapLegend(A.alba$x, A.alba$y, colvar=A.alba$value, pch=16, main="Abra alba",
-          cex=4, contours=MWTL$contours, NAtext="absent", log="")
+par(mfrow = c(2, 2))
+map_key   (A.alba$x, A.alba$y, colvar = A.alba$density, 
+           main = "Abra alba",
+           contours = MWTL$contours, 
+           cex = 2, pch = 18)
+        
+map_legend(A.alba$x, A.alba$y, colvar = A.alba$density, 
+           main = "Abra alba", 
+           contours = MWTL$contours, 
+           NAtext = "absent", 
+           cex = 4, pch = 16)
 
 # log transformation converts 0 values into NAs          
-mapKey(A.alba$x, A.alba$y, colvar=A.alba$value, pch=18, main="Abra alba",
-          cex=2, contours=MWTL$contours, NAcol="grey", log="c")
+map_key   (A.alba$x, A.alba$y, colvar = A.alba$density, 
+           main = "Abra alba",
+           contours = MWTL$contours, NAcol = "grey", log = "c", 
+           cex = 2, pch = 18)
 
-mapLegend(A.alba$x, A.alba$y, colvar=A.alba$value, pch=16, main="Abra alba",
-          cex=4, contours=MWTL$contours, NAtext="absent", log="c")
+map_legend(A.alba$x, A.alba$y, colvar = A.alba$density, 
+           main = "Abra alba",
+           contours = MWTL$contours, NAtext = "absent", 
+           log = "c", cex = 4, pch = 16)
 
 A.alba$value[A.alba$value==0] <- NA
-mapLegend(A.alba$x, A.alba$y, colvar=A.alba$value, pch=16, main="Abra alba",
-          cex=4, contours=MWTL$contours, NAtext="absent")
+
+map_legend(A.alba$x, A.alba$y, colvar = A.alba$density, 
+          main = "Abra alba",
+          contours = MWTL$contours, NAtext = "absent",
+          cex = 4, pch = 16)
 
 #------------------------------
 # mappng with Legend
@@ -225,17 +264,21 @@ mapLegend(A.alba$x, A.alba$y, colvar=A.alba$value, pch=16, main="Abra alba",
 
 DD <- merge(MWTL$stations, MWTL$abiotics)
 
-with(DD, mapLegend(x,y, colvar=D50, 
-                   contours=MWTL$contours))
+with(DD, map_legend(x, y, colvar = D50, 
+                   contours = MWTL$contours))
                    
-with(DD, mapLegend(x,y, colvar=seq(-1, 1, len=nrow(DD)), 
-                   contours=MWTL$contours))
+with(DD, map_legend(x, y, colvar = seq(-1, 1, len = nrow(DD)), 
+                   contours = MWTL$contours))
                    
-with(DD, mapLegend(x,y, colvar=seq(-1, 1, len=nrow(DD)), 
-                   scale="abs", contours=MWTL$contours, pch=c(15, 22)))
+with(DD, map_legend(x, y, colvar = seq(-1, 1, len = nrow(DD)), 
+                   scale = "abs", 
+                   contours = MWTL$contours, 
+                   pch = c(15, 22)))
                    
-with(DD, mapLegend(x,y, colvar=seq(-1, 1, len=nrow(DD)), scale="abs",
-                   contours=MWTL$contours, pch=22, lwd=2, clab="TRY",
-                  legend=list(title.col="red")))
+with(DD, map_legend(x, y, colvar = seq(-1, 1, len = nrow(DD)), 
+                   scale = "abs",
+                   contours = MWTL$contours, clab = "TRY",
+                   legend = list(title.col="red"), 
+                   pch = 22, lwd = 2))
 
 }

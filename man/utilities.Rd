@@ -1,26 +1,26 @@
 \name{General utilities for the Btrait package}
-\alias{getTaxonInfo}
-\alias{getTaxonomy}
+\alias{get_taxon_info}
+\alias{get_taxonomy}
 \alias{metadata}
 \title{
 
-  getTaxonInfo gets trait information for a taxon
+  \code{get_taxon_info} gets trait information for a taxon
   
-  getTaxonomy gets taxonomic information for a taxon
+  \code{get_taxonomy} gets taxonomic information for a taxon
   
-  metadata gets the description of the content of a database.
+  \code{metadata} gets the description of the content of a database.
 }
 
 \description{
- \code{getTaxonInfo} extracts trait information for a certain taxon from a trait database.
+ \code{get_taxon_info} extracts trait information for a certain taxon from a trait database.
 
  \code{metadata} returns a description of an object, i.e the meaning of the columns, units, etc...
 }
 
 \usage{
-getTaxonInfo(taxon, trait = Traits_nioz, taxonomy = Taxonomy)  
+get_taxon_info(taxon, trait = Traits_nioz, taxonomy = Taxonomy)  
 
-getTaxonomy(taxon, taxonomy=Taxonomy)
+get_taxonomy(taxon, taxonomy=Taxonomy)
 
 metadata(object)        
 }
@@ -37,9 +37,9 @@ metadata(object)
 }
 
 \value{
- \code{getTaxonInfo} returns a data.frame with the traits of the species whose modalities are not Null, NULL or None. 
+ \code{get_taxon_info} returns a data.frame with the traits of the species whose modalities are not Null, NULL or None. 
  
- \code{getTaxonomy} returns the occurrences of \code{taxon} within \code{taxonomy}. 
+ \code{get_taxonomy} returns the occurrences of \code{taxon} within \code{taxonomy}. 
 
  \code{metadata} returns a data.frame with a description of the contents of the database.
 }
@@ -49,19 +49,18 @@ metadata(object)
   Olivier Beauchard
 }
 \seealso{.
-\link{MWTL} for the data sets
+\link{MWTL} for the data sets.
 
-\link{mapKey} for simple plotting functions.
+\link{map_key} for simple plotting functions.
 
-\link{getDensity} for functions working with density data.
+\link{get_density} for functions working with density data.
 
-\link{getTraitDensity} for functions combining density and traits.
+\link{get_Db_index} for extracting bioturbation and bioirrigation indices.
 
-\link{getDbIndex} for extracting bioturbation and bioirrigation indices.
+\link{extend_trait} for functions working with traits.
 
-\link{extendTrait} for functions working with traits.
+\link{get_trait} 
 
-\link{getTrait} 
 }
 
 \keyword{manip}
@@ -78,14 +77,16 @@ metadata(Traits_nioz)
 ## ====================================================
 
 # Taxonomy of amphiura and related species in the databases.
-getTaxonomy("Amphiura filiformis")
-getTaxonomy("Amphiura")
+get_taxonomy("Amphiura filiformis")
+get_taxonomy("Amphiura")
 
-getTaxonInfo("Amphiura filiformis")
-getTaxonInfo("Amphiura filiformis", trait=Traits_cefas)
+get_taxon_info("Amphiura filiformis")
+get_taxon_info("Amphiura filiformis", 
+               trait = Traits_cefas)
 
 # there is no direct information on the traits of this species in Traits_cefas
-getTaxonInfo("Amphiura filiformis", trait=Traits_cefas, NULL)
+get_taxon_info("Amphiura filiformis", 
+               trait = Traits_cefas, NULL)
 
 ## ====================================================
 ## Northsea dataset

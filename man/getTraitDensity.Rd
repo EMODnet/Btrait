@@ -1,28 +1,31 @@
 \name{Combining Density and Trait data}
-\alias{getTraitDensity}
+\alias{get_trait_density}
 \title{
-  Functions for combining station x taxon and trait data.
+  Functions for combining (station, taxon, density) data with (taxon, trait) data into (station, trait) data.
 }
 
 \description{
- \code{getTraitDensity} combines (descriptor x taxon) density data with (taxon x trait) data to a (descriptor x trait) data set.
+ \code{get_trait_density} combines (descriptor x taxon) density data with (taxon x trait) data to a (descriptor x trait) data set.
 }
 
 \usage{
-getTraitDensity(descriptor, taxon, value, averageOver = NULL, 
+get_trait_density(data, descriptor, taxon, value, averageOver, 
         wide = NULL, d.column = 1, trait, t.column = 1, 
         trait.class = NULL, trait.score = NULL, taxonomy = NULL, 
         scalewithvalue = TRUE, verbose = FALSE)
 }
 
 \arguments{
-  \item{descriptor }{name(s) of the descriptor, i.e. *where* the data were taken, e.g. station names. Either a vector, a list, a data.frame or matrix (and with multiple columns). It can be of type numerical, character, or a factor. When a data.frame or a list the "names" will be used in the output; when a vector, the argument name will be used in the output.
-}    
-  \item{taxon }{vector describing *what* the data are; it gives the taxonomic name (e.g. species). Should be of the same length as (the number of rows of) \code{descriptor}. Can be a list (or data.frame with one column), or a vector. When a data.frame or a list the "name" will be used in the output; when a vector, the argument name will be used.
-}
-  \item{value }{vector or list that contains the *values* of the data, usually density. Should be of the same length as (the number of rows of) \code{descriptor} and \code{taxon}. For function \code{getDensity}, \code{value} can also be a multi-column data.frame or matrix. 
+  \item{data }{data.frame to use for extracting the arguments \code{descriptor}, \code{taxon}, \code{value}, \code{averageOver}. Can be missing. 
   }
-  \item{averageOver }{vector with *replicates* over which averages need to be taken. Should be of the same length as (the number of rows of) \code{descriptor}.
+  \item{descriptor }{ variable(s) *where* the data were taken, e.g. sampling stations. If \code{data} is not missing: one or more column(s) from \code{data}; use \code{cbind} or \code{data.frame} to select more columns. If \code{data} is missing: a vector, a list, a data.frame or a matrix (with one or multiple columns). It can be of type numerical, character, or a factor. In theory, descriptor can also be one number, \code{NA} or missing; however, care needs to be taken in case this combined with \code{subset} and \code{averageOver}.
+}    
+  \item{taxon }{variables describing *what* the data are;  it gives the taxonomic name (e.g. species). If \code{data} is not missing:  one column from \code{data}.
+If \code{data} is missing:  a list (or data.frame with one column), or a vector. When a data.frame or a list the "name" will be used in the output; when a vector, the argument name will be used.
+}
+  \item{value }{variable that contains the *values* of the data, usually density. If \code{data} is not missing:  one or more column(s) from \code{data}; use \code{cbind} or \code{data.frame} to select more columns. If \code{data} is missing: a vector, a list, a data.frame or a matrix (with one or multiple columns). it should be of the same length (or have the same number of rows) as (the number of rows of) \code{descriptor} and \code{taxon}. Should contain numerical values. Should always be present.
+  }
+  \item{averageOver }{*replicates* over which averages need to be taken. If \code{data} is not missing:  one or more column(s) from \code{data}; use \code{cbind} or \code{data.frame} to select more columns. Else a vector, a list, a data.frame or a matrix (with one or multiple columns). It can be of type numerical, character, or a factor. Can be absent.
   }
   \item{wide }{density data, in *WIDE* format. This is a data.frame or matrix with (descriptor x taxon) information. If \code{NULL}, this data.frame will be calculated from the \code{descriptor}, \code{taxon}, (\code{replicate}) and \code{value} data. The number of descriptor columns are specified with \code{d.column}. If a \code{data.frame} then the first column usually contains the descriptor name; in this case the dimensions of \code{wide} are (number of descriptors x number of species+1), and \code{d.column=1}. It is also allowed to have the descriptors as row.names of the data.frame -this requires setting \code{d.column=0}.   
   }
@@ -46,13 +49,24 @@ getTraitDensity(descriptor, taxon, value, averageOver = NULL,
 
 The taxonomy is used to fill in the gaps of the trait information, assuming that closely related taxa will share similar traits. This is done in two steps: 
 
-The trait database is first extended with information on higher taxonomic levels (using *extendTrait*). The traits for a taxonomic level are estimated as the average of the traits at the lower level. For instance, traits on genus level will be averages of known traits of all species in the database belonging to this genus. 
+The trait database is first extended with information on higher taxonomic levels (using *extend_trait*). The traits for a taxonomic level are estimated as the average of the traits at the lower level. For instance, traits on genus level will be averages of known traits of all species in the database belonging to this genus. 
 
 Then, for each taxon that is not present in the trait database, the traits on the closest taxonomic level are used. For instance, for an  unrecorded species, it is first checked if the trait is known on genus level, if not, family level and so on.
 }
 
 \value{
-\code{getTraitDensity} returns the descriptor x trait density matrix.
+\code{get_trait_density} returns the descriptor x trait density matrix.
+
+Depending on whether argument \code{data} is passed or not, 
+the output columns may be labelled differently:
+
+\itemize{
+\item if \code{data} is passed: the original names in data will be kept
+\item if \code{data} is not passed: the names will only be kept if explicitly passed.
+}
+
+see example labeled  "use data argument or explicit input".
+
 }
 
 \author{
@@ -62,15 +76,15 @@ Then, for each taxon that is not present in the trait database, the traits on th
 \seealso{
 \link{MWTL} for the data sets.
 
-\link{mapKey} for simple plotting functions.
+\link{map_key} for simple plotting functions.
 
-\link{getDensity} for functions working with density data.
+\link{get_density} for functions working with density data.
 
-\link{getDbIndex} for extracting bioturbation and bioirrigation indices.
+\link{get_Db_index} for extracting bioturbation and bioirrigation indices.
 
-\link{extendTrait} for functions working with traits.
+\link{extend_trait} for functions working with traits.
 
-\link{getTrait} 
+\link{get_trait} 
 }
 
 \note{
@@ -98,14 +112,27 @@ Bdata.rep <- data.frame(
 Bdata.rep
 
 ##-----------------------------------------------------
+## averaging over replicates - long format
+##-----------------------------------------------------
+
+Blong <- get_density(
+              data        = Bdata.rep,
+              descriptor  = station,
+              taxon       = species,
+              averageOver = replicate,
+              value       = density)
+Blong
+
+##-----------------------------------------------------
 ## From long to wide format, averaging over replicates
 ##-----------------------------------------------------
 
-Bwide <- with (Bdata.rep, 
-  l2wDensity (value      = density, 
-             descriptor  = station, 
-             averageOver = replicate,
-             taxon       = species))
+Bwide <- l2w_density (
+               data        = Bdata.rep,
+               value       = density, 
+               descriptor  = station, 
+               averageOver = replicate,
+               taxon       = species)
 Bwide
 
 ##-----------------------------------------------------
@@ -125,10 +152,10 @@ Btraits <- data.frame(
 
 # The metadata for this trait
 Btraits.lab <- data.frame(
-  colname  =c("T1_M1","T1_M2","T1_M3","T2_M1","T2_M2"),
-  trait    =c("T1"   ,"T1"   ,"T1"   ,"T2"   ,"T2"),
-  modality =c("M1"   ,"M2"   ,"M3"   ,"M1"   ,"M2"), 
-  score    =c(0      , 0.5   , 1     , 0.2   , 2)
+  colname  = c("T1_M1", "T1_M2", "T1_M3", "T2_M1", "T2_M2"),
+  trait    = c("T1"   , "T1"   , "T1"   , "T2"   , "T2"),
+  modality = c("M1"   , "M2"   , "M3"   , "M1"   , "M2"), 
+  score    = c(0      ,  0.5   ,  1     ,  0.2   ,  2)
 )
 
 ##-----------------------------------------------------
@@ -143,14 +170,105 @@ Btaxonomy <- data.frame(
   class   = c( "c.1", "c.1", "c.1", "c.1", "c.1", "c.1")
   )
 
-##-----------------------------------------------------
-## Community weighted mean score
-##-----------------------------------------------------
+## ====================================================
+## Use of get_trait_density: long and wide input
+## ====================================================
+
+# input in wide format (Bwide)
+cwm.1 <- get_trait_density (
+                        wide           = Bwide,  
+                        trait          = Btraits)
+cwm.1
+
+# input in long format (Blong)
+cwm.2 <- get_trait_density (
+                        data           = Blong,
+                        taxon          = species,
+                        descriptor     = station,
+                        value          = density,
+                        trait          = Btraits)
+cwm.2
+
+# input in original long format (Bdata.rep) - average over replicates
+cwm.3 <- get_trait_density (
+                        data           = Bdata.rep,
+                        taxon          = species,
+                        descriptor     = station,
+                        averageOver    = replicate,
+                        value          = density,
+                        trait          = Btraits)
+cwm.3
+
+# input in original long format (Bdata.rep) - keep replicates (as descriptor)
+cwm.3b <- get_trait_density (
+                        data           = Bdata.rep,
+                        taxon          = species,
+                        descriptor     = data.frame(station, replicate),
+                        value          = density,
+                        trait          = Btraits)
+cwm.3b
+
+## ====================================================
+## use data argument or explicit input
+## ====================================================
+
+# -----------------------------------------------------
+# use data argument
+# -----------------------------------------------------
+cwm.2 <- get_trait_density (
+                        data           = Blong,
+                        taxon          = species,
+                        descriptor     = station,
+                        value          = density,
+                        trait          = Btraits)
+                        
+cwm.2  # keeps the names of the original data
+
+# -----------------------------------------------------
+# use with() to create a data environment
+# -----------------------------------------------------
+cwm.2b <- with(Blong, get_trait_density (
+                        taxon          = species,
+                        descriptor     = station,
+                        value          = density,
+                        trait          = Btraits))
+
+cwm.2b     # Note: first column is called "descriptor"
+
+# explicitly name the descriptor argument
+cwm.2c <- with(Blong, get_trait_density (
+                        taxon          = species,
+                        descriptor     = list(station = station),
+                        value          = density,
+                        trait          = Btraits))
+
+cwm.2c     # called "station"
+
+# -----------------------------------------------------
+# explicit arguments
+# -----------------------------------------------------
+cwm.2d <- get_trait_density (
+                        taxon          = Blong$species,
+                        descriptor     = Blong$station,
+                        value          = Blong$density,
+                        trait          = Btraits)
+cwm.2d 
+
+cwm.2d <- get_trait_density (
+                        taxon          = Blong$species,
+                        descriptor     = list(station = Blong$station),
+                        value          = Blong$density,
+                        trait          = Btraits)
+cwm.2d 
+
+## ====================================================
+## use of scalewithvalue
+## ====================================================
 
 # if verbose=TRUE, a warning will be given, as there is no trait information
 # for sp4 - this affects the trait density for station "b"
 
-cwm.trait <- getTraitDensity (
+cwm.trait.1 <- get_trait_density (
                         wide           = Bwide,  
                         trait          = Btraits, 
                         trait.class    = Btraits.lab$trait, 
@@ -158,11 +276,13 @@ cwm.trait <- getTraitDensity (
                         scalewithvalue = TRUE, 
                         verbose        = FALSE)
 
-cwm.trait
-attributes(cwm.trait)$notrait   # species that was ignored
+cwm.trait.1
+
+attributes(cwm.trait.1)$notrait   # species that was ignored
 
 # same, but total trait values
-cwm.trait.2 <- getTraitDensity (
+
+cwm.trait.2 <- get_trait_density (
                         wide           = Bwide,  
                         trait          = Btraits, 
                         trait.class    = Btraits.lab$trait, 
@@ -172,9 +292,11 @@ cwm.trait.2 <- getTraitDensity (
 
 cwm.trait.2
 
-# Traits from all taxa in the dataset, including high-level information 
+## ====================================================
+## pass taxonomy to estimate traits for unrecorded species
+## ====================================================
 
-cwm.trait.2 <- getTraitDensity (
+cwm.trait.2 <- get_trait_density (
                         wide           = Bwide,  
                         trait          = Btraits, 
                         trait.class    = Btraits.lab$trait, 
@@ -183,11 +305,13 @@ cwm.trait.2 <- getTraitDensity (
                         scalewithvalue = TRUE)
 
 cwm.trait.2
-attributes(cwm.trait.2)$notrait
+attributes(cwm.trait.2)$notrait    # none
 
-# Same but keeping fuzzy scores
+##-----------------------------------------------------
+## Same but keeping fuzzy scores
+##-----------------------------------------------------
 
-cwm.trait.3 <- getTraitDensity (
+cwm.trait.3 <- get_trait_density (
                         wide           = Bwide,  
                         trait          = Btraits, 
                         taxonomy       = Btaxonomy,
@@ -195,9 +319,9 @@ cwm.trait.3 <- getTraitDensity (
 
 cwm.trait.3
 
-##-----------------------------------------------------
+## ====================================================
 ## categorical traits
-##-----------------------------------------------------
+## ====================================================
 
 # Note: no data for "sp.4"
 
@@ -208,17 +332,18 @@ Bcategory <- data.frame(
 
 \dontrun{
 # this will not work, as trait should be numerical
-cwm.trait.4 <- getTraitDensity (
+cwm.trait.4 <- get_trait_density (
                         wide           = Bwide,  
                         trait          = Bcategory, 
                         taxonomy       = Btaxonomy,
                         scalewithvalue = TRUE)
 }
 
+# convert categorical traits to numerical values
 crisp2fuzzy(Bcategory)
 
 # this will  work, as categorical traits -> numerical
-cwm.trait.4 <- getTraitDensity (
+cwm.trait.4 <- get_trait_density (
                         wide           = Bwide,  
                         trait          = crisp2fuzzy(Bcategory), 
                         taxonomy       = Btaxonomy,

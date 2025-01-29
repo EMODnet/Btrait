@@ -1,38 +1,41 @@
 \name{Density functions}
-\alias{addAbsences}
-\alias{getProportion}
-\alias{getDensity}
+\alias{add_absences}
+\alias{get_proportion}
+\alias{get_density}
 \title{
   Functions for working with station x taxon data.
 }
 
 \description{
- \code{getDensity} takes a subset of density data, possibly at higher taxonomic level.
+ \code{get_density} takes a subset of density data, possibly at higher taxonomic level.
 
- \code{getProportion} estimates proportional values from (a subset of) density data.
+ \code{get_proportion} estimates proportional values from (a subset of) density data.
 
- \code{addAbsences} adds taxon absences in density data in long format.
+ \code{add_absences} adds taxon absences in density data in long format.
 }
 
 \usage{
-getDensity(descriptor, taxon, value, averageOver = NULL, 
-        taxonomy = NULL, subset, wide.output = FALSE, 
-        full.output = FALSE, verbose=FALSE)
+get_density(data, descriptor, taxon, value, averageOver, 
+            taxonomy = NULL, subset, wide.output = FALSE, 
+            full.output = FALSE, verbose=FALSE)
 
-getProportion(descriptor, taxon, value, averageOver = NULL, 
-        taxonomy = NULL, verbose=FALSE)
+get_proportion(data, descriptor, taxon, value, averageOver, 
+            taxonomy = NULL, verbose=FALSE)
 
-addAbsences(descriptor, taxon, value, averageOver = NULL)
+add_absences(data, descriptor, taxon, value, averageOver)
 }
 
 \arguments{
-  \item{descriptor }{name(s) of the descriptor, i.e. *where* the data were taken, e.g. station names. Either a vector, a list, a data.frame or matrix (and with multiple columns). It can be of type numerical, character, or a factor. When a data.frame or a list the "names" will be used in the output; when a vector, the argument name will be used in the output. In theory, this could also be one number or \code{NA}; however, care needs to be taken in case this combined with \code{subset} and \code{averageOver}
-}    
-  \item{taxon }{vector describing *what* the data are; it gives the taxonomic name (e.g. species). Should be of the same length as (the number of rows of) \code{descriptor}. Can be a list (or data.frame with one column), or a vector. When a data.frame or a list the "name" will be used in the output; when a vector, the argument name will be used.
-}
-  \item{value }{vector or list that contains the *values* of the data, usually density. Should be of the same length as (the number of rows of) \code{descriptor} and \code{taxon}. For function \code{getDensity}, \code{value} can also be a multi-column data.frame or matrix. 
+  \item{data }{data.frame to use for extracting the arguments \code{descriptor}, \code{taxon}, \code{value}, \code{averageOver}. Can be missing. 
   }
-  \item{averageOver }{vector with *replicates* over which averages need to be taken. Should be of the same length as (the number of rows of) \code{descriptor}.
+  \item{descriptor }{ variable(s) *where* the data were taken, e.g. sampling stations. If \code{data} is not missing: one or more column(s) from \code{data}; use \code{cbind} or \code{data.frame} to select more columns. If \code{data} is missing: a vector, a list, a data.frame or a matrix (with one or multiple columns). It can be of type numerical, character, or a factor. In theory, descriptor can also be one number, \code{NA} or missing; however, care needs to be taken in case this combined with \code{subset} and \code{averageOver}.
+}    
+  \item{taxon }{variables describing *what* the data are;  it gives the taxonomic name (e.g. species). If \code{data} is not missing:  one column from \code{data}.
+If \code{data} is missing:  a list (or data.frame with one column), or a vector. When a data.frame or a list the "name" will be used in the output; when a vector, the argument name will be used.
+}
+  \item{value }{variable that contains the *values* of the data, usually density. If \code{data} is not missing:  one or more column(s) from \code{data}; use \code{cbind} or \code{data.frame} to select more columns. If \code{data} is missing: a vector, a list, a data.frame or a matrix (with one or multiple columns). it should be of the same length (or have the same number of rows) as (the number of rows of) \code{descriptor} and \code{taxon}. Should contain numerical values. Should always be present.
+  }
+  \item{averageOver }{*replicates* over which averages need to be taken. If \code{data} is not missing:  one or more column(s) from \code{data}; use \code{cbind} or \code{data.frame} to select more columns. Else a vector, a list, a data.frame or a matrix (with one or multiple columns). It can be of type numerical, character, or a factor. Can be absent.
   }
   \item{subset }{logical expression indicating elements to keep: missing values are taken as FALSE. If NULL, or absent, then all elements are used. Note that the subset is taken *after* the number of samples to average per descriptor is calculated, so this will also work for selecting certain taxa that may not be present in all replicates over which should be averaged.
   }
@@ -48,13 +51,22 @@ addAbsences(descriptor, taxon, value, averageOver = NULL)
 
 \value{
 \itemize{
- \item \code{getDensity} returns a \code{data.frame} combining descriptor, taxon, and value, in LONG format.
+ \item \code{get_density} returns a \code{data.frame} combining descriptor, taxon, and value, in LONG format.
+  The \code{value} consists of summed values for (\code{descriptor}, \code{averageOver}, 
+  \code{taxon}) combinations, followed by averaging over \code{averageOver}.
  
  Unless argument \code{full.output} is \code{TRUE}, this will not contain absences 
  (i.e. where value = 0), unless they were already present in the input.
+ 
+ \item \code{get_proportion} returns a \code{data.frame} combining descriptor, taxon, and proportional, in LONG format.
+}
 
-  The \code{value} consists of summed values for (\code{descriptor}, \code{averageOver}, 
-  \code{taxon}) combinations, followed by averaging over \code{averageOver}.
+Depending on whether argument \code{data} is passed or not, 
+the output columns may be labelled differently:
+
+\itemize{
+\item if \code{data} is passed: the original names in data will be kept
+\item if \code{data} is not passed: the names will only be kept if explicitly passed.
 }
 
 }
@@ -66,27 +78,28 @@ addAbsences(descriptor, taxon, value, averageOver = NULL)
 \seealso{
 \link{MWTL} for the data sets.
 
-\link{mapKey} for simple plotting functions.
+\link{map_key} for simple plotting functions.
 
 \link{long2wide} for estimating converting data from long to wide format and vice versa.
 
-\link{getSummary} for estimating summaries from density data.
+\link{get_summary} for estimating summaries from density data.
 
-\link{getTraitDensity} for functions combining density and traits.
+\link{get_trait_density} for functions combining density and traits.
 
-\link{extendTrait} for functions working with traits.
+\link{extend_trait} for functions working with traits.
 
-\link{getDbIndex} for extracting bioturbation and bioirrigation indices.
+\link{get_Db_index} for extracting bioturbation and bioirrigation indices.
 }
 
 \details{
 
 \itemize{
- \item{\code{getDensity}}. In this function a summed \code{value} over 
+
+ \item{\code{get_density}}. In this function a summed \code{value} over 
     \code{taxa} x \code{descriptor} is first calculated, and this value is then 
     divided by the number of replicates (as in \code{averageOver}) per \code{descriptor}.
     
-    This is suitable for density and biomass data, but NOT for mean individual weight for instance.
+    This is suitable for density and biomass data, but NOT for mean individual weight for instance (which cannot be summed).
 }
 
 }
@@ -107,36 +120,68 @@ Bdata.rep <- data.frame(
 )
 Bdata.rep
 
-# Proportion of each species
+## ====================================================
+## Proportion of each species -
+## ====================================================
+
+# three ways to extract proportions
+
+# -----------------------------------------------------
+# 1. using input argument data 
+# -----------------------------------------------------
+# note: taxon is called species as in original data set
+  
+  get_proportion (data        = Bdata.rep,
+                  value       = density, 
+                  descriptor  = data.frame(station, replicate), 
+                  taxon       = species)
+
+  # to force the taxon to be called taxon
+  get_proportion (data        = Bdata.rep,
+                  value       = density, 
+                  descriptor  = data.frame(station, replicate), 
+                  taxon       = data.frame(taxon = species))  # named dataframe
+
+# -----------------------------------------------------
+# 2. using with() to create an environment 
+# -----------------------------------------------------
+# note: taxon is called taxon
+
 with (Bdata.rep, 
-  getProportion (value       = density, 
-                 descriptor  = data.frame(station, replicate), 
-                 taxon       = species))
+  get_proportion (value       = density, 
+                  descriptor  = data.frame(station, replicate), 
+                  taxon       = species)
+      )
+
+# force the taxon to be called "species"
+with (Bdata.rep, 
+  get_proportion (value       = density, 
+                  descriptor  = data.frame(station, replicate), 
+                  taxon       = data.frame(species = species))
+      )          
+
+# -----------------------------------------------------
+# 3. using pipes
+# -----------------------------------------------------
+  Bdata.rep |> get_proportion (value       = density, 
+                               descriptor  = data.frame(station, replicate), 
+                               taxon       = species)
 
 
 ##-----------------------------------------------------
 ## average of replicates
 ##-----------------------------------------------------
 
-with (Bdata.rep, 
-  getDensity (value       = density, 
+  PP <-  get_density(
+              data        = Bdata.rep,
+              value       = density, 
               descriptor  = station, 
               taxon       = species, 
-              averageOver = replicate))
+              averageOver = replicate)
 
-# using named lists to have good column headings
-with (Bdata.rep, 
-  getDensity (value       = list(density=density), 
-              descriptor  = list(station=station), 
-              taxon       = species, 
-              averageOver = replicate))
-                 
-# estimating proportions
-with (Bdata.rep, 
-  getProportion (value    = list(density=density), 
-              descriptor  = list(station=station), 
-              taxon       = species, 
-              averageOver = replicate))
+
+# input arguments are kept in the attributes              
+attributes(PP)[-(1:3)]
                  
 # averaging multiple value columns at once 
 # extending the data with biomass - assume no biomass for st b
@@ -144,51 +189,57 @@ with (Bdata.rep,
 Bdata.rep$biomass = c(0.1, 0.2, 0.3, NA, NA, NA)
 Bdata.rep
 
-with (Bdata.rep, 
-  getDensity (value       = list(density=density, biomass=biomass), 
-              descriptor  = list(station=station), 
+  DD <-  get_density(
+              data        = Bdata.rep,
+              value       = data.frame(density, biomass), 
+              descriptor  = data.frame(station), 
               taxon       = species, 
-              averageOver = replicate))
+              averageOver = replicate)
+
+# input arguments              
+  attributes(DD)[-(1:3)]
 
 ##-----------------------------------------------------
 ## Select information for one species
 ##-----------------------------------------------------
 
-with (Bdata.rep, 
-  getDensity (subset      = species=="sp.2",
+  get_density(data        = Bdata.rep, 
+              subset      = species=="sp.2",
               value       = density, 
-              descriptor  = list(station=station), 
+              descriptor  = station, 
               taxon       = species, 
-              averageOver = replicate))
+              averageOver = replicate)
 
 # returns also the 0 value 
-with (Bdata.rep, 
-  getDensity (subset      = species=="sp.2",
+  get_density(data        = Bdata.rep,
+              subset      = species=="sp.2",
               value       = density, 
-              descriptor  = list(station=station), 
+              descriptor  = station, 
               taxon       = species, 
               averageOver = replicate, 
-              full.output = TRUE))
+              full.output = TRUE)
 
 ##-----------------------------------------------------
 ## Extend the long format with absences
 ##-----------------------------------------------------
 
 # take averages over replicates
-with(Bdata.rep, 
-  addAbsences (value      = density, 
-               descriptor = cbind(station, replicate), 
-               taxon      = species))
+Bdata.rep |>
+  add_absences (value      = density, 
+                descriptor = cbind(station, replicate), 
+                taxon      = species)
 
 # keep replicates
-with(Bdata.rep, 
-  addAbsences (value       = density, 
-               descriptor  = station, 
-               taxon       = species, 
-               averageOver = replicate))
+  add_absences (data        = Bdata.rep, 
+                value       = density, 
+                descriptor  = station, 
+                taxon       = species, 
+                averageOver = replicate)
 
 ## ====================================================
+## ====================================================
 ## A small dataset without replicates
+## ====================================================
 ## ====================================================
 
 Bdata <- data.frame(
@@ -209,35 +260,88 @@ Btaxonomy <- data.frame(
   class   = c( "c.1", "c.1", "c.1", "c.1", "c.1", "c.1")
   )
 
+# all input:                                 
+# ** simple density
+
+get_density(Bdata, 
+            descriptor = station, 
+            taxon      = species, 
+            value      = density)
+
+# without taxon: 
+# ** sum per station
+
+get_density(Bdata, 
+            descriptor = station, 
+            value      = density)
+
+# without taxon, and averaging over species: 
+# ** average per station
+
+get_density(Bdata, 
+            descriptor  = station, 
+            averageOver = species,
+            value       = density)
+
+# without descriptor: 
+# ** sum per species
+
+get_density(Bdata, 
+            taxon      = species, 
+            value      = density)
+
+# without descriptor, averaging over stations: 
+# ** average per species
+
+get_density(Bdata, 
+            taxon       = species, 
+            averageOver = station,
+            value       = density)
+
+# without descriptor and taxon: 
+# ** sum of all
+
+get_density(Bdata, 
+            value       = density)
+
+# without descriptor and taxon, averaging over species and stations: 
+# ** average of all
+
+get_density(Bdata, 
+            averageOver = cbind(station, species),
+            value       = density)
+
 ##-----------------------------------------------------
 ## density on higher taxonomic level
 ##-----------------------------------------------------
 
 # species density for a particular genus 
-sp.g2 <- with (Bdata, 
-  getDensity(descriptor = station, 
-             taxon      = species,
-             value      = density,
-             taxonomy   = Btaxonomy,
-             subset     = genus == "g.2")
-              )
+sp.g2 <- 
+  get_density(data       = Bdata,
+              descriptor = station, 
+              taxon      = species,
+              value      = density,
+              taxonomy   = Btaxonomy,
+              subset     = genus == "g.2")
+sp.g2
 
 # select data for station st.a
-Bselect <- with (Bdata, 
-   getDensity (value      = density, 
+Bselect <- 
+   get_density(data       = Bdata,
+               value      = density, 
                descriptor = station, 
                taxon      = species, 
                subset     = station=="st.a")
-                )
+
 Bselect
 
 # pass taxonomy to select only species that belong to g.1
-with (Bdata, 
-   getDensity (value      = density, 
+   get_density(data       = Bdata,
+               value      = density, 
                descriptor = station, 
                taxon      = species, 
                taxonomy   = Btaxonomy, 
-               subset     = genus=="g.1"))
+               subset     = genus=="g.1")
 
 ## ====================================================
 ## Northsea dataset
@@ -247,27 +351,29 @@ with (Bdata,
 ## Occurrence of Abra alba, averaged per station
 ##-----------------------------------------------------
 
-Abra_alba <- with(MWTL$density, 
-   getDensity(subset      = taxon=="Abra alba",
-              descriptor  = station,
-              averageOver = year,
-              taxon       = taxon,
-              value       = density))
+Abra_alba <- 
+   get_density(data        = MWTL$density,
+               subset      = taxon=="Abra alba",
+               descriptor  = station,
+               averageOver = year,
+               taxon       = taxon,
+               value       = density)
 head(Abra_alba)
 
 # Mean of all Abra species over all stations
 # This should be done in two steps.
 
-Abra <- with(MWTL$density, 
-   getDensity(subset      = genus=="Abra",
-              descriptor  = station,
-              averageOver = year,
-              taxon       = taxon,
-              taxonomy    = Taxonomy,
-              value       = density, 
-              full.output = TRUE))
+Abra <- 
+   get_density(data        = MWTL$density,
+               subset      = genus=="Abra",
+               descriptor  = station,
+               averageOver = year,
+               taxon       = taxon,
+               taxonomy    = Taxonomy,
+               value       = density, 
+               full.output = TRUE)
 head(Abra)
 
-tapply(Abra$value, INDEX=list(Abra$taxon), FUN=mean)
+tapply(Abra$density, INDEX=list(Abra$taxon), FUN=mean)
 
 }

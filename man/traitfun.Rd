@@ -1,6 +1,6 @@
 \name{Trait and taxonomic functions}
-\alias{getTrait}
-\alias{extendTrait}
+\alias{get_trait}
+\alias{extend_trait}
 \alias{fuzzy2crisp}
 \alias{crisp2fuzzy}
 \title{
@@ -8,21 +8,21 @@
 }
 
 \description{
- \code{getTrait} gets trait information for (unique) taxa.
+ \code{get_trait} gets trait information for (unique) taxa.
 
  \code{fuzzy2crisp} translate fuzzy traits into crisp traits.
 
  \code{crisp2fuzzy} translate crisp traits into fuzzy traits. Note: this makes sense only for categorical traits.
 
- \code{extendTrait} expands taxon x trait data based on their taxonomic composition.
+ \code{extend_trait} expands taxon x trait data based on their taxonomic composition.
 }
 
 \usage{
-getTrait(taxon, trait, trait.class=NULL, trait.score=NULL, 
-         taxonomy = NULL, t.column = 1, 
-         standardize = FALSE, verbose = FALSE)
+get_trait(taxon, trait, trait.class=NULL, trait.score=NULL, 
+          taxonomy = NULL, t.column = 1, 
+          standardize = FALSE, verbose = FALSE)
 
-extendTrait(trait, taxonomy, t.column = 1) 
+extend_trait(trait, taxonomy, t.column = 1) 
 
 fuzzy2crisp(trait, trait.class, trait.score, t.column = 1, 
         standardize = TRUE)
@@ -51,9 +51,9 @@ crisp2fuzzy (trait, t.column = 1)
 }
 \value{
 
-\code{extendTrait} returns the trait matrix, augmented with higher taxonomic levels,
+\code{extend_trait} returns the trait matrix, augmented with higher taxonomic levels,
 
-\code{getTrait} returns the taxon x trait matrix, in fuzzy format (if the \code{trait} database was in fuzzy format). However, when \code{trait.class} is not NULL, the matrix will be in crisp format.
+\code{get_trait} returns the taxon x trait matrix, in fuzzy format (if the \code{trait} database was in fuzzy format). However, when \code{trait.class} is not NULL, the matrix will be in crisp format.
 
 \code{fuzzy2crisp} returns the trait matrix, in crisp format (not fuzzy coded),
 
@@ -67,25 +67,25 @@ crisp2fuzzy (trait, t.column = 1)
 \seealso{
 \link{MWTL} for the data sets.
 
-\link{mapKey} for simple plotting functions.
+\link{map_key} for simple plotting functions.
 
-\link{getDensity} for functions working with density data.
+\link{get_density} for functions working with density data.
 
-\link{getSummary} for estimating summaries from density data.
+\link{get_summary} for estimating summaries from density data.
 
-\link{getTraitDensity} for functions combining density and traits.
+\link{get_trait_density} for functions combining density and traits.
 
-\link{getDbIndex} for extracting bioturbation and bioirrigation indices.
+\link{get_Db_index} for extracting bioturbation and bioirrigation indices.
 }
 \details{
 The \code{taxonomy} is used to fill in the gaps of the trait information, assuming that closely related taxa will share similar traits. This is done in several steps:
 
-In function \code{extendTrait} the traits are extended with information on higher taxonomic levels, provided that information is not yet in the trait database. The traits for a taxonomic level are estimated as the average of the traits at the lower level. For instance, traits on genus level will be averages of known traits of all species in the database belonging to this genus. 
+In function \code{extend_trait} the traits are extended with information on higher taxonomic levels, provided that information is not yet in the trait database. The traits for a taxonomic level are estimated as the average of the traits at the lower level. For instance, traits on genus level will be averages of known traits of all species in the database belonging to this genus. 
 
-In function *getTrait*, the trait database is first extended with information on higher taxonomic levels (using *extendTrait*). Then, for each taxon that is not present in the trait database, the traits on the closest taxonomic level are used. For instance, for an  unrecorded species, it is first checked if the trait is known on genus level, if not, family level and so on.
+In function *get_trait*, the trait database is first extended with information on higher taxonomic levels (using *extend_trait*). Then, for each taxon that is not present in the trait database, the traits on the closest taxonomic level are used. For instance, for an  unrecorded species, it is first checked if the trait is known on genus level, if not, family level and so on.
 
 
-for \code{taxon.getTrait}, only the traits for unique taxa are returned.
+for \code{get_trait}, only the traits for unique taxa are returned.
 Traits will be \code{NA} if traits were not present in the trait database and that 
 could not be derived based on taxonomic closeness. The list of taxa whose 
 traits remain unknown can be found in \code{attributes(..)$notrait}.
@@ -135,24 +135,24 @@ Btraits.lab <- data.frame(
 ##-----------------------------------------------------
 
 # sp.4 is not in Btraits 
-getTrait (taxon      = "sp.4", 
+get_trait (taxon      = "sp.4", 
           trait      = Btraits)
 
 # sp.4 traits derived from taxonomic tree (g.2)
-getTrait (taxon      = "sp.4", 
+get_trait (taxon      = "sp.4", 
           trait      = Btraits, 
           taxonomy   = Btaxonomy)
 
-getTrait (taxon      = c("g.2"), 
+get_trait (taxon      = c("g.2"), 
           trait      = Btraits, 
           taxonomy   = Btaxonomy)
 
 # g.2 is derived as mean of sp.2, sp.3 and sp.4 
-getTrait (taxon      = c("sp.2", "sp.3", "sp.4"), 
+get_trait (taxon      = c("sp.2", "sp.3", "sp.4"), 
           trait      = Btraits, 
           taxonomy   = Btaxonomy)
 
-getTrait (taxon      = c("g.2"), 
+get_trait (taxon      = c("g.2"), 
           trait      = Btraits, 
           taxonomy   = Btaxonomy)
 
@@ -183,7 +183,7 @@ getTrait (taxon      = c("g.2"),
 ## Extend traits with higher level information
 ##-----------------------------------------------------
 
-Btraits.ext <- extendTrait (trait    = Btraits, 
+Btraits.ext <- extend_trait(trait    = Btraits, 
                             taxonomy = Btaxonomy)
 
 Btraits.all <- rbind(Btraits, Btraits.ext)
@@ -195,18 +195,24 @@ fuzzy2crisp(trait       = Btraits.all,
             trait.class = Btraits.lab$trait)
 
 # In one go, and including sp.4
-getTrait (taxon    = c("sp.1", "sp.2", "sp.3", "sp.4", "sp.5", "sp.6"),
+get_trait(taxon    = c("sp.1", "sp.2", "sp.3", "sp.4", "sp.5", "sp.6"),
           trait    = Btraits, 
           taxonomy = Btaxonomy, 
           trait.score = Btraits.lab$score, 
           trait.class = Btraits.lab$trait)
           
           
-TraitSmall <- data.frame(species=c("Alcyonium acaule",  "Alcyonium coralloides"),
-                         T1.M1=c(0.9,1), T1.M2=c(0.1,0), T1.M3=c(0,0))
-TaxSmall <- data.frame(species = c("Alcyonium acaule",  "Alcyonium coralloides"), 
+TraitSmall <- data.frame(
+                species = c("Alcyonium acaule",  "Alcyonium coralloides"),
+                T1.M1   = c(0.9, 1), 
+                T1.M2   = c(0.1, 0), 
+                T1.M3   = c(0,   0))
+TaxSmall <- data.frame(
+              species = c("Alcyonium acaule",  "Alcyonium coralloides"), 
               Genus   = c("Alcyonium", "Alcyonium"), 
               Family  = c("Alcyoniidae", "Alcyoniidae"), 
               order   = c("Alcyonacea", "Alcyonacea"))
-T1 <- extendTrait(trait=TraitSmall, taxonomy=TaxSmall)         
+
+T1 <- extend_trait(trait    = TraitSmall, 
+                   taxonomy = TaxSmall)         
 }

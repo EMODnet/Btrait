@@ -78,6 +78,48 @@ for (i in 1:nrow(NSt)){
 ## Distribution of deep 3D burrowers
 ##-----------------------------------------------------
 
+# Tsese formulations are all the same:
+
+\dontrun{
+
+# explicit input of data - need to specify the name of the row 
+Data <- long2wide(row         = list(station = MWTL.groups$station), 
+                  column      = MWTL.groups$typology, 
+                  value       = MWTL.groups$density,
+                  averageOver = MWTL.groups$year, 
+                  subset      = (MWTL.groups$typology=="Deep3D"))
+head(Data)
+
+# use of with() to create environment
+Data <- with (MWTL.groups, 
+              long2wide(row         = list(station = station), 
+                        column      = typology, 
+                        value       = density,
+                        averageOver = year, 
+                        subset      = (typology=="Deep3D")))
+head(Data)
+
+# use of argument data to create environment
+Data <- long2wide(data        = MWTL.groups, 
+                  row         = station, 
+                  column      = typology, 
+                  value       = density,
+                  averageOver = year, 
+                  subset      = (typology=="Deep3D"))
+head(Data)
+
+# piping
+Data <- MWTL.groups |> long2wide( 
+                  row         = station, 
+                  column      = typology, 
+                  value       = density,
+                  averageOver = year, 
+                  subset      = (typology=="Deep3D"))
+head(Data)
+
+}
+
+
 Data <- with (MWTL.groups, 
             long2wide(row         = station, 
                       column      = typology, 
@@ -85,18 +127,20 @@ Data <- with (MWTL.groups,
                       averageOver = year, 
                       subset      = (typology=="Deep3D")))
 head(Data)
-Data.st <- merge(MWTL$stations, Data, by.x="station", by.y="descriptor")
+Data.st <- merge(MWTL$stations, Data, 
+                 by.x = "station", by.y = "descriptor")
 
-with (Data.st, mapKey(x=x, y=y, colvar=Deep3D, main="deep 3D", 
-                      clab="ind/m2", log="c"))
+with (Data.st, map_key(x = x, y = y, colvar = Deep3D, 
+                       main = "deep 3D", 
+                       clab = "ind/m2", log = "c"))
+
+
 }
 
 \references{
 The species typology is described in the following manuscript:
 
-Olivier Beauchard, Kari Elsa Ellingsen, Murray S.A. Thompson, Gerjan Piet, 
-Pascal Laffargue, Karline Soetaert, subm. 
-Assessing sea floor functional diversity and vulnerability. Marine Ecology Progress Series
+Beauchard, O., Murray S.A. Thompson, Kari Elsa Ellingsen, Gerjan Piet, Pascal Laffargue, Karline Soetaert, 2023. Assessing sea floor functional diversity and vulnerability. Marine Ecology Progress Serie v708, p21-43, https://www.int-res.com/abstracts/meps/v708/p21-43
 }
 
 \seealso{
@@ -104,15 +148,15 @@ Assessing sea floor functional diversity and vulnerability. Marine Ecology Progr
 
   \link{MWTL} for other data sets of the Northsea.
 
-  \link{mapKey} for plotting.
+  \link{map_key} for plotting.
 
-  \link{extendTrait} for functions operating on trait data.
+  \link{extend_trait} for functions operating on trait data.
 
-  \link{getDensity} for functions operating on density data.
+  \link{get_density} for functions operating on density data.
 
-  \link{getTraitDensity} for functions operating on density and trait data.
+  \link{get_trait_density} for functions operating on density and trait data.
 
-  \link{getDbIndex} for extracting bioturbation and bioirrigation indices.
+  \link{get_Db_index} for extracting bioturbation and bioirrigation indices.
 }
 
 \keyword{datasets}

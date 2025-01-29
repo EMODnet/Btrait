@@ -5,18 +5,35 @@
 ## ====================================================================
 ## ====================================================================
 
-long2wide <- function(row,             # descriptor (vector or data.frame)
+long2wide <- function(data,
+                      row,             # descriptor (vector or data.frame)
                       column,          # vector with column names(e.g. taxon) 
                       value,           # density value (vector)
-                      averageOver=NULL,# replicate name (vector)
+                      averageOver,     # replicate name (vector)
                       taxonomy=NULL,   # taxonomic relationships to 'taxon'
                       subset){         # logical expression which to include
 
+  if (! missing(data)){
+    if (! missing(row))
+      row <- eval(substitute(data.frame(row)), envir = data, enclos = parent.frame())
+    if (! missing(column))
+      column <- eval(substitute(data.frame(column)), envir = data, enclos = parent.frame())
+    if (! missing(value))
+      value <- eval(substitute(data.frame(value)), envir = data, enclos = parent.frame())
+    if (! missing(averageOver))
+      averageOver <- eval(substitute(data.frame(averageOver)), envir = data, enclos = parent.frame())
+    data_name <- substitute(data)
+  } else data_name <- NA
+  
+  if (missing(averageOver))
+    averageOver <- NULL
+  
   taxon    <- column
   cnTaxon  <- getname(column)
   
   descriptor <- row
-
+  cnDesc  <- getname(row)
+  
 # value can be missing
   if (is.null(value) | missing(value))
     value <- rep(1, times=length(column))
@@ -52,19 +69,27 @@ long2wide <- function(row,             # descriptor (vector or data.frame)
   
   # number of replicates per descriptor  
   if (! is.null(averageOver)) {
+     cnAvg <- colnames(averageOver)
      averageOver  <- OneFactor(as.data.frame(averageOver))
      nAvg <- aggregate(x   = averageOver, 
                        by  = list(desc=Desc), 
                        FUN = function(x) length(unique(x)))
+     
   } else {
      averageOver <- rep(1, times=nr)
      nAvg <- data.frame(desc=Desc, x=rep(1, times=nr))
+     cnAvg <- NA
+     
   }
 
   # take subset 
   if (! missing(subset)) {
      x <- data.frame(descriptor, taxon=taxon, 
                      averageOver=averageOver, Desc=Desc, value)
+     
+     if (! missing(data))
+       x <- data.frame(x, data)
+     
      
      if (! is.null(taxonomy)) {
       nr <- nrow(x)
@@ -78,6 +103,10 @@ long2wide <- function(row,             # descriptor (vector or data.frame)
      }
     e <- substitute(subset)
     r <- eval(e, x, parent.frame())
+    if (!is.logical(r)) {
+      r <- eval(subset, x, parent.frame(n=2))
+    }
+    
     if (!is.logical(r)) stop("'subset' must be logical")
     r <- r & !is.na(r)
     if (length(r) != nr) 
@@ -142,8 +171,13 @@ long2wide <- function(row,             # descriptor (vector or data.frame)
   colnames(value.Mean) <- c(cnDesc, taxnames)
   
   row.names(value.Mean) <- NULL
-  attributes(value.Mean)$taxon.names <- taxnames
-  attributes(value.Mean)$column.names <- taxnames
+  attributes(value.Mean)$taxon.names      <- taxnames
+  attributes(value.Mean)$dataset           <- data_name
+  attributes(value.Mean)$names_row         <- cnDesc
+  attributes(value.Mean)$names_column      <- cnTaxon
+  attributes(value.Mean)$names_value       <- cnValue
+  attributes(value.Mean)$names_averageOver <- cnAvg
+  
   attributes(value.Mean)$d.column <- d.column
   
   return(value.Mean)
@@ -151,36 +185,66 @@ long2wide <- function(row,             # descriptor (vector or data.frame)
 
 ## ====================================================================
 
-l2wTrait <- function(trait,          # descriptor of sample -> columns 
-                     taxon,          # vector with taxon names -> rows 
-                     value,          # density value (vector)
-                     averageOver=NULL,  # replicate name (vector)
-                     taxonomy=NULL,  # taxonomic relationships to 'taxon'
-                     subset=NULL){
-  if (missing(subset) | is.null(subset))
+l2w_trait <- function(trait,        # data set with traits in long format          
+                     descriptor,    # descriptor of sample -> columns 
+                     taxon,         # vector with taxon names -> rows 
+                     value,         # density value (vector)
+                     averageOver,   # replicate name (vector)
+                     taxonomy=NULL, # taxonomic relationships to 'taxon'
+                     subset){
+  if (! missing(trait)){
+    if (! missing(descriptor))
+      descriptor <- eval(substitute(data.frame(descriptor)), envir = trait, enclos = parent.frame())
+    if (! missing(taxon))
+      taxon <- eval(substitute(data.frame(taxon)), envir = trait, enclos = parent.frame())
+    if (! missing(value))
+      value <- eval(substitute(data.frame(value)), envir = trait, enclos = parent.frame())
+    if (! missing(averageOver))
+      averageOver <- eval(substitute(data.frame(averageOver)), envir = trait, enclos = parent.frame())
+  }
+  
+  if (missing(averageOver))
+    averageOver <- NULL
+  
+  if (missing(subset))
     long2wide(row         = taxon, 
-              column      = trait, 
+              column      = descriptor, 
               value       = value, 
               averageOver = averageOver)
   else
     long2wide(row         = taxon, 
-              column      = trait, 
+              column      = descriptor, 
               value       = value, 
               averageOver = averageOver,
               taxonomy    = taxonomy, 
-              subset      = subset)
+              subset      = substitute(subset))
 }
 
 ## ====================================================================
 
-l2wDensity <- function(descriptor,     # descriptor of the sample -> columns
+l2w_density <- function(data,
+                       descriptor,     # descriptor of the sample -> columns
                        taxon,          # vector with taxon names  -> rows 
                        value,          # density value (vector)
-                       averageOver=NULL, # replicate name (vector)
+                       averageOver, # replicate name (vector)
                        taxonomy=NULL,  # taxonomic relationships to 'taxon'
-                       subset=NULL){   # logical expression which to include
+                       subset){   # logical expression which to include
 
-  if (missing(subset) | is.null(subset))
+  if (! missing(data)){
+    if (! missing(descriptor))
+      descriptor <- eval(substitute(data.frame(descriptor)), envir = data, enclos = parent.frame())
+    if (! missing(taxon))
+      taxon <- eval(substitute(data.frame(taxon)), envir = data, enclos = parent.frame())
+    if (! missing(value))
+      value <- eval(substitute(data.frame(value)), envir = data, enclos = parent.frame())
+    if (! missing(averageOver))
+      averageOver <- eval(substitute(data.frame(averageOver)), envir = data, enclos = parent.frame())
+  }
+  
+  if (missing(averageOver))
+    averageOver <- NULL
+  
+  if (missing(subset))
     long2wide(row         = descriptor, 
               column      = taxon, 
               value       = value, 
@@ -192,7 +256,7 @@ l2wDensity <- function(descriptor,     # descriptor of the sample -> columns
               value       = value, 
               averageOver = averageOver,
               taxonomy    = taxonomy, 
-              subset      = subset)
+              subset      = substitute(subset))
 }
 
 ## ====================================================================
@@ -247,7 +311,7 @@ wide2long <- function(wide,
 
 ## ====================================================================
 
-w2lDensity <- function(wide, d.column=1, taxon.names=NULL, absences=FALSE){
+w2l_density <- function(wide, d.column=1, taxon.names=NULL, absences=FALSE){
   if (is.null(taxon.names))
     taxon.names <- attributes(wide)$taxon.names
 
@@ -256,7 +320,7 @@ w2lDensity <- function(wide, d.column=1, taxon.names=NULL, absences=FALSE){
 
 ## ====================================================================
 
-w2lTrait <- function(wide, t.column=1, trait.names=NULL, absences=FALSE){
+w2l_trait <- function(wide, t.column=1, trait.names=NULL, absences=FALSE){
   wide2long(wide, d.column=t.column, w.names=trait.names, absences=absences)
 }
 
@@ -266,11 +330,30 @@ w2lTrait <- function(wide, t.column=1, trait.names=NULL, absences=FALSE){
 ## ====================================================================
 ## ====================================================================
 
-addAbsences <- function(descriptor,      # descriptor name (vector) -> columns
+add_absences <- function(data,
+                        descriptor,      # descriptor name (vector) -> columns
                         taxon,           # vector with taxon names -> rows 
                         value,           # density value (vector)
-                        averageOver=NULL){ # replicate name (vector)
+                        averageOver){ # replicate name (vector)
  
+  if (! missing(data)){
+    if (! missing(descriptor))
+      descriptor  <- eval(substitute(data.frame(descriptor)), 
+                          envir = data, enclos = parent.frame())
+    if (! missing(taxon))
+      taxon       <- eval(substitute(data.frame(taxon)), 
+                          envir = data, enclos = parent.frame())
+    if (! missing(value))
+      value       <- eval(substitute(data.frame(value)), 
+                          envir = data, enclos = parent.frame())
+    if (! missing(averageOver))
+      averageOver <- eval(substitute(data.frame(averageOver)), 
+                          envir = data, enclos = parent.frame())
+  }
+  
+  if (missing(averageOver))
+    averageOver <- NULL
+  
   cnTaxon  <- getname(taxon)
   cnDesc   <- getname(descriptor)
   cnValue  <- getname(value)

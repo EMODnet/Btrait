@@ -9,11 +9,12 @@
 ## ====================================================================
 
   
-mapKey <- function(x=NULL, y=NULL, colvar=NULL, main=NULL, col=NULL, lwd=1,
-                   colkey=list(), xlim=NULL, ylim=NULL, clim=NULL, 
-                   contours=NULL, draw.levels=FALSE, col.levels="black", 
-                   by.levels=1, key.levels=FALSE, lwd.levels=1,
-                   axes=TRUE, frame.plot=TRUE, asp=NULL, NApch=43, ...){
+map_key <- function(x=NULL, y=NULL, colvar=NULL, 
+                    main=NULL, col=NULL, lwd=1,
+                    colkey=list(), xlim=NULL, ylim=NULL, clim=NULL, 
+                    contours=NULL, draw.levels=FALSE, col.levels="black", 
+                    by.levels=1, key.levels=FALSE, lwd.levels=1,
+                    axes=TRUE, frame.plot=TRUE, asp=NULL, NApch=43, ...){
 
   dot <- list(...)  
   hasContours <- TRUE
@@ -125,7 +126,7 @@ plotContours <- function (x=NULL, y=NULL, z=NULL, addCont=TRUE,
          if (is.list(colkey)) {
            colkey$at <- seq(from=dx/2, by=dx, length.out=length(labs))
            colkey$labels <- as.character(labs)
-           if (is.null(clim)) clim <- range(labs)
+           if (is.null(clim)) clim <- range(labs, na.rm=TRUE)
          }
        }
      
@@ -143,7 +144,7 @@ plotContours <- function (x=NULL, y=NULL, z=NULL, addCont=TRUE,
          if (is.list(colkey))  {          
            colkey$at <- seq(from=dx/2, by=dx, length.out=length(labs))
            colkey$labels <- as.character(labs)
-           if (is.null(clim)) clim <- range(labs)
+           if (is.null(clim)) clim <- range(labs, na.rm=TRUE)
          }
      }
      
@@ -174,7 +175,7 @@ plotContours <- function (x=NULL, y=NULL, z=NULL, addCont=TRUE,
 ## Mapping with a legend; size of pch ~ value
 ## ====================================================================
 
-mapLegend <- function (x=NULL, y=NULL, colvar=NULL, main=NULL, col=NULL, lwd=1,
+map_legend <- function (x=NULL, y=NULL, colvar=NULL, main=NULL, col=NULL, lwd=1,
                        legend = list(), xlim=NULL, ylim=NULL, clim=NULL, 
                        scale="simple", pch=18, cex=3, cex.min=cex/20, 
                        contours=NULL, draw.levels=FALSE, col.levels="black", 
@@ -212,12 +213,6 @@ mapLegend <- function (x=NULL, y=NULL, colvar=NULL, main=NULL, col=NULL, lwd=1,
   cv <- colvar
   if (islog) cv <- log10(colvar)
   
-  cl <- clim
-  if (! is.null(clim)) {
-    if (islog) cl <- log10(clim)
-    colvar[colvar > max(clim)] <- max(clim)
-    colvar[colvar < min(clim)] <- min(clim)
-  }
   
   isna <- which(is.na(cv) | is.infinite(cv))
   if (length(isna)){
@@ -230,6 +225,14 @@ mapLegend <- function (x=NULL, y=NULL, colvar=NULL, main=NULL, col=NULL, lwd=1,
     NAcol <- ell$NAcol
     if (is.null(NAcol)) NAcol <- "black"
   }
+  
+  cl <- clim
+  if (! is.null(clim)) {
+    if (islog) cl <- log10(clim)
+    colvar[colvar > max(clim)] <- max(clim)
+    colvar[colvar < min(clim)] <- min(clim)
+  } else # clim <- range(cv, na.rm=TRUE)
+  
   # size range for symbols
   if (cex.min < cex) 
     cex <- cex - cex.min 
@@ -245,6 +248,7 @@ mapLegend <- function (x=NULL, y=NULL, colvar=NULL, main=NULL, col=NULL, lwd=1,
   # for legend
   # Legend
   if (! is.list(legend)) legend <- as.list(legend)
+  Legend <- legend ## Keep a copy of original
   
   if (is.null(legend$x))
     legend$x <- "center"
@@ -261,8 +265,11 @@ mapLegend <- function (x=NULL, y=NULL, colvar=NULL, main=NULL, col=NULL, lwd=1,
     colvar <- rep(1, times=length(x))
   }  
   if (length(cv)) {  
-   pcv <- pretty(cv)
-  
+   if (! is.null(clim)) 
+     pcv <- pretty(clim)
+   else    
+     pcv <- pretty(cv)
+   
   # scale according to values
    if (scale == "simple") {  
     pr <- range(pcv)  # range
@@ -290,25 +297,34 @@ mapLegend <- function (x=NULL, y=NULL, colvar=NULL, main=NULL, col=NULL, lwd=1,
    Cex <- CexFun(cv)
   
   
-   legend$col <- createKey(pcv, col=col)
-   legend$pt.lwd <- lwd
-   legend$title <- ell$clab
+   if (is.null(legend$col))
+     legend$col <- createKey(pcv, col=col, clim=clim)  # Added clim (12/12/2024)
+   if (is.null(legend$pt.lwd))
+     legend$pt.lwd <- lwd
+   if (is.null(legend$title))
+     legend$title <- ell$clab
    
-   legend$pch <- rep(pch[1], length=length(pcv))
-   if (scale == "abs" & length(pch) == 2)  # pch has 2 values: for pos/neg
-    legend$pch[pcv < 0] <- pch[2]
-  
-   legend$pt.cex <- CexFun(pcv)
-   legend$pt.bg <- ell$bg
-   legend$legend <- pcv
+   if (is.null(legend$pch)){
+     legend$pch <- rep(pch[1], length=length(pcv))
+     if (scale == "abs" & length(pch) == 2)  # pch has 2 values: for pos/neg
+       legend$pch[pcv < 0] <- pch[2]
+  }
+   if (is.null(legend$pt.cex))
+     legend$pt.cex <- CexFun(pcv)
+   if (is.null(legend$pt.bg))
+     legend$pt.bg <- ell$bg
+   if (is.null(legend$legend))
+     legend$legend <- pcv
    
    
    }   
    
    legend.side <- legend$side
    if (is.null(legend.side)) legend.side <- 4
+   
    legend.cex  <- legend$cex
    if (is.null(legend.cex)) legend.cex <- 1
+   
    legend.pars <- legend$pars
   
    legend$side <- legend$cex <- legend$pars <- NULL
@@ -316,9 +332,11 @@ mapLegend <- function (x=NULL, y=NULL, colvar=NULL, main=NULL, col=NULL, lwd=1,
    if (islog) {
      mp  <- min(pcv)
      pcv <- 10^pcv
+     if (is.null(Legend$legend))  # originally not given
      legend$legend <- format(pcv, digits=max(1, -mp))
   
-    legend$title <- ell$clab
+     if (is.null(Legend$title))  # originally not given
+       legend$title <- ell$clab
    }
    if ( length(isna)){
      if (! class(NApch) == class(legend$pch)) 
@@ -330,6 +348,8 @@ mapLegend <- function (x=NULL, y=NULL, colvar=NULL, main=NULL, col=NULL, lwd=1,
    }  
   
   asp <- NULL
+ # if (is.null(clim))  clim <- range(cv, na.rm=TRUE)
+    
   if (is.null(asp)) asp <- 1/cos((mean(ylim) * pi)/180)
   sc <- list(method="scatter2D", x=x, y=y, colvar=colvar, colkey=FALSE, 
              main=main, legend=legend, col=col, lwd=lwd, pch=Pch, cex=Cex, 
@@ -361,31 +381,31 @@ mapLegend <- function (x=NULL, y=NULL, colvar=NULL, main=NULL, col=NULL, lwd=1,
   
 }
 
-mapMWTL <- function(x=NULL, y=NULL, colvar=NULL, draw.levels=TRUE, 
+map_MWTL <- function(x=NULL, y=NULL, colvar=NULL, draw.levels=TRUE, 
                     type="key", ...){
   if (type=="key")
-    mapKey(x=x,y=y,colvar=colvar, contours=MWTL$contours, 
+    map_key(x=x,y=y,colvar=colvar, contours=MWTL$contours, 
            draw.levels=draw.levels, 
            colkey=list(length=0.3, width=0.5, shift=-0.2, dist=-0.2,
                         cex.axis=0.8, cex.clab=par("cex.lab")),
            las=1, ...)
   else
-    mapLegend(x=x, y=y, colvar=colvar, contours=MWTL$contours,
+    map_legend(x=x, y=y, colvar=colvar, contours=MWTL$contours,
               draw.levels=draw.levels, legend=list(x="bottomright", side=0), 
               las=1, ...)
   
 }
 
-mapNSBS <- function(x=NULL, y=NULL, colvar=NULL, draw.levels=TRUE, 
+map_NSBS <- function(x=NULL, y=NULL, colvar=NULL, draw.levels=TRUE, 
                     type="key", ...){
   if (type=="key")
-    mapKey(x=x,y=y,colvar=colvar, contours=NSBS$contours, 
+    map_key(x=x,y=y,colvar=colvar, contours=NSBS$contours, 
            draw.levels=draw.levels, 
            colkey=list(length=0.3, width=0.5,shift=-0.2, dist=-0.2,
                        cex.axis=0.8, cex.clab=par("cex.lab")), 
            las=1, ...)
   else
-    mapLegend(x=x, y=y, colvar=colvar, contours=NSBS$contours,
+    map_legend(x=x, y=y, colvar=colvar, contours=NSBS$contours,
               draw.levels=draw.levels, legend=list(x="bottomright", side=0),
               las=1, ...)
   

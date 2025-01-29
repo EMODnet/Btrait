@@ -17,7 +17,7 @@ require(Btrait)
 
 The R-package *Btrait* facilitates working with a combination of biological density, trait, and taxonomic data. It contains:
 
-* functions for working with density and trait data (*getDensity*, *getTraits*, *getTraitDensity*, ...),
+* functions for working with density and trait data (*get_density*, *get_trait*, *get_trait_density*, ...),
 * two data sets with macrobenthos species density and biomass data from the Northsea (*MWTL*, *NSBS*),
 * data sets with functional trait data (*Traits_nioz*, *Traits_cefas*, *Traits_Db*, *Traits_irr*).
 
@@ -65,10 +65,13 @@ Note that this database is atypical in the sense that sometimes the station x sa
 
 ```{r}
 DOUBLE <- subset(MWTL$density, 
-   subset=(station=="TERHDE1" & year==2018 & taxon == "Donax vittatus"))
+                 subset = (station == "TERHDE1" & 
+                           year    == 2018      & 
+                           taxon   == "Donax vittatus"))
 
-knitr::kable(DOUBLE, caption = "example of a double occurrence in the MWTL dataset",
-             row.names=FALSE)
+knitr::kable(DOUBLE, 
+             caption = "example of a double occurrence in the MWTL dataset",
+             row.names = FALSE)
 ```
 
 ## The NSBS dataset
@@ -109,36 +112,49 @@ metadata(MWTL$density)
 
 ## Station positions
 
-We use function *mapKey* to generate figures with station positions, passing the respective contours for each dataset. 
+We use function *map_key* to generate figures with station positions, passing the respective contours for each dataset. 
 The R-function *merge* is used to augment the data.frame *types* (that contains the area to which each station belongs), with the longitudes (x) and latitudes (y) in the *stations* data.frame. 
 
 ```{r, fig.height=14, fig.width=12}
-MWTLab   <- merge(MWTL$stations, 
-                  MWTL$types, by="station")
+MWTLab   <- merge(MWTL$stations, MWTL$types, 
+                  by = "station")
 
 MWTLab$area <- factor(MWTLab$area)
 
-par(las=1, oma=c(0,0,1,0), cex.axis=1.2, cex.main=2, cex.lab=1.2)
+par(las = 1, oma = c(0, 0, 1, 0), 
+    cex.axis = 1.2, cex.main = 2, cex.lab = 1.2)
+
 with(MWTLab, 
-  mapKey(contours=MWTL$contours, x=x, y=y, colvar = c(1:4)[area], 
-            col=1:4, colkey=FALSE,
-            pch=c(15:18)[area], cex=2, main="MWTL station positions", 
-            clab="m", draw.levels=TRUE))
-with(MWTL$stations, text(x, y+0.05, label=station, cex=0.8, adj=0))
-legend ("bottomright", legend=levels(MWTLab$area), col=1:4, pch=15:18, cex=2)
+  map_key(x = x, y = y, colvar = c(1:4)[area], 
+          contours = MWTL$contours, draw.levels = TRUE, 
+          col = 1:4, colkey = FALSE, 
+          main = "MWTL station positions", clab = "m",
+          pch = c(15:18)[area], cex = 2))
+
+with(MWTL$stations, 
+  text(x, y+0.05, label = station, 
+       cex = 0.8, adj = 0))
+
+legend ("bottomright", legend = levels(MWTLab$area), 
+        col = 1:4, pch = 15:18, cex = 2)
 ```
 
 ```{r, fig.height=14, fig.width=12}
-NSBSabio <- merge(NSBS$stations, NSBS$abiotics, by="station")
+NSBSabio <- merge(NSBS$stations, NSBS$abiotics, 
+                  by = "station")
 
 par(las=1, oma=c(0,0,1,0), cex.axis=1.2, cex.main=2, cex.lab=1.2)
 with(NSBSabio, 
-  mapKey(contours=NSBS$contours, x=x, y=y, colvar=depth, 
-            pch=16, cex=2, main="NSBS station positions", 
-            clab="m", draw.levels=TRUE))
+  map_key(x = x, y = y, colvar = depth, 
+          main = "NSBS station positions", clab = "m", 
+          contours = NSBS$contours, draw.levels = TRUE, 
+          pch = 16, cex = 0.9 ))
+
 # remove the "ICES" from the station names
-with(NSBS$stations, text(x=x+0.05, y=y+0.08, 
-     label=substr(station, 5, 7), cex=0.9, adj=0))
+with(NSBS$stations, 
+     text(x = x+0.05, y = y+0.08, 
+          label = substr(station, 5, 7), 
+          cex = 0.9, adj = 0))
 ```
 
 ## Consistency of the density databases
@@ -148,12 +164,13 @@ We test the consistency of both data sets, by looking at the total density, biom
 To find the common stations, we merge the station information of both datasets, by the coordinates (x, y):
 
 ```{r}
-Common <- merge(MWTL$stations, 
-                NSBS$stations, 
-                by=c("x", "y"))
+Common <- merge(MWTL$stations, NSBS$stations, 
+                by = c("x", "y"))
+
 colnames(Common)[3:4] <- c("MWTL", "NSBS")
-knitr::kable(Common, caption="stations in common by MWTL and NSBS dataset",
-             row.names=FALSE)
+knitr::kable(Common, 
+             caption = "stations in common by MWTL and NSBS dataset",
+             row.names = FALSE)
 ```
 
 To test whether the density, biomass and number of taxa are comparable in both datasets,
@@ -163,18 +180,20 @@ The biomass and density data are compatible. The total *number of taxa* found in
 
 ```{r, echo=FALSE}
 # density
-NSBScommon  <- with(NSBS$density, 
-      getSummary(subset     = station %in% Common$NSBS,   # need only common stations
-                 descriptor = list(station = station),
-                 taxon      = taxon,
-                 value      = density))
+NSBScommon  <- 
+    get_summary(data       = NSBS$density, 
+                subset     = station %in% Common$NSBS,   # need only common stations
+                descriptor = list(station = station),
+                taxon      = taxon,
+                value      = density)
 
-MWTLcommon <- with(MWTL$density, 
-     getSummary(subset      = station %in% Common$MWTL,
+MWTLcommon <- 
+    get_summary(data        = MWTL$density, 
+                subset      = station %in% Common$MWTL,
                 descriptor  = list(station = station),
                 taxon       = taxon,
                 value       = density,
-                averageOver = year))
+                averageOver = year)
 
 ALLdens <- merge(merge(NSBS$stations, NSBScommon$density),
                  merge(MWTL$stations, MWTLcommon$density), 
@@ -183,85 +202,115 @@ names(ALLdens)[c(3:6)] <- c("NSBSstation", "NSBSdensity", "MWTLstation", "MWTLde
 
 # taxonomy
 ALLtax <- merge(merge(NSBS$stations, NSBScommon$taxa),
-                merge(MWTL$stations, MWTLcommon$taxa), by=c("x", "y"))
+                merge(MWTL$stations, MWTLcommon$taxa), 
+                by = c("x", "y"))
+
 names(ALLtax)[c(3:6)] <- c("NSBSstation", "NSBSdiversity", "MWTLstation", "MWTLdiversity")
 
 # biomass
-NSBScommon.B  <- with(NSBS$biomass,     # biomass is in different dataframe
-      getSummary(subset     = station %in% Common$NSBS,
-                 descriptor = list(station = station),
-                 taxon      = taxon,
-                 value      = biomass))
+NSBScommon.B  <- 
+    get_summary(data       = NSBS$biomass, 
+                subset     = station %in% Common$NSBS,
+                descriptor = list(station = station),
+                taxon      = taxon,
+                value      = biomass)
 
-MWTLcommon.B <- with(MWTL$density, 
-     getSummary(subset      = station %in% Common$MWTL,
+MWTLcommon.B <- 
+    get_summary(data        = MWTL$density, 
+                subset      = station %in% Common$MWTL,
                 descriptor  = list(station = station),
                 taxon       = taxon,
                 value       = biomass,
-                averageOver = year))    # take the average over the years
+                averageOver = year)    # take the average over the years
 
 ALLbiom <- merge(merge(NSBS$stations, NSBScommon.B$density),
-                merge(MWTL$stations, MWTLcommon.B$density), by=c("x", "y"))
+                merge(MWTL$stations, MWTLcommon.B$density), 
+                by = c("x", "y"))
 names(ALLbiom)[c(3:6)] <- c("NSBSstation", "NSBSbiomass", "MWTLstation", "MWTLbiomass")
 ```
 
 ```{r, fig.height=9, fig.width=8, echo=FALSE}
-par(mfrow=c(2,2), oma=c(0,0,3,0))
-plot(ALLdens$NSBSdensity, ALLdens$MWTLdensity, main="Total density", 
-     xlab="NSBS density, ind/m2", ylab="MWTL density, ind/m2",type="n")
-text(ALLdens$NSBSdensity, ALLdens$MWTLdensity, pch=as.character(1:14), cex=2)
-abline(a=0,b=1)
+par(mfrow = c(2, 2), oma = c(0, 0, 3, 0))
+plot(ALLdens$NSBSdensity, ALLdens$MWTLdensity, 
+     main = "Total density", 
+     xlab = "NSBS density, ind/m2", ylab = "MWTL density, ind/m2",
+     type = "n")
+text(ALLdens$NSBSdensity, ALLdens$MWTLdensity, 
+     pch = as.character(1:14), cex = 1.5)
 
-plot(ALLtax$NSBSdiversity, ALLtax$MWTLdiversity, main="Number of taxa", 
-     xlab="NSBS diversity, #taxa", ylab="MWTL diversity, # taxa", type="n")
-text(ALLtax$NSBSdiversity, ALLtax$MWTLdiversity, pch=as.character(1:14), cex=2)
-abline(a=0,b=1)
-plot(ALLbiom$NSBSbiomass, ALLbiom$MWTLbiomass, main="Total biomass", 
-     xlab="NSBS biomass, gAFDW/m2", ylab="MWTLbiomass, gAFDW/m2",type="n")
-text(ALLbiom$NSBSbiomass, ALLbiom$MWTLbiomass, pch=as.character(1:14), cex=2)
-abline(a=0,b=1)
-plot(c(0,1), c(0,1), xlab="", ylab="", axes=FALSE, type="n")
+abline(a = 0, b = 1)
+
+plot(ALLtax$NSBSdiversity, ALLtax$MWTLdiversity, 
+     main = "Number of taxa", 
+     xlab = "NSBS diversity, #taxa", ylab = "MWTL diversity, # taxa", 
+     type = "n")
+text(ALLtax$NSBSdiversity, ALLtax$MWTLdiversity, 
+     pch = as.character(1:14), cex = 1.5)
+
+abline(a = 0, b = 1)
+
+plot(ALLbiom$NSBSbiomass, ALLbiom$MWTLbiomass, 
+     main = "Total biomass", 
+     xlab = "NSBS biomass, gAFDW/m2", ylab = "MWTLbiomass, gAFDW/m2",
+     type = "n")
+text(ALLbiom$NSBSbiomass, ALLbiom$MWTLbiomass, 
+     pch = as.character(1:14), cex = 1.5)
+abline(a = 0,b = 1)
+
+plot(c(0, 1), c(0, 1), 
+     xlab = "", ylab = "", 
+     axes = FALSE, type = "n")
 legend (legend=paste(as.character(1:14), "  ", Common[,"NSBS"], 
                      "  ", Common[,"MWTL"]), x="center")
-mtext(side=3, outer=TRUE, line=1, "MWTL versus NSBS comparison", cex=2)
+mtext(side=3, outer=TRUE, line=1, "MWTL versus NSBS comparison", cex=1.5)
 ```
 
 In the figures below, maps of total density and number of taxa are created for both data sets. 
 
 ```{r}
-MWTL.summ <-  with (MWTL$density, 
-    getSummary(descriptor  = station, 
+MWTL.summ <-  
+   get_summary(data        = MWTL$density, 
+               descriptor  = station, 
                averageOver = year, 
                taxon       = taxon, 
-               value       = density))
+               value       = density)
 
-NSBS.summ <-  with (NSBS$density, 
-    getSummary(descriptor = station, 
+NSBS.summ <-   
+   get_summary(data       = NSBS$density, 
+               descriptor = station, 
                taxon      = taxon, 
-               value      = density))
+               value      = density)
 ```
 
-```{r, fig.width=11, fig.height=10}
-par(mfrow=c(2,2))
-par(las=1, oma=c(1,1,1,1), cex.main=2)
+```{r, fig.width=11, fig.height=12}
+par(mfrow = c(2,2))
+par(las = 1, oma = c(1, 1, 1, 1), cex.main = 2)
 
-with(merge(MWTL$stations, MWTL.summ$density, by=1), 
-  mapKey(contours=MWTL$contours, x=x, y=y, colvar=density, 
-            pch=18, cex=2, main="MWTL total density",  
-            clab="ind/m2", draw.levels=TRUE))
-with(merge(NSBS$stations, NSBS.summ$density, by=1), 
-  mapKey(contours=NSBS$contours, x=x, y=y, colvar=density, 
-            pch=18, cex=2, main="NSBS total density", 
-            clab="ind/m2", draw.levels=TRUE))
+with(merge(MWTL$stations, MWTL.summ$density, 
+           by = 1), 
+  map_key(x = x, y = y, colvar = density, 
+          main = "MWTL total density", clab = "ind/m2", 
+          contours = MWTL$contours, draw.levels = TRUE, 
+          pch = 18, cex = 2 ))
 
-with(merge(MWTL$stations, MWTL.summ$taxa, by=1), 
-  mapKey(contours=MWTL$contours, x=x, y=y, colvar=taxa, 
-            pch=18, cex=2, main="MWTL number of taxa", 
-            clab="/m2", draw.levels=TRUE))
-with(merge(NSBS$stations, NSBS.summ$taxa, by=1), 
-  mapKey(contours=NSBS$contours, x=x, y=y, colvar=taxa, 
-            pch=18, cex=2, main="NSBS number of taxa", 
-            clab="/m2", draw.levels=TRUE))
+with(merge(NSBS$stations, NSBS.summ$density, 
+           by = 1), 
+  map_key(x = x, y = y, colvar = density, 
+          main = "NSBS total density", clab = "ind/m2", 
+          contours = NSBS$contours, draw.levels = TRUE,
+          pch = 18, cex = 2))
+
+with(merge(MWTL$stations, MWTL.summ$taxa, 
+           by = 1), 
+  map_key( x=x, y=y, colvar=taxon, main="MWTL number of taxa", 
+            clab="/m2", contours=MWTL$contours, draw.levels=TRUE, 
+            pch=18, cex=2))
+with(merge(NSBS$stations, NSBS.summ$taxa, 
+           by = 1), 
+  map_key(x = x, y = y, colvar=taxon, 
+          main = "NSBS number of taxa", clab = "/m2", 
+          contours = NSBS$contours, draw.levels = TRUE,
+          pch = 18, cex = 2))
 ```
 
 \newpage
@@ -286,7 +335,7 @@ The trait information is stored in a ($taxa \times traits$) data.frame, where th
 For example, the first part of the NIOZ trait data is:
 
 ```{r}
-head(Traits_nioz, n=c(3,3))
+head(Traits_nioz, n = c(3,3))
 ```
 
 where *ET1.M1* is shorthand for modality 1 of the effect trait 1.
@@ -294,7 +343,7 @@ where *ET1.M1* is shorthand for modality 1 of the effect trait 1.
 For each trait database, the meaning of the traits and the modalities is explained in the attribute *description* of the data.frame, which can be extracted with the function *metadata*. Below are the first two rows from the description in the *Traits_nioz*:
 
 ```{r}
-head(metadata(Traits_nioz), n=2)
+head(metadata(Traits_nioz), n = 2)
 ```
 
 The *description* attribute is a data.frame with the following columns: 
@@ -325,7 +374,7 @@ NR <- data.frame(
            cefas = sum(ii <- !unique(NSBS$density$taxon) %in% Traits_cefas$taxon)/length(ii),
            Db    = sum(ii <- !unique(NSBS$density$taxon) %in% Traits_Db$taxon   )/length(ii))*100)
 knitr::kable(NR,
-             row.names=FALSE, 
+             row.names=FALSE, digit = 1,
              caption="percentage taxa NOT represented in the databases")
 ```
 
@@ -355,19 +404,21 @@ cefas_select <- subset(metadata(Traits_cefas),
 nioz_select <- subset(metadata(Traits_nioz), 
      trait %in% c("Body length", "Life span", "Substratum depth distribution"))
 
-knitr::kable(cefas_select[,c(1,2,3,5,7)], caption="CEFAS traits in common",
-             row.names=FALSE)
-knitr::kable(nioz_select [,c(1,2,3,5,7)], caption="NIOZ traits in common",
-             row.names=FALSE)
+knitr::kable(cefas_select[,c(1,2,3,5,7)], 
+             caption = "CEFAS traits in common with NIOZ traits",
+             row.names = FALSE)
+knitr::kable(nioz_select [,c(1,2,3,5,7)], 
+             caption = "NIOZ traits in common with CEFAS traits",
+             row.names = FALSE)
 ```
 
-The traits in the cefas database are now matched with those in the nioz database, with function *getTrait*. 
+The traits in the cefas database are now matched with those in the nioz database, with function *get_trait*. 
 The species data in the nioz database are calculated on genus level, so that they can be compared with the cefas data. 
 This is done by passing the taxonomic tree up to genus level. For a large number of genera in the cefas database, the traits could not be found; they are removed (they are NA in the returned data).
 
 ```{r}
 # Select nioz traits for the taxa in the cefas database
-TR_nioz <- getTrait(
+TR_nioz <- get_trait(
   taxon    = Traits_cefas$taxon,   
   trait    = Traits_nioz[,c("taxon", nioz_select$colname)],
   taxonomy = Taxonomy[,c("taxon", "genus")]
@@ -408,16 +459,17 @@ knitr::kable(cefas_FT, caption="CEFAS feeding types",
 knitr::kable(nioz_FT, caption="NIOZ feeding types",
              row.names=FALSE)
 
-FT_nioz <- getTrait(
+FT_nioz <- get_trait(
   taxon    = Traits_cefas$taxon,   
   trait    = Traits_nioz[,c("taxon", nioz_FT$colname)],
   taxonomy = Taxonomy[,c("taxon", "genus")]
   )
 FT_nioz <- na.omit(FT_nioz)
 FT_nioz <- FT_nioz[order(FT_nioz$taxon),]
-#head(FT_nioz,n=c(2,4))
 colnames(FT_nioz)[-1] <- paste(nioz_FT$modality, "nioz", sep="")
+
 FT_cefas <- Traits_cefas[,c("taxon", cefas_FT$colname)]
+
 FT <- merge(FT_nioz, FT_cefas, by=1)
 FT$'Deposit feedercefas'      <- FT$f_Surface_deposit + FT$f_Subsurface_deposit
 FT$'Suspension feedercefas'   <- FT$f_Suspension
@@ -456,7 +508,7 @@ SUMM <- rbind(
   Bodylength=summary(trall$Substratum.depth.distribution - trall$Sediment.position)
   )
 knitr::kable(SUMM, caption="statistics of deviations between cefas and nioz trait data",
-             row.names=FALSE)
+             row.names=FALSE, digits = c(2,2,2,4,2))
 ```
 
 \newpage
@@ -466,17 +518,18 @@ knitr::kable(SUMM, caption="statistics of deviations between cefas and nioz trai
 ## Community Weighted Mean (CWM) of MWTL Northsea data based on cefas traits. 
 
 The Community Weighted Mean (CWM) of traits is estimated, based on the (stations x taxon density) and (taxon x traits) matrix; we use the cefas data.
-In the function *getTraitDensity*, we pass the value of the modalities (trait.score) of the trait classes, so that the average modality value will be calculated. 
+In the function *get_trait_density*, we pass the value of the modalities (trait.score) of the trait classes, so that the average modality value will be calculated. 
 We also pass the taxonomy table, so that the traits for unknown taxa will be generated, based on their taxonomic relationship.
 
 ```{r}
 Tcefas.lab <- metadata(Traits_cefas)
 
-MWTL.cwm <- getTraitDensity(
-                descriptor  = MWTL$density$station, 
-                taxon       = MWTL$density$taxon, 
-                averageOver = MWTL$density$year,
-                value       = MWTL$density$density, 
+MWTL.cwm <- get_trait_density(
+                data        = MWTL$density,
+                descriptor  = station, 
+                taxon       = taxon, 
+                averageOver = year,
+                value       = density, 
 
                 trait       = Traits_cefas, 
                 trait.class = Tcefas.lab$trait, 
@@ -492,14 +545,18 @@ Station.traits <- merge(MWTL$stations, MWTL.cwm, by=1)
 
 ```{r, fig.height=5, fig.width=8, fig.cap="Community weighed trait values based on the MWTL density and cefas trait data"}
 par(mfrow=c(1,2), mar=c(3,3,3,2), oma=c(2,2,0,0))
+
 units          <-  rbind(unique(Tcefas.lab[,c("trait", "units")]))
 units$colnames <- make.names(units$trait)
 
 ii <- which(units$trait %in% c("Sediment position", "Lifespan"))
+
 for (i in ii)
- mapKey(x=Station.traits$x, y=Station.traits$y, contours=MWTL$contours,
-      colvar= Station.traits[,units$colnames[i]], 
-      cex=2, clab=units[i,2], main=units[i,1], pch=18)
+ map_key(x = Station.traits$x, y = Station.traits$y, 
+         colvar = Station.traits[,units$colnames[i]], 
+         contours = MWTL$contours,
+         clab = units[i,2], main = units[i,1], 
+         cex = 2, pch = 18)
 ```
 
 ## Estimating the bioturbation and bio-irrigation potential
@@ -522,37 +579,40 @@ $$IPc = \sum_i {W_i}^{3/4} \times A_i \times BT_i \times FT_i \times ID_i$$
 * Scores for feeding types, $FT_i$ are $1$ for surface filter feeders, $2$ for predators, $3$ for deposit feeders and $4$ for sub surface filter feeders. 
 * Injection pockets, $IP_i$, at depths of 0-2, 2-5, 5-10 and >10 cm depth get an ID score of $1$, $2$, $3$ and $4$ respectively.
 
-The bioturbation index can easily be estimated from the function *getDbIndex*, and the database *Traits_Db*.
-The bioirrigation index can be estimated from the function *getIrrIndex*, and the database *Traits_Irr*.
+The bioturbation index can easily be estimated from the function *get_Db_index*, and the database *Traits_Db*.
+The bioirrigation index can be estimated from the function *get_irr_index*, and the database *Traits_Irr*.
 
-As not all MWTL taxa are represented in *Traits_Db* or *Traits_irr*, we use information on closely related species at the nearest taxonomic level, to also provide values for those taxa that are not represented. It suffices to pass the taxonomic information to function *getDbIndex* or *getIrrIndex* to achieve this. 
+As not all MWTL taxa are represented in *Traits_Db* or *Traits_irr*, we use information on closely related species at the nearest taxonomic level, to also provide values for those taxa that are not represented. It suffices to pass the taxonomic information to function *get_Db_index* or *get_irr_index* to achieve this. 
 
 The functions return the total bioturbation or bioirrigation index for all stations, and the average BPc or IPC for all taxa.
 
 In the code below, first the Northsea data are selected; we select the data for 1995 only. Then the bioturbation and bioirrigation index are estimated based on these data. 
 
 ```{r}
-MWTL1995 <- with (MWTL$density, 
-     getDensity(descriptor = list(station=station),
-                subset     = (year == 1995),
+MWTL1995 <- 
+    get_density(data       = MWTL$density, 
+                descriptor = list(station = station),
+                subset     = year == 1995,
                 taxon      = taxon,
-                value      = data.frame(density, biomass))) 
+                value      = data.frame(density, biomass)) 
 
-MWTLDb <- with(MWTL1995, 
-  getDbIndex (descriptor = station, 
-              taxon      = taxon, 
-              density    = density, 
-              biomass    = biomass, 
-              trait      = Traits_Db, 
-              taxonomy   = Taxonomy))
+MWTLDb <- 
+  get_Db_index (data       = MWTL1995, 
+                descriptor = station, 
+                taxon      = taxon, 
+                density    = density, 
+                biomass    = biomass, 
+                trait      = Traits_Db, 
+                taxonomy   = Taxonomy)
 
-MWTLIrr <- with(MWTL1995, 
-  getIrrIndex(descriptor = station, 
-              taxon      = taxon, 
-              density    = density, 
-              biomass    = biomass, 
-              trait      = Traits_irr, 
-              taxonomy   = Taxonomy))
+MWTLIrr <- 
+  get_irr_index(data       = MWTL1995,
+                descriptor = station, 
+                taxon      = taxon, 
+                density    = density, 
+                biomass    = biomass, 
+                trait      = Traits_irr, 
+                taxonomy   = Taxonomy)
 ```
 
 Both functions return a list with several data.frames:
@@ -563,6 +623,7 @@ Both functions return a list with several data.frames:
 ```{r}
 MWTLbpc            <- MWTLDb$descriptor
 row.names(MWTLbpc) <- NULL
+
 knitr::kable(head(MWTLbpc[order(MWTLbpc$BPc, decreasing=TRUE),], n=10),
              caption="10 stations with largest bioturbation potential",
              row.names=FALSE)
@@ -604,11 +665,15 @@ IPCMWTL <- merge(MWTL$stations,
                  MWTLipc      , 
                  by          = 1)
 with (BPCMWTL, 
-  mapKey(x=x, y=y, colvar=BPc, cex=2, main="BPc for 1995",
-            pch=18, contours=MWTL$contours, draw.levels=TRUE))
+  map_key(x = x, y = y, colvar = BPc, 
+          main = "BPc for 1995",
+          contours = MWTL$contours, draw.levels = TRUE, 
+          pch = 18, cex = 2))
+
 with (IPCMWTL, 
-  mapKey(x=x, y=y, colvar=IPc, cex=2, main="IPc for 1995",
-            pch=18, contours=MWTL$contours, draw.levels=TRUE))
+  map_key(x = x, y = y, colvar = IPc, main = "IPc for 1995",
+          contours = MWTL$contours, draw.levels = TRUE, 
+          pch = 18, cex = 2))
 ```
 
 \newpage

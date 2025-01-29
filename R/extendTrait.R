@@ -4,9 +4,9 @@
 ## ====================================================================
 ## ====================================================================
 
-extendTrait <- function(trait,       # data.frame with traits; 1st column:taxon
-                        taxonomy,    # data.frame with taxonomic data; 
-                        t.column=1){ # nr or name of column in trait with taxon names
+extend_trait <- function(trait,       # data.frame with traits; 1st column:taxon
+                         taxonomy,    # data.frame with taxonomic data; 
+                         t.column=1){ # nr or name of column in trait with taxon names
   
 # convert/clean trait data  
   trait <- clearRows(trait, t.column, 'trait')  # taxon names become row.names
@@ -19,7 +19,7 @@ extendTrait <- function(trait,       # data.frame with traits; 1st column:taxon
 
 # taxa converted to factors    
   LEVS   <- unique(c(rn, unlist(taxonomy)))  # levels from taxa (trait and taxonomy)
-  TAX    <- sapply(as.data.frame(taxonomy),  # facotrize all columns of taxonomy  
+  TAX    <- sapply(as.data.frame(taxonomy),  # factorize all columns of taxonomy  
                    FUN=function(x) as.integer(factor(x, levels=LEVS)))
   TAX[is.na(TAX)] <- 0L   
 
@@ -55,5 +55,5 @@ extendTrait <- function(trait,       # data.frame with traits; 1st column:taxon
   
   attributes(newTrait)$n     <- RES$numLevs[1:nNew]
   attributes(newTrait)$level <- colnames(taxonomy)[RES$Levs[1:nNew]]
-  newTrait
+  unique(newTrait)  # some may be double 
 }
