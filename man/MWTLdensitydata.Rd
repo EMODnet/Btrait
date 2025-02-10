@@ -380,8 +380,8 @@ NStrait.lab <- metadata(Traits_nioz)
 trait.cwm <- get_trait_density (wide           = NSwide, 
                                trait          = Traits_nioz, 
                                taxonomy       = Taxonomy,
-                               trait.class    = NStrait.lab$trait, 
-                               trait.score    = NStrait.lab$score, 
+                               trait_class    = NStrait.lab$trait, 
+                               trait_score    = NStrait.lab$score, 
                                scalewithvalue = TRUE)
 
 head(trait.cwm, n=c(3,4))  

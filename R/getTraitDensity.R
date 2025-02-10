@@ -13,11 +13,11 @@ get_trait_density <- function(data,         # density data
                       averageOver, 
                       
                       wide=NULL,         # density data, WIDE format (descriptor x taxon) 
-                      d.column=1,        # nr/name of column with descriptor names in wide
+                      descriptor_column=1,        # nr/name of column with descriptor names in wide
                       trait,             # species x trait data, WIDE format    
-                      t.column=1,        # nr/name of column with taxon names in trait
-                      trait.class=NULL,  # indices to trait levels - vector
-                      trait.score=NULL,  # indices to trait values - vector
+                      taxon_column=1,        # nr/name of column with taxon names in trait
+                      trait_class=NULL,  # indices to trait levels - vector
+                      trait_score=NULL,  # indices to trait values - vector
                       taxonomy=NULL,     # if !NULL, trait is expanded at higher levels
                       scalewithvalue=TRUE,  # rescale with value - 
                       verbose=FALSE)  
@@ -49,30 +49,30 @@ get_trait_density <- function(data,         # density data
                       column      = taxon, 
                       value       = value, 
                       averageOver = averageOver)
-    d.column <- attributes(wide)$d.column
+    descriptor_column <- attributes(wide)$descriptor_column
   }
   Att         <- attributes(wide)
   
-  taxon.names <- attributes(wide)$taxon.names
-  if (is.null(taxon.names))taxon.names <- colnames(wide)[-1]
+  taxon_names <- attributes(wide)$taxon_names
+  if (is.null(taxon_names))taxon_names <- colnames(wide)[-1]
   
   # KARLINE: CHECK IF THISIS WANTED...
 #  if (! is.null(taxonomy)) {
-#    taxonomy <- taxonomy[taxonomy[,1] %in% taxon.names,]
+#    taxonomy <- taxonomy[taxonomy[,1] %in% taxon_names,]
 #    if (! nrow(taxonomy)) stop ("density data and taxonomy have nothing in common")
 #  }
-  x  <- clearRows(wide, d.column, "wide") # remove descriptor columns
+  x  <- clearRows(wide, descriptor_column, "wide") # remove descriptor columns
   
-  DESCs <- wide[,d.column]
+  DESCs <- wide[,descriptor_column]
   cn    <- attributes(x)$cn  # name(s) of the descriptor columns  
-  if (is.null(taxon.names)) taxon.names <- colnames(x)
+  if (is.null(taxon_names)) taxon_names <- colnames(x)
 
 # check input of trait data
-  trait <- clearRows(trait, t.column, "trait") # remove descriptor columns
+  trait <- clearRows(trait, taxon_column, "trait") # remove descriptor columns
   row.names.trait <- row.names(trait)
   
   # trait information for the taxa in the data
-  trait <- get_trait (taxon    = taxon.names, 
+  trait <- get_trait (taxon    = taxon_names, 
                       trait    = data.frame(taxon=row.names.trait, trait), 
                       taxonomy = taxonomy)
   
@@ -95,8 +95,8 @@ get_trait_density <- function(data,         # density data
     stop("dimensions of 'wide' (", nrow(x), ",", ncol(x), ") and 'trait' (", 
         nrow(trait), ",", ncol(trait), ") not compatible- check input or rownames?")
   }
-  if (! is.null (row.names.trait) & ! is.null(taxon.names))
-    if (!identical(row.names.trait,  taxon.names)) 
+  if (! is.null (row.names.trait) & ! is.null(taxon_names))
+    if (!identical(row.names.trait,  taxon_names)) 
       stop("names of 'wide' and 'trait' not compatible")
 
   NSP             <- as.matrix(trait)
@@ -110,22 +110,22 @@ get_trait_density <- function(data,         # density data
   cwm <- data.frame(DESCs, cwm)
   colnames(cwm)[1:length(cn)] <- cn
   
-  if (!is.null(trait.class))
+  if (!is.null(trait_class))
     cwm <- fuzzy2crisp(cwm,       # species-trait matrix - in WIDE format
-                       t.column    = d.column, 
-                       trait.class = trait.class,
-                       trait.score = trait.score, # indices to trait values - vector
+                       taxon_column  = descriptor_column, 
+                       trait_class = trait_class,
+                       trait_score = trait_score, # indices to trait values - vector
                        standardize = FALSE)
   if (scalewithvalue) {  
     if (length(iun)) X[, iun] <- 0
     
-    if (is.vector(cwm[, -d.column]))
-      cwm[, -d.column] <- cwm[,-d.column]/rowSums(X)  # d.column/taxon?
+    if (is.vector(cwm[, -descriptor_column]))
+      cwm[, -descriptor_column] <- cwm[,-descriptor_column]/rowSums(X)  # descriptor_column/taxon?
     else 
-      cwm[, -d.column]  <- sweep(cwm[,-d.column], 
+      cwm[, -descriptor_column]  <- sweep(cwm[,-descriptor_column], 
                                  MARGIN = 1, 
                                  STATS  = rowSums(X, na.rm=TRUE),
-                                 FUN    = "/")  # d.column/taxon?
+                                 FUN    = "/")  # descriptor_column/taxon?
   }
   
   row.names(cwm) <- NULL

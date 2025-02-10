@@ -25,13 +25,13 @@
 }
 
 \usage{
-wide2long(wide, d.column = 1, w.names = NULL, 
+wide2long(wide, descriptor_column = 1, wide_names = NULL, 
           absences = FALSE)
 
-w2l_density(wide, d.column = 1, taxon.names = NULL, 
+w2l_density(wide, descriptor_column = 1, taxon_names = NULL, 
            absences = FALSE) 
 
-w2l_trait(wide, t.column = 1, trait.names = NULL, 
+w2l_trait(wide, taxon_column = 1, trait_names = NULL, 
            absences = FALSE) 
 
 long2wide(data, row, column, value, averageOver, 
@@ -46,7 +46,7 @@ l2w_trait(trait, descriptor, taxon, value, averageOver,
 
 \arguments{
 
-  \item{wide }{data, in *WIDE* format. For density data, this is a data.frame or matrix with (descriptor x taxon) information, and the first column usually contains the descriptor name. For trait data this is a data.frame with (taxon x trait) information, and the first column generally contains the names of the taxa. It is also allowed to have the descriptors as row.names of the data.frame -this requires setting \code{d.column=0}.   
+  \item{wide }{data, in *WIDE* format. For density data, this is a data.frame or matrix with (descriptor x taxon) information, and the first column usually contains the descriptor name. For trait data this is a data.frame with (taxon x trait) information, and the first column generally contains the names of the taxa. It is also allowed to have the descriptors as row.names of the data.frame -this requires setting \code{descriptor_column=0}.   
   }
   \item{row }{vector or data.frame that contains the data that will be used to label the rows in wide format. This can consist of multiple colums.
 }    
@@ -67,14 +67,14 @@ If \code{data} is missing:  a list (or data.frame with one column), or a vector.
   }
   \item{taxonomy }{taxonomic information; first column will be matched with \code{taxon}, regardless of its name.
   }
-  \item{d.column }{position(s) or name(s) of the column(s) that holds the descriptors of the (density) data set, and that should be removed for any calculations. The default is to have the first column holding the descriptors. If \code{NULL}, or \code{0}, then there is no separate column with names, so the \code{row.names} of the dataset are used as descriptor names.
+  \item{descriptor_column }{position(s) or name(s) of the column(s) that holds the descriptors of the (density) data set, and that should be removed for any calculations. The default is to have the first column holding the descriptors. If \code{NULL}, or \code{0}, then there is no separate column with names, so the \code{row.names} of the dataset are used as descriptor names.
   }
-  \item{t.column }{position(s) or name(s) of the column(s) that holds the taxon names of the (trait) data set, and that should be removed for any calculations. The default is to have the first column holding the taxa. If \code{NULL}, or \code{0}, then there is no separate column with names, so the \code{row.names} of the dataset are used as taxon names.
+  \item{taxon_column }{position(s) or name(s) of the column(s) that holds the taxon names of the (trait) data set, and that should be removed for any calculations. The default is to have the first column holding the taxa. If \code{NULL}, or \code{0}, then there is no separate column with names, so the \code{row.names} of the dataset are used as taxon names.
   }
   
-  \item{trait }{(taxon x trait) data or (descriptor x trait) data, in WIDE format. Traits can be fuzzy coded. In the default setting, the first column contains the name of the taxon, and \code{t.column=1}. It is also allowed to have the taxa as \code{row.names} of the data.frame - set \code{t.column=0}. 
+  \item{trait }{(taxon x trait) data or (descriptor x trait) data, in WIDE format. Traits can be fuzzy coded. In the default setting, the first column contains the name of the taxon, and \code{taxon_column=1}. It is also allowed to have the taxa as \code{row.names} of the data.frame - set \code{taxon_column=0}. 
   }
-  \item{w.names, taxon.names, trait.names }{names of the items constituting the columns in the wide dataset. If not given, the columnames (minus d.column) will be used. Input this as a data.frame if you want to set the names of the columns in the long format. 
+  \item{wide_names, taxon_names, trait_names }{names of the items constituting the columns in the wide dataset. If not given, the columnames (minus descriptor_column) will be used. Input this as a data.frame if you want to set the names of the columns in the long format. 
   }
   \item{absences }{if \code{TRUE} the long format will contains 0's for absences
   }
@@ -261,7 +261,7 @@ Bwide.genus
 
 # this does not include the absences, and renames the species
   wide2long (wide = Bwide, 
-             w.name = paste("Species", 1:3, sep="_"))
+             wide_names = paste("Species", 1:3, sep="_"))
 
 ## ====================================================
 ## From wide trait data to long format

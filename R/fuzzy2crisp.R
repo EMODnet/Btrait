@@ -6,30 +6,30 @@
 ## ====================================================================
 
 fuzzy2crisp <- function(trait,             # species-trait matrix, in WIDE format
-                        trait.class,       # indices to trait classes - vector
-                        trait.score,       # indices to trait values - vector
-                        t.column=1,        # nr or name of column(s) with taxa
+                        trait_class,       # indices to trait classes - vector
+                        trait_score,       # indices to trait values - vector
+                        taxon_column=1,    # nr or name of column(s) with taxa
                         standardize=TRUE){ # rescale to sum to 1 or not
 
 # check input, remove descriptor column if necessary
   Trait <- trait
-  trait <- clearRows(trait, t.column, "trait")
+  trait <- clearRows(trait, taxon_column, "trait")
 #  rown  <- row.names(trait)
 #  if (attributes(trait)$numericRownames)
 #    rown <- as.numeric(rown)
   cn    <- attributes(trait)$cn  # name of the column that has been removed
   rown <- Trait[,cn]
-  if (length(trait.class) != length(trait.score))
-    stop("'trait.class' and 'trait.score' should have the same length")
-  if (ncol(trait) != length(trait.class))
-    stop("'trait' should have the same nr of columns or one more, as the number of traits (length 'trait.class')")
+  if (length(trait_class) != length(trait_score))
+    stop("'trait_class' and 'trait_score' should have the same length")
+  if (ncol(trait) != length(trait_class))
+    stop("'trait' should have the same nr of columns or one more, as the number of traits (length 'trait_class')")
 
   # weighted values
-   if (is.numeric(trait.score)){
-     SP <- t(t(trait)*trait.score)  # weighted  values
+   if (is.numeric(trait_score)){
+     SP <- t(t(trait)*trait_score)  # weighted  values
 
      # a function to convert to crisp values for one row
-     FUN <- function(x)tapply(x, INDEX=list(trait.class), FUN=sum)
+     FUN <- function(x)tapply(x, INDEX=list(trait_class), FUN=sum)
      
      swm <- apply(SP, MARGIN=1, FUN=FUN)
      
@@ -41,14 +41,14 @@ fuzzy2crisp <- function(trait,             # species-trait matrix, in WIDE forma
      
    } else {  # categorical trait scores
      # the number of levels (modalities) for each trait class
-     LENlevel <- tapply(trait.class, INDEX=trait.class, FUN=length)
+     LENlevel <- tapply(trait_class, INDEX=trait_class, FUN=length)
      
      # the maximum level value for each trait class
-     FUN <- function(x)tapply(x, INDEX=list(trait.class), FUN=which.max)
+     FUN <- function(x)tapply(x, INDEX=list(trait_class), FUN=which.max)
      
      Swm <- apply(trait, MARGIN=1, FUN=FUN)
      
-     swm <- trait.score[Swm+c(0, LENlevel[-length(LENlevel)])]
+     swm <- trait_score[Swm+c(0, LENlevel[-length(LENlevel)])]
      dim(swm) <- dim(Swm)
      if (is.vector(swm)) swm <- matrix(data=swm, nrow=1)
      row.names(swm) <- row.names(Swm)
@@ -56,13 +56,13 @@ fuzzy2crisp <- function(trait,             # species-trait matrix, in WIDE forma
   
   if (is.vector(swm)) {
     swm <- matrix(data=swm, ncol=1)
-    colnames(swm) <-trait.class[1] 
+    colnames(swm) <-trait_class[1] 
   } else 
     swm <- t(swm)
 
   if (length(rown)){ 
     swm <- data.frame(rown, swm)
-    colnames(swm)[t.column] <- cn
+    colnames(swm)[taxon_column] <- cn
     row.names(swm) <- NULL
   }
   as.data.frame(swm)  # this will be alphabetically ordered.
@@ -74,10 +74,10 @@ fuzzy2crisp <- function(trait,             # species-trait matrix, in WIDE forma
 ## ====================================================================
 
 crisp2fuzzy <- function(trait,
-                        t.column=1){ 
+                        taxon_column=1){ 
 
 # check input
-  x     <- clearRows(trait, t.column, "trait")
+  x     <- clearRows(trait, taxon_column, "trait")
   rown  <- row.names(x)
 
   type <- sapply(x, class)

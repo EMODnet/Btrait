@@ -237,7 +237,7 @@ map_legend <- function (x=NULL, y=NULL, colvar=NULL, main=NULL, col=NULL, lwd=1,
   if (cex.min < cex) 
     cex <- cex - cex.min 
   else 
-    cex.min <- 0
+    cex.min <- cex
   
   # size and pch for all colvar
   Pch <- pch[1]

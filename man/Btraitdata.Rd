@@ -228,7 +228,7 @@ data.frame(FT_cefas$modality, numberOfOccurrences = FTtable_cefas)
 trait.lab <- attributes(Traits_nioz)$description
 
 # traits are extended with taxonomic information (via taxonomy), 
-# and converted to crisp values (by passing trait.class, trait.score)
+# and converted to crisp values (by passing trait_class, trait_score)
 
 cwm.weight.score <- 
     get_trait_density(data           = MWTL$density, 
@@ -238,8 +238,8 @@ cwm.weight.score <-
                       averageOver    = year, 
                       trait          = Traits_nioz, 
                       taxonomy       = Taxonomy,
-                      trait.class    = trait.lab$trait, 
-                      trait.score    = trait.lab$score, 
+                      trait_class    = trait.lab$trait, 
+                      trait_score    = trait.lab$score, 
                       scalewithvalue = TRUE)
 
 head(cwm.weight.score, n = c(3,4))  
@@ -296,8 +296,8 @@ Irr.meta[, c(1:3,8:9)]
 cnames <- c("taxon", Irr.meta$colname)  # columns to be extracted from Traits_nioz
 
 Irr.traits <- fuzzy2crisp(trait       = Traits_nioz[, cnames], 
-                          trait.class = Irr.meta$IR.type, 
-                          trait.score = Irr.meta$IR.value)
+                          trait_class = Irr.meta$IR.type, 
+                          trait_score = Irr.meta$IR.value)
 
 # metadata
 Irr.traits.meta <- data.frame(

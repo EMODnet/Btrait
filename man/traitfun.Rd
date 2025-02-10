@@ -18,42 +18,42 @@
 }
 
 \usage{
-get_trait(taxon, trait, trait.class=NULL, trait.score=NULL, 
-          taxonomy = NULL, t.column = 1, 
+get_trait(taxon, trait, trait_class=NULL, trait_score=NULL, 
+          taxonomy = NULL, taxon_column = 1, 
           standardize = FALSE, verbose = FALSE)
 
-extend_trait(trait, taxonomy, t.column = 1) 
+extend_trait(trait, taxonomy, taxon_column = 1) 
 
-fuzzy2crisp(trait, trait.class, trait.score, t.column = 1, 
+fuzzy2crisp(trait, trait_class, trait_score, taxon_column = 1, 
         standardize = TRUE)
 
-crisp2fuzzy (trait, t.column = 1)
+crisp2fuzzy (trait, taxon_column = 1)
 }
 
 \arguments{
   \item{taxon }{vector with the taxon names for which to get the trait information. 
  }
   \item{trait}{ (taxon x trait) data or (descriptor x trait) data, in WIDE format. 
-  Traits can be fuzzy coded. In the default setting, the first column contains the name of the taxon, and \code{t.column=1}. It is also allowed to have the taxa as \code{row.names} of the data.frame - set \code{t.column=0}. 
+  Traits can be fuzzy coded. In the default setting, the first column contains the name of the taxon, and \code{taxon_column=1}. It is also allowed to have the taxa as \code{row.names} of the data.frame - set \code{taxon_column=0}. 
   }
-  \item{trait.class }{indices to trait classes, a vector. The length of this vector should equal the number of columns of \code{trait} minus the descriptor columns  (nrow(\code{trait}) - \code{t.column}). If not \code{NULL}, the fuzzy traits will be converted to crisp values.
+  \item{trait_class }{indices to trait classes, a vector. The length of this vector should equal the number of columns of \code{trait} minus the descriptor columns  (nrow(\code{trait}) - \code{taxon_column}). If not \code{NULL}, the fuzzy traits will be converted to crisp values.
   }
-  \item{trait.score }{trait values or scores, a vector. Should be of same length as \code{trait.class}.
+  \item{trait_score }{trait values or scores, a vector. Should be of same length as \code{trait_class}.
   }
-  \item{standardize }{when TRUE, will standardize the trait modalities, so that for each trait class they sum to 1. Only used when \code{trait.class} is given a value.
+  \item{standardize }{when TRUE, will standardize the trait modalities, so that for each trait class they sum to 1. Only used when \code{trait_class} is given a value.
   }
   \item{verbose }{when TRUE, will write warnings to the screen.
   }
   \item{taxonomy }{taxonomic information (the relationships between the taxa), a data.frame; first column will be matched with \code{taxon}, regardless of its name. This is used to estimate traits of taxa that are not accounted for, and that will be estimated based on taxa at the nearest taxonomic level. See details.
   }
-  \item{t.column }{position(s) or name(s) of the column(s) that holds the taxon of the data set. The default is to have the first column holding the taxon. If \code{NULL}, or \code{0}, then there is no separate column with names, so the \code{row.names} of the dataset are used as the taxon names.
+  \item{taxon_column }{position(s) or name(s) of the column(s) that holds the taxon of the data set. The default is to have the first column holding the taxon. If \code{NULL}, or \code{0}, then there is no separate column with names, so the \code{row.names} of the dataset are used as the taxon names.
   }
 }
 \value{
 
 \code{extend_trait} returns the trait matrix, augmented with higher taxonomic levels,
 
-\code{get_trait} returns the taxon x trait matrix, in fuzzy format (if the \code{trait} database was in fuzzy format). However, when \code{trait.class} is not NULL, the matrix will be in crisp format.
+\code{get_trait} returns the taxon x trait matrix, in fuzzy format (if the \code{trait} database was in fuzzy format). However, when \code{trait_class} is not NULL, the matrix will be in crisp format.
 
 \code{fuzzy2crisp} returns the trait matrix, in crisp format (not fuzzy coded),
 
@@ -162,8 +162,8 @@ get_trait (taxon      = c("g.2"),
 
 # for categoric values: the most abundant category is taken
  C1 <- fuzzy2crisp(trait       = Btraits, 
-                   trait.class = Btraits.lab$trait, 
-                   trait.score = Btraits.lab$modality, 
+                   trait_class = Btraits.lab$trait, 
+                   trait_score = Btraits.lab$modality, 
                    standardize = TRUE)
  C1
  
@@ -173,8 +173,8 @@ get_trait (taxon      = c("g.2"),
  
 # for numeric (or binary) values: the weighted mean is calculated
  C2 <- fuzzy2crisp(trait       = Btraits, 
-                   trait.class = Btraits.lab$trait, 
-                   trait.score = Btraits.lab$score, 
+                   trait_class = Btraits.lab$trait, 
+                   trait_score = Btraits.lab$score, 
                    standardize = TRUE)
  C2
  (C2f <- crisp2fuzzy(C2))  # this has no effect
@@ -191,15 +191,15 @@ Btraits.all
 
 #same, but in crisp format
 fuzzy2crisp(trait       = Btraits.all, 
-            trait.score = Btraits.lab$score, 
-            trait.class = Btraits.lab$trait)
+            trait_score = Btraits.lab$score, 
+            trait_class = Btraits.lab$trait)
 
 # In one go, and including sp.4
 get_trait(taxon    = c("sp.1", "sp.2", "sp.3", "sp.4", "sp.5", "sp.6"),
           trait    = Btraits, 
           taxonomy = Btaxonomy, 
-          trait.score = Btraits.lab$score, 
-          trait.class = Btraits.lab$trait)
+          trait_score = Btraits.lab$score, 
+          trait_class = Btraits.lab$trait)
           
           
 TraitSmall <- data.frame(

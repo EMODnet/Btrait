@@ -59,7 +59,7 @@ long2wide <- function(data,
     
   cnDesc   <- getname(descriptor)
   colnames(descriptor) <- cnDesc
-  d.column <- 1:ncol(descriptor)
+  descriptor_column <- 1:ncol(descriptor)
 
   cnValue  <- getname(value)
   cnames   <- c(cnDesc, cnTaxon, cnValue)
@@ -171,14 +171,14 @@ long2wide <- function(data,
   colnames(value.Mean) <- c(cnDesc, taxnames)
   
   row.names(value.Mean) <- NULL
-  attributes(value.Mean)$taxon.names      <- taxnames
+  attributes(value.Mean)$taxon_names      <- taxnames
   attributes(value.Mean)$dataset           <- data_name
   attributes(value.Mean)$names_row         <- cnDesc
   attributes(value.Mean)$names_column      <- cnTaxon
   attributes(value.Mean)$names_value       <- cnValue
   attributes(value.Mean)$names_averageOver <- cnAvg
   
-  attributes(value.Mean)$d.column <- d.column
+  attributes(value.Mean)$descriptor_column <- descriptor_column
   
   return(value.Mean)
 }
@@ -266,11 +266,11 @@ l2w_density <- function(data,
 ## ====================================================================
 
 wide2long <- function(wide, 
-                      d.column = 1, # column name/nr with rownames
-                      w.names  = NULL, 
+                      descriptor_column = 1, # column name/nr with rownames
+                      wide_names  = NULL, 
                       absences = FALSE){       
 
-  row.names.col <- d.column 
+  row.names.col <- descriptor_column 
 
   Nonames <- FALSE
   if (is.null(row.names.col)) 
@@ -287,20 +287,20 @@ wide2long <- function(wide,
   # sum the same taxon within one descriptor and replicate 
   # (sometimes necessary due to renaming of some taxa)
   
-  if (is.null(w.names)) {
-    w.names <- data.frame(name=colnames(wide)[-row.names.col])
+  if (is.null(wide_names)) {
+    wide_names <- data.frame(name=colnames(wide)[-row.names.col])
   }
-  w.names <- as.data.frame(w.names)
-  nw <- ncol(w.names)
+  wide_names <- as.data.frame(wide_names)
+  nw <- ncol(wide_names)
   ii <- (irow+1):(irow+nw)  
   Long <- reshape(wide, 
                   direction ="long", 
                   varying=list(c(1:ncol(wide))[-row.names.col]), 
                   v.names="value")  [,-(irow+3)]
-  LL <- data.frame(Long[,1:(irow)], w.names[Long[,irow+1],], 
+  LL <- data.frame(Long[,1:(irow)], wide_names[Long[,irow+1],], 
                    Long[,(irow+2):ncol(Long)])
   names(LL)[1:irow] <- names(Long)[1:irow] #"taxon"
-  names(LL)[ii] <- names(w.names)
+  names(LL)[ii] <- names(wide_names)
   names(LL)[ncol(LL)] <- "value"
   if (! absences) 
     LL <- LL[which(LL[,ncol(LL)]!=0),]
@@ -311,17 +311,18 @@ wide2long <- function(wide,
 
 ## ====================================================================
 
-w2l_density <- function(wide, d.column=1, taxon.names=NULL, absences=FALSE){
-  if (is.null(taxon.names))
-    taxon.names <- attributes(wide)$taxon.names
+w2l_density <- function(wide, descriptor_column=1, taxon_names=NULL, absences=FALSE){
+  if (is.null(taxon_names))
+    taxon_names <- attributes(wide)$taxon_names
 
-  wide2long(wide, d.column, w.names=taxon.names, absences=absences)
+  wide2long(wide, descriptor_column, wide_names=taxon_names, absences=absences)
 }
 
 ## ====================================================================
 
-w2l_trait <- function(wide, t.column=1, trait.names=NULL, absences=FALSE){
-  wide2long(wide, d.column=t.column, w.names=trait.names, absences=absences)
+w2l_trait <- function(wide, taxon_column=1, trait_names=NULL, absences=FALSE){
+  wide2long(wide, descriptor_column=taxon_column, 
+            wide_names=trait_names, absences=absences)
 }
 
 ## ====================================================================
@@ -364,7 +365,7 @@ add_absences <- function(data,
                   averageOver = averageOver)
 
   ZZ <- wide2long(Z2, 
-                  d.column=attributes(Z2)$d.column, absences=TRUE)
+                  descriptor_column=attributes(Z2)$descriptor_column, absences=TRUE)
  
   rm("Z2")
   colnames(ZZ) <- cnames

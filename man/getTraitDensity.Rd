@@ -10,8 +10,8 @@
 
 \usage{
 get_trait_density(data, descriptor, taxon, value, averageOver, 
-        wide = NULL, d.column = 1, trait, t.column = 1, 
-        trait.class = NULL, trait.score = NULL, taxonomy = NULL, 
+        wide = NULL, descriptor_column = 1, trait, taxon_column = 1, 
+        trait_class = NULL, trait_score = NULL, taxonomy = NULL, 
         scalewithvalue = TRUE, verbose = FALSE)
 }
 
@@ -27,13 +27,13 @@ If \code{data} is missing:  a list (or data.frame with one column), or a vector.
   }
   \item{averageOver }{*replicates* over which averages need to be taken. If \code{data} is not missing:  one or more column(s) from \code{data}; use \code{cbind} or \code{data.frame} to select more columns. Else a vector, a list, a data.frame or a matrix (with one or multiple columns). It can be of type numerical, character, or a factor. Can be absent.
   }
-  \item{wide }{density data, in *WIDE* format. This is a data.frame or matrix with (descriptor x taxon) information. If \code{NULL}, this data.frame will be calculated from the \code{descriptor}, \code{taxon}, (\code{replicate}) and \code{value} data. The number of descriptor columns are specified with \code{d.column}. If a \code{data.frame} then the first column usually contains the descriptor name; in this case the dimensions of \code{wide} are (number of descriptors x number of species+1), and \code{d.column=1}. It is also allowed to have the descriptors as row.names of the data.frame -this requires setting \code{d.column=0}.   
+  \item{wide }{density data, in *WIDE* format. This is a data.frame or matrix with (descriptor x taxon) information. If \code{NULL}, this data.frame will be calculated from the \code{descriptor}, \code{taxon}, (\code{replicate}) and \code{value} data. The number of descriptor columns are specified with \code{descriptor_column}. If a \code{data.frame} then the first column usually contains the descriptor name; in this case the dimensions of \code{wide} are (number of descriptors x number of species+1), and \code{descriptor_column=1}. It is also allowed to have the descriptors as row.names of the data.frame -this requires setting \code{descriptor_column=0}.   
   }
-  \item{trait }{(taxon x trait) data or (descriptor x trait) data, in *WIDE* format, and containing numerical values only. Traits can be fuzzy coded. The number of columns with taxonomic information is specified with \code{t.column}. The default is to have the first column contain the name of the taxon, and \code{t.column=1}. It is also allowed to have the taxa as \code{row.names} of the data.frame; in this case, \code{t.column=0}. See last example for how to deal with cgtegorical traits.
+  \item{trait }{(taxon x trait) data or (descriptor x trait) data, in *WIDE* format, and containing numerical values only. Traits can be fuzzy coded. The number of columns with taxonomic information is specified with \code{taxon_column}. The default is to have the first column contain the name of the taxon, and \code{taxon_column=1}. It is also allowed to have the taxa as \code{row.names} of the data.frame; in this case, \code{taxon_column=0}. See last example for how to deal with cgtegorical traits.
   }
-  \item{trait.class }{indices to trait levels, a vector. The length of this vector should equal the number of columns of \code{trait} or \code{wide} minus the value of \code{t.column}. If present, this -together with \code{trait.score}- will be used to convert the trait matrix from fuzzy to crisp format.
+  \item{trait_class }{indices to trait levels, a vector. The length of this vector should equal the number of columns of \code{trait} or \code{wide} minus the value of \code{taxon_column}. If present, this -together with \code{trait_score}- will be used to convert the trait matrix from fuzzy to crisp format.
   }
-  \item{trait.score }{trait values or scores, a vector. Should be of same length as \code{trait.class}
+  \item{trait_score }{trait values or scores, a vector. Should be of same length as \code{trait_class}
   }
   \item{scalewithvalue }{when TRUE, will standardize with respect to total density, so that the average trait value is obtained (not the summed value). Note that total density will be estimated only for those taxa whose traits are known.
   }
@@ -41,7 +41,7 @@ If \code{data} is missing:  a list (or data.frame with one column), or a vector.
   }
   \item{taxonomy }{taxonomic information (the relationships between the taxa), a data.frame; first column will be matched with \code{taxon}, regardless of its name. This is used to estimate traits of taxa that are not accounted for, and that will be estimated based on taxa at the nearest taxonomic level. See details.
   }
-  \item{d.column, t.column }{position(s) or name(s) of the column(s) that holds the descriptor of the density data set (data.frame \code{wide}), and the taxa in the trait data set (data.frame \code{trait}). The default is to have the first column holding the descriptors or taxa. If \code{NULL}, or \code{0}, then there is no separate column with names, so the \code{row.names} of the dataset are used as descriptor or taxon names.
+  \item{descriptor_column, taxon_column }{position(s) or name(s) of the column(s) that holds the descriptor of the density data set (data.frame \code{wide}), and the taxa in the trait data set (data.frame \code{trait}). The default is to have the first column holding the descriptors or taxa. If \code{NULL}, or \code{0}, then there is no separate column with names, so the \code{row.names} of the dataset are used as descriptor or taxon names.
   }
 }
 
@@ -271,8 +271,8 @@ cwm.2d
 cwm.trait.1 <- get_trait_density (
                         wide           = Bwide,  
                         trait          = Btraits, 
-                        trait.class    = Btraits.lab$trait, 
-                        trait.score    = Btraits.lab$score, 
+                        trait_class    = Btraits.lab$trait, 
+                        trait_score    = Btraits.lab$score, 
                         scalewithvalue = TRUE, 
                         verbose        = FALSE)
 
@@ -285,8 +285,8 @@ attributes(cwm.trait.1)$notrait   # species that was ignored
 cwm.trait.2 <- get_trait_density (
                         wide           = Bwide,  
                         trait          = Btraits, 
-                        trait.class    = Btraits.lab$trait, 
-                        trait.score    = Btraits.lab$score, 
+                        trait_class    = Btraits.lab$trait, 
+                        trait_score    = Btraits.lab$score, 
                         scalewithvalue = FALSE, 
                         verbose        = FALSE)
 
@@ -299,8 +299,8 @@ cwm.trait.2
 cwm.trait.2 <- get_trait_density (
                         wide           = Bwide,  
                         trait          = Btraits, 
-                        trait.class    = Btraits.lab$trait, 
-                        trait.score    = Btraits.lab$score, 
+                        trait_class    = Btraits.lab$trait, 
+                        trait_score    = Btraits.lab$score, 
                         taxonomy       = Btaxonomy,
                         scalewithvalue = TRUE)
 

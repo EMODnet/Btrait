@@ -6,10 +6,10 @@
 
 extend_trait <- function(trait,       # data.frame with traits; 1st column:taxon
                          taxonomy,    # data.frame with taxonomic data; 
-                         t.column=1){ # nr or name of column in trait with taxon names
+                         taxon_column=1){ # nr or name of column in trait with taxon names
   
 # convert/clean trait data  
-  trait <- clearRows(trait, t.column, 'trait')  # taxon names become row.names
+  trait <- clearRows(trait, taxon_column, 'trait')  # taxon names become row.names
   cn    <- attributes(trait)$cn                 # name of column holding the taxa
   trnames <- c(cn, attributes(trait)$colnames)
   rn    <- row.names(trait)        # taxa for which traits are already assigned

@@ -434,13 +434,13 @@ The data are converted to crisp format, and merged with the crisp cefas data.
 ```{r}
 trnioz <- fuzzy2crisp(
   trait       = TR_nioz,
-  trait.class = nioz_select$trait,
-  trait.score = nioz_select$value
+  trait_class = nioz_select$trait,
+  trait_score = nioz_select$value
 )
 trcefas <- fuzzy2crisp(  
   trait       = Traits_cefas[,c("taxon", cefas_select$colname)],
-  trait.class = cefas_select$trait,
-  trait.score = cefas_select$value
+  trait_class = cefas_select$trait,
+  trait_score = cefas_select$value
 )
 trall <- merge(trnioz, trcefas, by=1)
 dim(trall)
@@ -518,7 +518,7 @@ knitr::kable(SUMM, caption="statistics of deviations between cefas and nioz trai
 ## Community Weighted Mean (CWM) of MWTL Northsea data based on cefas traits. 
 
 The Community Weighted Mean (CWM) of traits is estimated, based on the (stations x taxon density) and (taxon x traits) matrix; we use the cefas data.
-In the function *get_trait_density*, we pass the value of the modalities (trait.score) of the trait classes, so that the average modality value will be calculated. 
+In the function *get_trait_density*, we pass the value of the modalities (trait_._score) of the trait classes, so that the average modality value will be calculated. 
 We also pass the taxonomy table, so that the traits for unknown taxa will be generated, based on their taxonomic relationship.
 
 ```{r}
@@ -532,8 +532,8 @@ MWTL.cwm <- get_trait_density(
                 value       = density, 
 
                 trait       = Traits_cefas, 
-                trait.class = Tcefas.lab$trait, 
-                trait.score = Tcefas.lab$value, 
+                trait_class = Tcefas.lab$trait, 
+                trait_score = Tcefas.lab$value, 
                 taxonomy    = Taxonomy)  
 ```
 

@@ -112,7 +112,7 @@ getname <- function(var) {
 
 clearRows <- function(x, d.column, name){
   
-  cn <- NULL # the name or nr of the column with the descriptor.names
+  cn <- NULL # the name or nr of the column with the descriptor names
   cnames <- colnames(x)
   
   # check input

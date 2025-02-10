@@ -208,7 +208,7 @@ knitr::kable(S.traits.lab, caption="Data.frame with trait descriptions",
 The trait *score* is required for recasting the fuzzy traits into crisp format:.
 
 ```{r, echo=FALSE}
-FC <- fuzzy2crisp(trait=S.traits, trait.class= S.traits.lab$trait, trait.score=S.traits.lab$score)
+FC <- fuzzy2crisp(trait=S.traits, trait_class= S.traits.lab$trait, trait_score=S.traits.lab$score)
 ```
 
 ```{r, echo=FALSE}
@@ -364,7 +364,7 @@ This format can easily be generated from the wide format:
 ```{r}
 S.traits.long <- w2l_trait(
             wide        = S.traits, 
-            trait.names = S.traits.lab[,c("trait", "modality")])
+            trait_names = S.traits.lab[,c("trait", "modality")])
 
 S.traits.long[order(S.traits.long$species),]
 ```
@@ -375,13 +375,13 @@ The example trait database (S.traits) is fuzzy-coded, meaning that one trait is 
 For instance, trait T1 (depth) for sp.2 can be either expressed as modality M1 or M2, etc...
 
 For summaries it may be more instructive to have one number for each trait, i.e. to represent the trait data in crisp format. 
-To do this, we need to pass the trait.class that each column belongs to, and the score that needs to be assigned to each modality.
+To do this, we need to pass the trait_class that each column belongs to, and the score that needs to be assigned to each modality.
 
 ```{r}
 S.traits.crisp <- fuzzy2crisp(
             trait       = S.traits, 
-            trait.class = S.traits.lab$trait, 
-            trait.score = S.traits.lab$score)
+            trait_class = S.traits.lab$trait, 
+            trait_score = S.traits.lab$score)
 knitr::kable(S.traits.crisp, 
        caption="Data.frame with species traits in crisp format", 
        align="c", row.names=FALSE)
@@ -466,8 +466,8 @@ cwm <- get_trait_density(
         averageOver = S.density$year,
         value       = S.density$density, 
         trait       = S.traits,             # fuzzy coded traits per station
-        trait.class = S.traits.lab$trait,   # fuzzy trait class for S.trait columns
-        trait.score = S.traits.lab$score,   # modality value 
+        trait_class = S.traits.lab$trait,   # fuzzy trait class for S.trait columns
+        trait_score = S.traits.lab$score,   # modality value 
         taxonomy    = S.taxonomy)
 knitr::kable(cwm, row.names=FALSE)
 ```
@@ -482,8 +482,8 @@ cwm2 <- get_trait_density(
          taxon       = S.density$species, 
          value       = S.density$density, 
          trait       = S.traits,             
-         trait.class = S.traits.lab$trait,    
-         trait.score = S.traits.lab$score)
+         trait_class = S.traits.lab$trait,    
+         trait_score = S.traits.lab$score)
 knitr::kable(cwm2, row.names=FALSE)
 ```
 
@@ -501,8 +501,8 @@ cwm.fuz <- get_trait_density(
 knitr::kable(cwm.fuz, row.names=FALSE)
 
 fuzzy2crisp(trait      = cwm.fuz, 
-           trait.class = S.traits.lab$trait,   
-           trait.score = S.traits.lab$score)
+           trait_class = S.traits.lab$trait,   
+           trait_score = S.traits.lab$score)
 ```
 
 # Show results
