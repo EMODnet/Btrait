@@ -5,7 +5,7 @@ importFrom("graphics", "par", "abline", "axis", "boxplot", "points", "rug")
 importFrom("stats", "reshape", "quantile")
 importFrom("grDevices", "grey.colors")
 importFrom("stats", "aggregate")
-importFrom("utils", "stack")
+importFrom("utils", "stack", "head")
 
 export(map_key, map_legend, map_MWTL, map_NSBS)
 export(metadata)
@@ -20,5 +20,5 @@ export(get_taxonomy, get_taxon_info)
 export(get_irr_index, get_Db_index)
 export(get_trait)
 export(extend_trait)
-
+export(standardize_trait, standardize_taxonomy)
                 

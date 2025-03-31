@@ -39,7 +39,7 @@ If \code{data} is missing:  a list (or data.frame with one column), or a vector.
   }
   \item{subset }{logical expression indicating elements to keep: missing values are taken as FALSE. If NULL, or absent, then all elements are used. Note that the subset is taken *after* the number of samples to average per descriptor is calculated, so this will also work for selecting certain taxa that may not be present in all replicates over which should be averaged.
   }
-  \item{taxonomy }{taxonomic information; first column will be matched with \code{taxon}, regardless of its name.
+  \item{taxonomy }{taxonomic information; first column will be matched with \code{taxon}.
   }
   \item{full.output }{ when TRUE, will also return descriptors for which the value is 0. This can be relevant in case a selection is made for taxonomic composition. Note that the taxon in this case will be undefined.
   }

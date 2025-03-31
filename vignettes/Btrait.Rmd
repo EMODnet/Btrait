@@ -2,9 +2,18 @@
 title: "R-package Btrait: working with biological data and trait information"
 author: "Karline Soetaert and Olivier Beauchard"
 date: "18 November 2022"
+output:
+  html_document:
+    df_print: paged
+    toc: true
+    number_sections: true
+    toc_float: true
+    code_folding: show
+    theme: flatly
+  pdf_document: default
 vignette: >
   %\VignetteIndexEntry{R-package Btrait: working with biological data and trait information} 
-  %\VignetteEngine{knitr::knitr} 
+  %\VignetteEngine{knitr::rmarkdown} 
   %\VignetteEncoding{UTF-8}\n"
 ---
 
@@ -193,10 +202,10 @@ Here also a numerical value (*score*) is assigned to these modalities.
 
 ```{r}
 S.traits.lab <- data.frame(
-  colname  =c("T1_M1","T1_M2" ,"T1_M3",  "T2_M1",  "T2_M2"),
-  trait    =c("depth","depth" ,"depth",  "feeding","feeding"),
-  modality =c("0-5cm","5-10cm","10-15cm","filter", "deposit"), 
-  score    =c(2.5    , 7.5    , 12.5    , 1      , 2     )
+  colname  =c("T1_M1", "T1_M2" , "T1_M3",   "T2_M1",   "T2_M2"  ),
+  trait    =c("depth", "depth" , "depth",   "feeding", "feeding"),
+  modality =c("0-5cm", "5-10cm", "10-15cm", "filter",  "deposit"), 
+  score    =c(2.5    ,  7.5    ,  12.5    ,  1      ,   2       )
   )
 ```
 
@@ -208,12 +217,15 @@ knitr::kable(S.traits.lab, caption="Data.frame with trait descriptions",
 The trait *score* is required for recasting the fuzzy traits into crisp format:.
 
 ```{r, echo=FALSE}
-FC <- fuzzy2crisp(trait=S.traits, trait_class= S.traits.lab$trait, trait_score=S.traits.lab$score)
+FC <- fuzzy2crisp(trait       = S.traits, 
+                  trait_class = S.traits.lab$trait, 
+                  trait_score = S.traits.lab$score)
 ```
 
 ```{r, echo=FALSE}
-knitr::kable(FC, caption="Trait dataset in crisp format, based on the trait score", 
-             align="c", row.names=FALSE)
+knitr::kable(FC, 
+             caption = "Trait dataset in crisp format, based on the trait score", 
+             align = "c", row.names = FALSE)
 ```
 
 ## A crisp trait dataset
@@ -238,8 +250,9 @@ S.traits2 <- data.frame(
 ```
 
 ```{r, echo=FALSE}
-knitr::kable(S.traits2, caption="Data.frame with species trait information, crisp coded", 
-             align="c", row.names=FALSE)
+knitr::kable(S.traits2, 
+             caption = "Data.frame with species trait information, crisp coded", 
+             align = "c", row.names = FALSE)
 ```
 
 This data set in "fuzzy" format needs more columns:
@@ -249,8 +262,8 @@ CF <- crisp2fuzzy(S.traits2)
 ```
 
 ```{r, echo=FALSE}
-knitr::kable(CF, caption="Crisp trait dataset in fuzzy format", 
-             align="c", row.names=FALSE)
+knitr::kable(CF, caption = "Crisp trait dataset in fuzzy format", 
+             align = "c", row.names = FALSE)
 ```
 
 \newpage
@@ -498,7 +511,7 @@ cwm.fuz <- get_trait_density(
             value       = S.density$density, 
             trait       = S.traits,           # fuzzy coded traits per station
             taxonomy    = S.taxonomy)
-knitr::kable(cwm.fuz, row.names=FALSE)
+knitr::kable(cwm.fuz, row.names = FALSE)
 
 fuzzy2crisp(trait      = cwm.fuz, 
            trait_class = S.traits.lab$trait,   
@@ -518,8 +531,9 @@ S.stations <- data.frame(
 ```
 
 ```{r, echo=FALSE}
-knitr::kable(S.stations, caption="Data.frame with station positions", 
-             align="c", row.names=FALSE)
+knitr::kable(S.stations, 
+             caption = "Data.frame with station positions", 
+             align = "c", row.names = FALSE)
 ```
 
 The mean trait values per station can be plotted using functions *map_key* or *map_legend*. 
@@ -564,13 +578,13 @@ accounted for in the trait database; the *taxonomy* used is from WoRMS.
 
 
 ```{r}
-MWTL_trait <- with(MWTL$density, 
-                 get_trait_density(descriptor  = station,
-                                   averageOver = year,
-                                   taxon       = taxon,
-                                   value       = density,
-                                   taxonomy    = Taxonomy,
-                                   trait       = Traits_nioz))
+MWTL_trait <- get_trait_density(data        = MWTL$density,
+                                descriptor  = station,
+                                averageOver = year,
+                                taxon       = taxon,
+                                value       = density,
+                                taxonomy    = Taxonomy,
+                                trait       = Traits_nioz)
 ```
 
 Then we look up the column name for the trait that holds the fraction swimmers. 
@@ -578,10 +592,11 @@ The data are restricted to hold the station name and this trait.
 
 ```{r}
 TraitMeta <- metadata(Traits_nioz)
-swimName <- subset(TraitMeta, subset=modality == "Swimmer")$colname
 
-MWTLswim <- data.frame(station = MWTL_trait$descriptor, 
-                       pSwimmer = MWTL_trait[,swimName])
+swimName  <- subset(TraitMeta, subset=modality == "Swimmer")$colname
+
+MWTLswim  <- data.frame(station  = MWTL_trait$station, 
+                        pSwimmer = MWTL_trait[, swimName])
 head(MWTLswim)
 ```
 

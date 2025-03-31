@@ -10,7 +10,7 @@ long2wide <- function(data,
                       column,          # vector with column names(e.g. taxon) 
                       value,           # density value (vector)
                       averageOver,     # replicate name (vector)
-                      taxonomy=NULL,   # taxonomic relationships to 'taxon'
+                      taxonomy = NULL, # taxonomic relationships to 'taxon'
                       subset){         # logical expression which to include
 
   if (! missing(data)){
@@ -185,12 +185,12 @@ long2wide <- function(data,
 
 ## ====================================================================
 
-l2w_trait <- function(trait,        # data set with traits in long format          
-                     descriptor,    # descriptor of sample -> columns 
-                     taxon,         # vector with taxon names -> rows 
-                     value,         # density value (vector)
-                     averageOver,   # replicate name (vector)
-                     taxonomy=NULL, # taxonomic relationships to 'taxon'
+l2w_trait <- function(trait,          # data set with traits in long format          
+                     descriptor,      # descriptor of sample -> columns 
+                     taxon,           # vector with taxon names -> rows 
+                     value,           # density value (vector)
+                     averageOver,     # replicate name (vector)
+                     taxonomy = NULL, # taxonomic relationships to 'taxon'
                      subset){
   if (! missing(trait)){
     if (! missing(descriptor))
@@ -311,7 +311,8 @@ wide2long <- function(wide,
 
 ## ====================================================================
 
-w2l_density <- function(wide, descriptor_column=1, taxon_names=NULL, absences=FALSE){
+w2l_density <- function(wide, descriptor_column = 1, 
+                        taxon_names = NULL, absences = FALSE){
   if (is.null(taxon_names))
     taxon_names <- attributes(wide)$taxon_names
 
@@ -320,7 +321,8 @@ w2l_density <- function(wide, descriptor_column=1, taxon_names=NULL, absences=FA
 
 ## ====================================================================
 
-w2l_trait <- function(wide, taxon_column=1, trait_names=NULL, absences=FALSE){
+w2l_trait <- function(wide, taxon_column = 1, 
+                      trait_names = NULL, absences = FALSE){
   wide2long(wide, descriptor_column=taxon_column, 
             wide_names=trait_names, absences=absences)
 }

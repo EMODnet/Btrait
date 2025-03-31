@@ -3,18 +3,18 @@
 ## Extracting trait data 
 ## ====================================================================
 
-get_trait <- function(taxon,            # taxon name (vector)
-                     trait,            # data.frame with traits
-                     trait_class=NULL, # to obtain crisp values
-                     trait_score=NULL,
-                     taxonomy=NULL,    # data.frame with taxonomic data
-                     taxon_column=1,       # columnname/nr with taxon in trait data.frame
-                     standardize=FALSE, 
-                     verbose=FALSE){ 
+get_trait <- function(taxon,             # taxon name (vector)
+                     trait,              # data.frame with traits
+                     trait_class = NULL, # to obtain crisp values
+                     trait_score = NULL,
+                     taxonomy = NULL,    # data.frame with taxonomic data
+                     taxon_column = 1,   # columnname/nr with taxon in trait data.frame
+                     standardize = FALSE, 
+                     verbose = FALSE){ 
   
 #  trait <- clearRows(trait, taxon_column, "trait")
   if (taxon_column == 0) {
-    trait <- cbind(taxon=rownames(trait), taxon)
+    trait <- cbind(taxon = rownames(trait), taxon)
     taxon_column <- 1
   }
   cn    <- colnames(trait)
@@ -39,10 +39,11 @@ get_trait <- function(taxon,            # taxon name (vector)
   
   else {
     if (! is.null(taxonomy)){  # expand trait with traits at higher taxonomic level
-      Btax  <- merge(data.frame(taxon=taxon), taxonomy, 
-                   by.x = "taxon", 
-                   by.y = 1)
-      if (nrow(Btax) == 0) stop("cannot get traits, as no taxon is in the taxonomy input",
+      Btax  <- merge(data.frame(taxon = taxon), taxonomy, 
+                     by.x = "taxon", 
+                     by.y = 1)
+      if (nrow(Btax) == 0) 
+          stop("cannot get traits, as no taxon is in the taxonomy input",
                                 "\n example of taxon, eg: ", taxon[1])
       
       all.x <- FALSE
@@ -77,7 +78,8 @@ get_trait <- function(taxon,            # taxon name (vector)
   }
   if (verbose & ! is.null(NotMerged)){
     if (iun <- nrow(NotMerged) > 0)
-        warning( "for ", iun, " species, the traits could not be found - they are set = NA - see attributes()$notrait")
+        warning( "for ", iun, 
+  " species, the traits could not be found - they are set = NA - see attributes()$notrait")
   }
 
   # restore ordering as in taxon

@@ -2,9 +2,18 @@
 title: "Benthic density and trait databases in R-package Btrait"
 author: "Karline Soetaert and Olivier Beauchard"
 date: "18 November 2022"
+output:
+  html_document:
+    df_print: paged
+    toc: true
+    number_sections: true
+    toc_float: true
+    code_folding: show
+    theme: flatly
+  pdf_document: default
 vignette: >
   %\VignetteIndexEntry{Benthic density and trait databases in R-package Btrait} 
-  %\VignetteEngine{knitr::knitr} 
+  %\VignetteEngine{knitr::rmarkdown} 
   %\VignetteEncoding{UTF-8}\n"
 ---
 

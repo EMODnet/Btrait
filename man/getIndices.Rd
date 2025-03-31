@@ -41,7 +41,7 @@ If \code{data} is missing:  a list (or data.frame with one column), or a vector.
   }
   \item{full.output }{when TRUE, will output the full data.frame with the descriptor x taxon indices (called \code{all}. See \code{value}.
   }
-  \item{taxonomy }{taxonomic information (the relationships between the taxa), a data.frame; first column will be matched with \code{taxon}, regardless of its name. This is used to estimate traits of taxa that are not accounted for, and that will be estimated based on taxa at the nearest taxonomic level. See details.
+  \item{taxonomy }{taxonomic information (the relationships between the taxa), a data.frame; first column will be matched with \code{taxon} (in the data.frames \code{data} and \code{trait}). The subsequent columns should have increasing taxonomic level. (e.g. the column order should be *species, genus, family, ...*. The taxonomic relations from \code{data} and \code{trait} are used to estimate traits of taxa that are not accounted for, and that will be estimated based on taxa at the nearest taxonomic level. See details.
   }
 }
 

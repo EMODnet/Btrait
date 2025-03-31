@@ -6,21 +6,21 @@
 ## ====================================================================
 
 
-get_trait_density <- function(data,         # density data
-                      descriptor, 
-                      taxon, 
-                      value, 
-                      averageOver, 
+get_trait_density <- function(data,      # density data
+                  descriptor, 
+                  taxon, 
+                  value, 
+                  averageOver, 
                       
-                      wide=NULL,         # density data, WIDE format (descriptor x taxon) 
-                      descriptor_column=1,        # nr/name of column with descriptor names in wide
-                      trait,             # species x trait data, WIDE format    
-                      taxon_column=1,        # nr/name of column with taxon names in trait
-                      trait_class=NULL,  # indices to trait levels - vector
-                      trait_score=NULL,  # indices to trait values - vector
-                      taxonomy=NULL,     # if !NULL, trait is expanded at higher levels
-                      scalewithvalue=TRUE,  # rescale with value - 
-                      verbose=FALSE)  
+                  wide=NULL,             # density data, WIDE format (descriptor x taxon) 
+                  descriptor_column = 1, # nr/name of column with descriptor names in wide
+                  trait,                 # species x trait data, WIDE format    
+                  taxon_column = 1,      # nr/name of column with taxon names in trait
+                  trait_class = NULL,    # indices to trait levels - vector
+                  trait_score = NULL,    # indices to trait values - vector
+                  taxonomy = NULL,       # if !NULL, trait is expanded at higher levels
+                  scalewithvalue = TRUE, # rescale with value - 
+                  verbose = FALSE)  
 
 { 
 

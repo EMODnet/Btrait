@@ -20,7 +20,7 @@
 \usage{
 get_taxon_info(taxon, trait = Traits_nioz, taxonomy = Taxonomy)  
 
-get_taxonomy(taxon, taxonomy=Taxonomy)
+get_taxonomy(taxon, taxonomy = Taxonomy)
 
 metadata(object)        
 }

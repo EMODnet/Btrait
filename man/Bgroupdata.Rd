@@ -13,27 +13,40 @@
 **\code{Groups}** contains 11 typological species groups representing sea floor functions, as derived from a cluster analysis on species traits by Beauchard et al. (submitted).
 
 \itemize{
- \item{Epi3D, }{Epibenthic 3D, Builders of large and complex 3D-structures on the sediment; high biodeposition ability}.
+ \item \code{Epibenthic} 3D, Builders of large and complex 3D-structures on the sediment; 
+    high biodeposition ability
+
+ \item \code{Foul}, Small fouling species of various substrata, such as 
+ barnacles and epibenthic tube builders; can create extended organic mats; 
+ high biodeposition ability
  
- \item{Foul, }{Small fouling species of various substrata, such as barnacles and epibenthic tube builders; can create extended organic mats; high biodeposition ability}
+ \item \code{Neutral}, species deprived of the ability to alter sediments; 
+ also characteristic of biodeposition; also slowly mobile species from hard substrata
  
- \item{Neutral, }{species deprived of the ability to alter sediments; also characteristic of biodeposition; also slowly mobile species from hard substrata}
+ \item \code{ShalShel}, Shallow shell, mostly sub-sediment surface buried bivalves; 
+ dominantly biodiffusors, shell providers; low to high biodepositors
  
- \item{ShalShel, }{Shallow shell, mostly sub-sediment surface buried bivalves; dominantly biodiffusors, shell providers; low to high biodepositors}
+ \item \code{SurfDiff}, Surficial biodiffusors, with variable degrees of burying ability; 
+ no other specific attribute
  
- \item{SurfDiff, }{Surficial biodiffusors, with variable degrees of burying ability; no other specific attribute}
+ \item \code{SmalTub}, Small tube dweller; mostly superficial tubicolous occurring 
+ in wide lawns of tubes or tube protrusions ; 
+ commonly biostabilisers, advectors (downward and upward conveying, moderate ventilation ability, with some degree of biodeposition
  
- \item{SmalTub, }{Small tube dweller; mostly superficial tubicolous occurring in wide lawns of tubes or tube protrusions ; commonly biostabilisers, advectors (downward and upward conveying, moderate ventilation ability, with some degree of biodeposition}
+ \item \code{DeepTub}, Deep tube dweller; similar to smalTub, but les tubicolous and 
+ more burrow dwellers (I- or J-shaped), and deeper burrowers; higher ventilation ability
  
- \item{DeepTub, }{Deep tube dweller; similar to smalTub, but les tubicolous and more burrow dwellers (I- or J-shaped), and deeper burrowers; higher ventilation ability}
+ \item \code{MinBiot}, Minor bioturbator, larger and less sedentary, deeper burrowing 
+ ability than DeepTub; mostly advectors
  
- \item{MinBiot, }{Minor bioturbator, larger and less sedentary, deeper burrowing ability than DeepTub; mostly advectors}
+ \item \code{SesBio}, Sessile bioturbator, deep burrowing ability, 
+ great bioirrigation potential due to wider burrow
  
- \item{SesBio, }{Sessile bioturbator, deep burrowing ability, great bioirrigation potential due to wider burrow}
+ \item \code{MajBiot}, Major bioturbator, deep burrowing, mobile and non-shelly; 
+ diffusive mixing
  
- \item{MajBiot, }{Major bioturbator, deep burrowing, mobile and non-shelly; diffusive mixing}
- 
- \item{Deep3D, }{Deepest burrowers, long term burrows, very high level of sediment mixing and irrigation}
+ \item \code{Deep3D}, Deepest burrowers, long term burrows, very high level of 
+ sediment mixing and irrigation
 }
 
 Explanation on its contents is given in its attribute \code{description} (use \code{metadata(Groups)} to derive it)

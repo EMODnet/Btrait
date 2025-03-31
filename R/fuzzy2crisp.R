@@ -5,11 +5,11 @@
 ## ====================================================================
 ## ====================================================================
 
-fuzzy2crisp <- function(trait,             # species-trait matrix, in WIDE format
-                        trait_class,       # indices to trait classes - vector
-                        trait_score,       # indices to trait values - vector
-                        taxon_column=1,    # nr or name of column(s) with taxa
-                        standardize=TRUE){ # rescale to sum to 1 or not
+fuzzy2crisp <- function(trait,               # species-trait matrix, in WIDE format
+                        trait_class,         # indices to trait classes - vector
+                        trait_score,         # indices to trait values - vector
+                        taxon_column = 1,    # nr or name of column(s) with taxa
+                        standardize = TRUE){ # rescale to sum to 1 or not
 
 # check input, remove descriptor column if necessary
   Trait <- trait

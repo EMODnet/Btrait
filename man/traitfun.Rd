@@ -18,7 +18,7 @@
 }
 
 \usage{
-get_trait(taxon, trait, trait_class=NULL, trait_score=NULL, 
+get_trait(taxon, trait, trait_class = NULL, trait_score = NULL, 
           taxonomy = NULL, taxon_column = 1, 
           standardize = FALSE, verbose = FALSE)
 
@@ -36,7 +36,7 @@ crisp2fuzzy (trait, taxon_column = 1)
   \item{trait}{ (taxon x trait) data or (descriptor x trait) data, in WIDE format. 
   Traits can be fuzzy coded. In the default setting, the first column contains the name of the taxon, and \code{taxon_column=1}. It is also allowed to have the taxa as \code{row.names} of the data.frame - set \code{taxon_column=0}. 
   }
-  \item{trait_class }{indices to trait classes, a vector. The length of this vector should equal the number of columns of \code{trait} minus the descriptor columns  (nrow(\code{trait}) - \code{taxon_column}). If not \code{NULL}, the fuzzy traits will be converted to crisp values.
+  \item{trait_class }{indices to trait classes, a vector. The length of this vector should equal the number of columns of \code{trait} minus the descriptor columns (nrow(\code{trait}) - \code{taxon_column}). The order should be conform the order in the trait columns (not checked). If not \code{NULL}, the fuzzy traits will be converted to crisp values.
   }
   \item{trait_score }{trait values or scores, a vector. Should be of same length as \code{trait_class}.
   }
@@ -44,7 +44,7 @@ crisp2fuzzy (trait, taxon_column = 1)
   }
   \item{verbose }{when TRUE, will write warnings to the screen.
   }
-  \item{taxonomy }{taxonomic information (the relationships between the taxa), a data.frame; first column will be matched with \code{taxon}, regardless of its name. This is used to estimate traits of taxa that are not accounted for, and that will be estimated based on taxa at the nearest taxonomic level. See details.
+  \item{taxonomy }{taxonomic information (the relationships between the taxa), a data.frame; first column will be matched with \code{taxon} (in the data.frames \code{data} and \code{trait}). The subsequent columns should have increasing taxonomic level. (e.g. the column order should be *species, genus, family, ...*. The taxonomic relations from \code{data} and \code{trait} are used to estimate traits of taxa that are not accounted for, and that will be estimated based on taxa at the nearest taxonomic level. See details.
   }
   \item{taxon_column }{position(s) or name(s) of the column(s) that holds the taxon of the data set. The default is to have the first column holding the taxon. If \code{NULL}, or \code{0}, then there is no separate column with names, so the \code{row.names} of the dataset are used as the taxon names.
   }
