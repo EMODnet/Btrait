@@ -81,6 +81,12 @@ get_trait_density <- function(data,      # density data
   else 
     notrait <- NA
   
+  # one taxon can be present several times...
+  if (nrow(trait) != length(taxon_names)){  # taxa may have been present multiple times
+    row.names(trait) <- trait[,1]
+    trait <- trait[taxon_names, ]
+  }
+  
   if (verbose & length(iun)) 
     warning( length(iun), " species are not in the trait database - check attributes()$notrait to find them")
     
