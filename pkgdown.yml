@@ -1,0 +1,95 @@
+url: https://emodnet.github.io/Btrait/
+home:
+  title: Functions for combining density data, taxonomy, and trait composition data.
+  description: "Btrait contains functions and data sets to work with density data, trait information and taxonomic relationships. This includes (1) functions to work with a combination of species-density (or species-biomass) data, species-trait information, and taxonomy 
+(2) two data sets with density and biomass data of the macrobenthos (macrobenthos are animals that live in the sediment and that are generally larger than 1 mm) in the North Sea and (3) several macrobenthos trait databases \n"
+template:
+  bootstrap: 5
+  params:
+    bootswatch: flatly
+  opengraph:
+    image:
+      src: man/figures/Logo_hex.png
+      alt: Btrai logo
+reference:
+- title: Density
+  desc: Functions to estimate density under fishing
+  contents:
+  - '`density_logistic`'
+  - '`density_perturb`'
+  - '`density_metier`'
+- title: Steady-state
+  desc: Functions to estimate steady-state under fishing
+  contents:
+  - '`steady_logistic`'
+  - '`steady_perturb`'
+  - '`steady_metier`'
+- title: Trawl
+  desc: Functions to estimate density at trawling events
+  contents:
+  - '`trawl_perturb`'
+  - '`trawl_metier`'
+- title: Models as in deSolve
+  desc: Functions to estimate density using deSolve input
+  contents:
+  - '`run_perturb`'
+  - '`run_logistic`'
+- title: Model parameters
+  desc: Functions to estimate the model parameters
+  contents:
+  - '`par_d`'
+  - '`par_K`'
+  - '`par_r`'
+  - '`par_m`'
+- title: Ecosystem functions
+  desc: Functions to estimate ecosystem functions or traits
+  contents:
+  - '`get_Db_model`'
+  - '`get_irr_model`'
+  - '`get_trait_model`'
+- title: Sensitivity functions
+  desc: Sensitivity of an area or taxon to fishing parameters
+  contents:
+  - '`sensitivity_taxon`'
+  - '`sensitivity_area`'
+- title: Critical values
+  desc: Critical values for fishing or taxon parameters
+  contents:
+  - '`critical_sar`'
+  - '`critical_gpd`'
+  - '`critical_d`'
+  - '`critical_r`'
+- title: Data sets
+  contents:
+  - '`SAR`'
+  - '`NIOZdata`'
+- other: ~
+  contents: Bfiat-package
+navbar:
+  type: inverse
+  left:
+  - text: How To
+    menu:
+    - text: Installation
+      href: articles/installation.html
+    - text: Description
+      href: articles/Bfiat.html
+  - text: Examples of use
+    menu:
+    - text: The dutch monitoring data - fishing impact on density
+      href: articles/MWTL.html
+    - text: The dutch monitoring - fishing impact on ecosystem functioning
+      href: articles/MWTL_EF.html
+  right:
+  - icon: fa-file-code-o
+    text: functions
+    href: reference/index.html
+  - icon: fa-github fa-lg
+    text: github
+    href: https://emodnet.github.io/Bfiat/
+repo:
+  url:
+    home: https://github.com/EMODnet/Bfiat/
+    source: https://github.com/EMODnet/Bfiat/
+
+
