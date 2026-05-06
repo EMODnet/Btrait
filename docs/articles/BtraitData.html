@@ -5,57 +5,48 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="Btrait">
 <title>Benthic density and trait databases in R-package Btrait • Btrait</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Benthic density and trait databases in R-package Btrait">
-<meta property="og:description" content="Btrait">
-<!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
+<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Benthic density and trait databases in R-package Btrait">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
-    
 
-    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
-    
+
+    <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
+
     <a class="navbar-brand me-2" href="../index.html">Btrait</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.1</small>
 
-    
+
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="nav-item">
-  <a class="nav-link" href="../articles/Btrait.html">Get started</a>
-</li>
-<li class="nav-item">
-  <a class="nav-link" href="../reference/index.html">Reference</a>
-</li>
+<li class="nav-item"><a class="nav-link" href="../articles/Btrait.html">Get started</a></li>
+<li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="active nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/BtraitData.html">Benthic density and trait databases in R-package Btrait</a>
-  </div>
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
+<li><a class="dropdown-item" href="../articles/BtraitData.html">Benthic density and trait databases in R-package Btrait</a></li>
+  </ul>
 </li>
       </ul>
-<form class="form-inline my-2 my-lg-0" role="search">
-        <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
-</form>
-
-      <ul class="navbar-nav"></ul>
+<ul class="navbar-nav">
+<li class="nav-item"><form class="form-inline" role="search">
+ <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
+</form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/EMODnet/Btrait/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+      </ul>
 </div>
 
-    
+
   </div>
 </nav><div class="container template-article">
 
@@ -64,13 +55,14 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="" class="logo" alt=""><h1>Benthic density and trait databases in R-package Btrait</h1>
+
+      <h1>Benthic density and trait databases in R-package Btrait</h1>
                         <h4 data-toc-skip class="author">Karline
 Soetaert and Olivier Beauchard</h4>
             
             <h4 data-toc-skip class="date">18 November 2022</h4>
       
-      
+      <small class="dont-index">Source: <a href="https://github.com/EMODnet/Btrait/blob/HEAD/vignettes/BtraitData.Rmd" class="external-link"><code>vignettes/BtraitData.Rmd</code></a></small>
       <div class="d-none name"><code>BtraitData.Rmd</code></div>
     </div>
 
@@ -83,7 +75,7 @@ Soetaert and Olivier Beauchard</h4>
 of biological density, trait, and taxonomic data. It contains:</p>
 <ul>
 <li>functions for working with density and trait data
-(<em>getDensity</em>, <em>getTraits</em>, <em>getTraitDensity</em>,
+(<em>get_density</em>, <em>get_trait</em>, <em>get_trait_density</em>,
 …),</li>
 <li>two data sets with macrobenthos species density and biomass data
 from the Northsea (<em>MWTL</em>, <em>NSBS</em>),</li>
@@ -144,10 +136,13 @@ another taxon that was already available. One example of such double
 occurrence is:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">DOUBLE</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">MWTL</span><span class="op">$</span><span class="va">density</span>, </span>
-<span>   subset<span class="op">=</span><span class="op">(</span><span class="va">station</span><span class="op">==</span><span class="st">"TERHDE1"</span> <span class="op">&amp;</span> <span class="va">year</span><span class="op">==</span><span class="fl">2018</span> <span class="op">&amp;</span> <span class="va">taxon</span> <span class="op">==</span> <span class="st">"Donax vittatus"</span><span class="op">)</span><span class="op">)</span></span>
+<span>                 subset <span class="op">=</span> <span class="op">(</span><span class="va">station</span> <span class="op">==</span> <span class="st">"TERHDE1"</span> <span class="op">&amp;</span> </span>
+<span>                           <span class="va">year</span>    <span class="op">==</span> <span class="fl">2018</span>      <span class="op">&amp;</span> </span>
+<span>                           <span class="va">taxon</span>   <span class="op">==</span> <span class="st">"Donax vittatus"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">DOUBLE</span>, caption <span class="op">=</span> <span class="st">"example of a double occurrence in the MWTL dataset"</span>,</span>
-<span>             row.names<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">DOUBLE</span>, </span>
+<span>             caption <span class="op">=</span> <span class="st">"example of a double occurrence in the MWTL dataset"</span>,</span>
+<span>             row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <caption>example of a double occurrence in the MWTL dataset</caption>
 <colgroup>
@@ -243,8 +238,8 @@ of the data. Contours were generated by applying the
 based on high-resolution GEBCO bathymetry data from the Northsea.</li>
 </ul>
 <p>The taxonomic relationships between taxa is in a data.frame called
-<em>Taxonomy</em>, as generated with the <em>worms</em> package
-(Holstein, 2018).</p>
+<em>Taxonomy</em>, as generated with the <em>worrms</em> package
+(Chamberlain and Vanhoorne, 2023).</p>
 <p>The positions and names of the MWTL and NSBS stations is in the
 following figures, where the colors either denote the area (MWTL) or
 water depths (NSBS).</p>
@@ -264,38 +259,52 @@ attributes, which can be extracted with the function
 <div class="section level3">
 <h3 id="station-positions">Station positions<a class="anchor" aria-label="anchor" href="#station-positions"></a>
 </h3>
-<p>We use function <em>mapBtrait</em> to generate figures with station
+<p>We use function <em>map_key</em> to generate figures with station
 positions, passing the respective contours for each dataset. The
 R-function <em>merge</em> is used to augment the data.frame
 <em>types</em> (that contains the area to which each station belongs),
 with the longitudes (x) and latitudes (y) in the <em>stations</em>
 data.frame.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">MWTLab</span>   <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">MWTL</span><span class="op">$</span><span class="va">stations</span>, </span>
-<span>                  <span class="va">MWTL</span><span class="op">$</span><span class="va">types</span>, by<span class="op">=</span><span class="st">"station"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">MWTLab</span>   <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">MWTL</span><span class="op">$</span><span class="va">stations</span>, <span class="va">MWTL</span><span class="op">$</span><span class="va">types</span>, </span>
+<span>                  by <span class="op">=</span> <span class="st">"station"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">MWTLab</span><span class="op">$</span><span class="va">area</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">MWTLab</span><span class="op">$</span><span class="va">area</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>las<span class="op">=</span><span class="fl">1</span>, oma<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">0</span><span class="op">)</span>, cex.axis<span class="op">=</span><span class="fl">1.2</span>, cex.main<span class="op">=</span><span class="fl">2</span>, cex.lab<span class="op">=</span><span class="fl">1.2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>las <span class="op">=</span> <span class="fl">1</span>, oma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>, </span>
+<span>    cex.axis <span class="op">=</span> <span class="fl">1.2</span>, cex.main <span class="op">=</span> <span class="fl">2</span>, cex.lab <span class="op">=</span> <span class="fl">1.2</span><span class="op">)</span></span>
+<span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">MWTLab</span>, </span>
-<span>  <span class="fu"><a href="../reference/BtraitMap.html">mapBtrait</a></span><span class="op">(</span>contours<span class="op">=</span><span class="va">MWTL</span><span class="op">$</span><span class="va">contours</span>, x<span class="op">=</span><span class="va">x</span>, y<span class="op">=</span><span class="va">y</span>, col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span><span class="op">[</span><span class="va">area</span><span class="op">]</span>, </span>
-<span>            pch<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">15</span><span class="op">:</span><span class="fl">18</span><span class="op">)</span><span class="op">[</span><span class="va">area</span><span class="op">]</span>, cex<span class="op">=</span><span class="fl">2</span>, main<span class="op">=</span><span class="st">"MWTL station positions"</span>, </span>
-<span>            clab<span class="op">=</span><span class="st">"m"</span>, draw.levels<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">MWTL</span><span class="op">$</span><span class="va">stations</span>, <span class="fu"><a href="https://rdrr.io/r/graphics/text.html" class="external-link">text</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">+</span><span class="fl">0.05</span>, label<span class="op">=</span><span class="va">station</span>, cex<span class="op">=</span><span class="fl">0.8</span>, adj<span class="op">=</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span> <span class="op">(</span><span class="st">"bottomright"</span>, legend<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/levels.html" class="external-link">levels</a></span><span class="op">(</span><span class="va">MWTLab</span><span class="op">$</span><span class="va">area</span><span class="op">)</span>, col<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, pch<span class="op">=</span><span class="fl">15</span><span class="op">:</span><span class="fl">18</span>, cex<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<p><img src="BtraitData_files/figure-html/unnamed-chunk-4-1.png" width="1152"></p>
+<span>  <span class="fu"><a href="../reference/BtraitMap.html">map_key</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span>, colvar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span><span class="op">[</span><span class="va">area</span><span class="op">]</span>, </span>
+<span>          contours <span class="op">=</span> <span class="va">MWTL</span><span class="op">$</span><span class="va">contours</span>, draw.levels <span class="op">=</span> <span class="cn">FALSE</span>, </span>
+<span>          col <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, colkey <span class="op">=</span> <span class="cn">FALSE</span>, </span>
+<span>          main <span class="op">=</span> <span class="st">"MWTL station positions"</span>, clab <span class="op">=</span> <span class="st">"m"</span>,</span>
+<span>          pch <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">15</span><span class="op">:</span><span class="fl">18</span><span class="op">)</span><span class="op">[</span><span class="va">area</span><span class="op">]</span>, cex <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">MWTL</span><span class="op">$</span><span class="va">stations</span>, </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/graphics/text.html" class="external-link">text</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">+</span><span class="fl">0.05</span>, label <span class="op">=</span> <span class="va">station</span>, </span>
+<span>       cex <span class="op">=</span> <span class="fl">0.8</span>, adj <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span> <span class="op">(</span><span class="st">"bottomright"</span>, legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/levels.html" class="external-link">levels</a></span><span class="op">(</span><span class="va">MWTLab</span><span class="op">$</span><span class="va">area</span><span class="op">)</span>, </span>
+<span>        col <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, pch <span class="op">=</span> <span class="fl">15</span><span class="op">:</span><span class="fl">18</span>, cex <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<p><img src="BtraitData_files/figure-html/unnamed-chunk-4-1.png" class="r-plt" alt="" width="1152"></p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">NSBSabio</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">NSBS</span><span class="op">$</span><span class="va">stations</span>, <span class="va">NSBS</span><span class="op">$</span><span class="va">abiotics</span>, by<span class="op">=</span><span class="st">"station"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">NSBSabio</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">NSBS</span><span class="op">$</span><span class="va">stations</span>, <span class="va">NSBS</span><span class="op">$</span><span class="va">abiotics</span>, </span>
+<span>                  by <span class="op">=</span> <span class="st">"station"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>las<span class="op">=</span><span class="fl">1</span>, oma<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">0</span><span class="op">)</span>, cex.axis<span class="op">=</span><span class="fl">1.2</span>, cex.main<span class="op">=</span><span class="fl">2</span>, cex.lab<span class="op">=</span><span class="fl">1.2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">NSBSabio</span>, </span>
-<span>  <span class="fu"><a href="../reference/BtraitMap.html">mapBtrait</a></span><span class="op">(</span>contours<span class="op">=</span><span class="va">NSBS</span><span class="op">$</span><span class="va">contours</span>, x<span class="op">=</span><span class="va">x</span>, y<span class="op">=</span><span class="va">y</span>, colvar<span class="op">=</span><span class="va">depth</span>, </span>
-<span>            pch<span class="op">=</span><span class="fl">16</span>, cex<span class="op">=</span><span class="fl">2</span>, main<span class="op">=</span><span class="st">"NSBS station positions"</span>, </span>
-<span>            clab<span class="op">=</span><span class="st">"m"</span>, draw.levels<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="../reference/BtraitMap.html">map_key</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span>, colvar <span class="op">=</span> <span class="va">depth</span>, </span>
+<span>          main <span class="op">=</span> <span class="st">"NSBS station positions"</span>, clab <span class="op">=</span> <span class="st">"m"</span>, </span>
+<span>          contours <span class="op">=</span> <span class="va">NSBS</span><span class="op">$</span><span class="va">contours</span>, draw.levels <span class="op">=</span> <span class="cn">FALSE</span>, </span>
+<span>          pch <span class="op">=</span> <span class="fl">16</span>, cex <span class="op">=</span> <span class="fl">0.9</span> <span class="op">)</span><span class="op">)</span></span>
+<span></span>
 <span><span class="co"># remove the "ICES" from the station names</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">NSBS</span><span class="op">$</span><span class="va">stations</span>, <span class="fu"><a href="https://rdrr.io/r/graphics/text.html" class="external-link">text</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span><span class="op">+</span><span class="fl">0.05</span>, y<span class="op">=</span><span class="va">y</span><span class="op">+</span><span class="fl">0.08</span>, </span>
-<span>     label<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/substr.html" class="external-link">substr</a></span><span class="op">(</span><span class="va">station</span>, <span class="fl">5</span>, <span class="fl">7</span><span class="op">)</span>, cex<span class="op">=</span><span class="fl">0.9</span>, adj<span class="op">=</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="BtraitData_files/figure-html/unnamed-chunk-5-1.png" width="1152"></p>
+<span><span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">NSBS</span><span class="op">$</span><span class="va">stations</span>, </span>
+<span>     <span class="fu"><a href="https://rdrr.io/r/graphics/text.html" class="external-link">text</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span><span class="op">+</span><span class="fl">0.05</span>, y <span class="op">=</span> <span class="va">y</span><span class="op">+</span><span class="fl">0.08</span>, </span>
+<span>          label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/substr.html" class="external-link">substr</a></span><span class="op">(</span><span class="va">station</span>, <span class="fl">5</span>, <span class="fl">7</span><span class="op">)</span>, </span>
+<span>          cex <span class="op">=</span> <span class="fl">0.9</span>, adj <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="BtraitData_files/figure-html/unnamed-chunk-5-1.png" class="r-plt" alt="" width="1152"></p>
 </div>
 <div class="section level3">
 <h3 id="consistency-of-the-density-databases">Consistency of the density databases<a class="anchor" aria-label="anchor" href="#consistency-of-the-density-databases"></a>
@@ -306,12 +315,13 @@ common.</p>
 <p>To find the common stations, we merge the station information of both
 datasets, by the coordinates (x, y):</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">Common</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">MWTL</span><span class="op">$</span><span class="va">stations</span>, </span>
-<span>                <span class="va">NSBS</span><span class="op">$</span><span class="va">stations</span>, </span>
-<span>                by<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">Common</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">MWTL</span><span class="op">$</span><span class="va">stations</span>, <span class="va">NSBS</span><span class="op">$</span><span class="va">stations</span>, </span>
+<span>                by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">Common</span><span class="op">)</span><span class="op">[</span><span class="fl">3</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"MWTL"</span>, <span class="st">"NSBS"</span><span class="op">)</span></span>
-<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">Common</span>, caption<span class="op">=</span><span class="st">"stations in common by MWTL and NSBS dataset"</span>,</span>
-<span>             row.names<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">Common</span>, </span>
+<span>             caption <span class="op">=</span> <span class="st">"stations in common by MWTL and NSBS dataset"</span>,</span>
+<span>             row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <caption>stations in common by MWTL and NSBS dataset</caption>
 <thead><tr class="header">
@@ -415,42 +425,53 @@ taxa</em> found in the NSBS data set is much lower than in the MWTL data
 set, but this is not surprising, as the MWTL data were sampled on a
 regular basis over 19 years, whereas the NSBS data were gathered in a
 one-time event.</p>
-<p><img src="BtraitData_files/figure-html/unnamed-chunk-8-1.png" width="768"></p>
+<p><img src="BtraitData_files/figure-html/unnamed-chunk-8-1.png" class="r-plt" alt="" width="768"></p>
 <p>In the figures below, maps of total density and number of taxa are
 created for both data sets.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">MWTL.summ</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span> <span class="op">(</span><span class="va">MWTL</span><span class="op">$</span><span class="va">density</span>, </span>
-<span>    <span class="fu"><a href="../reference/summary.html">getSummary</a></span><span class="op">(</span>descriptor  <span class="op">=</span> <span class="va">station</span>, </span>
+<code class="sourceCode R"><span><span class="va">MWTL.summ</span> <span class="op">&lt;-</span>  </span>
+<span>   <span class="fu"><a href="../reference/summary.html">get_summary</a></span><span class="op">(</span>data        <span class="op">=</span> <span class="va">MWTL</span><span class="op">$</span><span class="va">density</span>, </span>
+<span>               descriptor  <span class="op">=</span> <span class="va">station</span>, </span>
 <span>               averageOver <span class="op">=</span> <span class="va">year</span>, </span>
 <span>               taxon       <span class="op">=</span> <span class="va">taxon</span>, </span>
-<span>               value       <span class="op">=</span> <span class="va">density</span><span class="op">)</span><span class="op">)</span></span>
+<span>               value       <span class="op">=</span> <span class="va">density</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">NSBS.summ</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span> <span class="op">(</span><span class="va">NSBS</span><span class="op">$</span><span class="va">density</span>, </span>
-<span>    <span class="fu"><a href="../reference/summary.html">getSummary</a></span><span class="op">(</span>descriptor <span class="op">=</span> <span class="va">station</span>, </span>
+<span><span class="va">NSBS.summ</span> <span class="op">&lt;-</span>   </span>
+<span>   <span class="fu"><a href="../reference/summary.html">get_summary</a></span><span class="op">(</span>data       <span class="op">=</span> <span class="va">NSBS</span><span class="op">$</span><span class="va">density</span>, </span>
+<span>               descriptor <span class="op">=</span> <span class="va">station</span>, </span>
 <span>               taxon      <span class="op">=</span> <span class="va">taxon</span>, </span>
-<span>               value      <span class="op">=</span> <span class="va">density</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span>               value      <span class="op">=</span> <span class="va">density</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>las<span class="op">=</span><span class="fl">1</span>, oma<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span>, cex.main<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>las <span class="op">=</span> <span class="fl">1</span>, oma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, cex.main <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">MWTL</span><span class="op">$</span><span class="va">stations</span>, <span class="va">MWTL.summ</span><span class="op">$</span><span class="va">density</span>, by<span class="op">=</span><span class="fl">1</span><span class="op">)</span>, </span>
-<span>  <span class="fu"><a href="../reference/BtraitMap.html">mapBtrait</a></span><span class="op">(</span>contours<span class="op">=</span><span class="va">MWTL</span><span class="op">$</span><span class="va">contours</span>, x<span class="op">=</span><span class="va">x</span>, y<span class="op">=</span><span class="va">y</span>, colvar<span class="op">=</span><span class="va">density</span>, </span>
-<span>            pch<span class="op">=</span><span class="fl">18</span>, cex<span class="op">=</span><span class="fl">2</span>, main<span class="op">=</span><span class="st">"MWTL total density"</span>,  </span>
-<span>            clab<span class="op">=</span><span class="st">"ind/m2"</span>, draw.levels<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">NSBS</span><span class="op">$</span><span class="va">stations</span>, <span class="va">NSBS.summ</span><span class="op">$</span><span class="va">density</span>, by<span class="op">=</span><span class="fl">1</span><span class="op">)</span>, </span>
-<span>  <span class="fu"><a href="../reference/BtraitMap.html">mapBtrait</a></span><span class="op">(</span>contours<span class="op">=</span><span class="va">NSBS</span><span class="op">$</span><span class="va">contours</span>, x<span class="op">=</span><span class="va">x</span>, y<span class="op">=</span><span class="va">y</span>, colvar<span class="op">=</span><span class="va">density</span>, </span>
-<span>            pch<span class="op">=</span><span class="fl">18</span>, cex<span class="op">=</span><span class="fl">2</span>, main<span class="op">=</span><span class="st">"NSBS total density"</span>, </span>
-<span>            clab<span class="op">=</span><span class="st">"ind/m2"</span>, draw.levels<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">MWTL</span><span class="op">$</span><span class="va">stations</span>, <span class="va">MWTL.summ</span><span class="op">$</span><span class="va">density</span>, </span>
+<span>           by <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>, </span>
+<span>  <span class="fu"><a href="../reference/BtraitMap.html">map_key</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span>, colvar <span class="op">=</span> <span class="va">density</span>, </span>
+<span>          main <span class="op">=</span> <span class="st">"MWTL total density"</span>, clab <span class="op">=</span> <span class="st">"ind/m2"</span>, </span>
+<span>          contours <span class="op">=</span> <span class="va">MWTL</span><span class="op">$</span><span class="va">contours</span>, draw.levels <span class="op">=</span> <span class="cn">FALSE</span>, </span>
+<span>          pch <span class="op">=</span> <span class="fl">18</span>, cex <span class="op">=</span> <span class="fl">2</span> <span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">MWTL</span><span class="op">$</span><span class="va">stations</span>, <span class="va">MWTL.summ</span><span class="op">$</span><span class="va">taxa</span>, by<span class="op">=</span><span class="fl">1</span><span class="op">)</span>, </span>
-<span>  <span class="fu"><a href="../reference/BtraitMap.html">mapBtrait</a></span><span class="op">(</span>contours<span class="op">=</span><span class="va">MWTL</span><span class="op">$</span><span class="va">contours</span>, x<span class="op">=</span><span class="va">x</span>, y<span class="op">=</span><span class="va">y</span>, colvar<span class="op">=</span><span class="va">taxa</span>, </span>
-<span>            pch<span class="op">=</span><span class="fl">18</span>, cex<span class="op">=</span><span class="fl">2</span>, main<span class="op">=</span><span class="st">"MWTL number of taxa"</span>, </span>
-<span>            clab<span class="op">=</span><span class="st">"/m2"</span>, draw.levels<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">NSBS</span><span class="op">$</span><span class="va">stations</span>, <span class="va">NSBS.summ</span><span class="op">$</span><span class="va">taxa</span>, by<span class="op">=</span><span class="fl">1</span><span class="op">)</span>, </span>
-<span>  <span class="fu"><a href="../reference/BtraitMap.html">mapBtrait</a></span><span class="op">(</span>contours<span class="op">=</span><span class="va">NSBS</span><span class="op">$</span><span class="va">contours</span>, x<span class="op">=</span><span class="va">x</span>, y<span class="op">=</span><span class="va">y</span>, colvar<span class="op">=</span><span class="va">taxa</span>, </span>
-<span>            pch<span class="op">=</span><span class="fl">18</span>, cex<span class="op">=</span><span class="fl">2</span>, main<span class="op">=</span><span class="st">"NSBS number of taxa"</span>, </span>
-<span>            clab<span class="op">=</span><span class="st">"/m2"</span>, draw.levels<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="BtraitData_files/figure-html/unnamed-chunk-10-1.png" width="1056"></p>
+<span><span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">NSBS</span><span class="op">$</span><span class="va">stations</span>, <span class="va">NSBS.summ</span><span class="op">$</span><span class="va">density</span>, </span>
+<span>           by <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>, </span>
+<span>  <span class="fu"><a href="../reference/BtraitMap.html">map_key</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span>, colvar <span class="op">=</span> <span class="va">density</span>, </span>
+<span>          main <span class="op">=</span> <span class="st">"NSBS total density"</span>, clab <span class="op">=</span> <span class="st">"ind/m2"</span>, </span>
+<span>          contours <span class="op">=</span> <span class="va">NSBS</span><span class="op">$</span><span class="va">contours</span>, draw.levels <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>          pch <span class="op">=</span> <span class="fl">18</span>, cex <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">MWTL</span><span class="op">$</span><span class="va">stations</span>, <span class="va">MWTL.summ</span><span class="op">$</span><span class="va">taxa</span>, </span>
+<span>           by <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>, </span>
+<span>  <span class="fu"><a href="../reference/BtraitMap.html">map_key</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span>, colvar <span class="op">=</span> <span class="va">taxon</span>, </span>
+<span>          main <span class="op">=</span> <span class="st">"MWTL number of taxa"</span>, clab <span class="op">=</span> <span class="st">"/m2"</span>, </span>
+<span>          contours <span class="op">=</span> <span class="va">MWTL</span><span class="op">$</span><span class="va">contours</span>, draw.levels <span class="op">=</span> <span class="cn">FALSE</span>, </span>
+<span>          pch <span class="op">=</span> <span class="fl">18</span>, cex <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">NSBS</span><span class="op">$</span><span class="va">stations</span>, <span class="va">NSBS.summ</span><span class="op">$</span><span class="va">taxa</span>, </span>
+<span>           by <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>, </span>
+<span>  <span class="fu"><a href="../reference/BtraitMap.html">map_key</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span>, colvar<span class="op">=</span><span class="va">taxon</span>, </span>
+<span>          main <span class="op">=</span> <span class="st">"NSBS number of taxa"</span>, clab <span class="op">=</span> <span class="st">"/m2"</span>, </span>
+<span>          contours <span class="op">=</span> <span class="va">NSBS</span><span class="op">$</span><span class="va">contours</span>, draw.levels <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>          pch <span class="op">=</span> <span class="fl">18</span>, cex <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="BtraitData_files/figure-html/unnamed-chunk-10-1.png" class="r-plt" alt="" width="1056"></p>
 <div style="page-break-after: always;"></div>
 </div>
 </div>
@@ -492,13 +513,14 @@ species traits by Beauchard et al. (in press).</p>
 <div class="section level3">
 <h3 id="structure-of-the-trait-databases">Structure of the trait databases<a class="anchor" aria-label="anchor" href="#structure-of-the-trait-databases"></a>
 </h3>
-<p>The trait information is stored in a (<span class="math inline">\(taxa \times traits\)</span>) data.frame, where the
-first column represents the taxon name, and subsequent columns have the
-trait scores for the various trait modalities; the column names
-represent the trait modalities.</p>
+<p>The trait information is stored in a
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mi>a</mi><mi>x</mi><mi>a</mi><mo>×</mo><mi>t</mi><mi>r</mi><mi>a</mi><mi>i</mi><mi>t</mi><mi>s</mi></mrow><annotation encoding="application/x-tex">taxa \times traits</annotation></semantics></math>)
+data.frame, where the first column represents the taxon name, and
+subsequent columns have the trait scores for the various trait
+modalities; the column names represent the trait modalities.</p>
 <p>For example, the first part of the NIOZ trait data is:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">Traits_nioz</span>, n<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>,<span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">Traits_nioz</span>, n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>,<span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##                   taxon ET1.M1 ET1.M2</span></span>
 <span><span class="co">## 1          Abludomelita    0.5    0.5</span></span>
 <span><span class="co">## 2 Abludomelita obtusata    0.5    0.5</span></span>
@@ -510,7 +532,7 @@ is explained in the attribute <em>description</em> of the data.frame,
 which can be extracted with the function <em>metadata</em>. Below are
 the first two rows from the description in the <em>Traits_nioz</em>:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="../reference/utilities.html">metadata</a></span><span class="op">(</span><span class="va">Traits_nioz</span><span class="op">)</span>, n<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="../reference/utilities.html">metadata</a></span><span class="op">(</span><span class="va">Traits_nioz</span><span class="op">)</span>, n <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##   colname                         trait modality indic value score units</span></span>
 <span><span class="co">## 1  ET1.M1 Substratum depth distribution        0     1   0.0  1.00    cm</span></span>
 <span><span class="co">## 2  ET1.M2 Substratum depth distribution      0-5     1   2.5  0.75    cm</span></span></code></pre>
@@ -524,22 +546,27 @@ the trait databases.</p>
 <p>With respect to the northsea data sets (MWTL and NSBS) for instance,
 the percentage of taxa not represented in the trait databases is:</p>
 <table class="table">
+<caption>percentage taxa NOT represented in the databases</caption>
 <thead><tr class="header">
+<th align="left">database</th>
 <th align="right">MWTL</th>
 <th align="right">NSBS</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="right">47.75</td>
-<td align="right">63.04348</td>
+<td align="left">Traits_nioz</td>
+<td align="right">47.8</td>
+<td align="right">63.0</td>
 </tr>
 <tr class="even">
-<td align="right">85.25</td>
-<td align="right">90.94203</td>
+<td align="left">Traits_cefas</td>
+<td align="right">85.2</td>
+<td align="right">90.9</td>
 </tr>
 <tr class="odd">
-<td align="right">24.75</td>
-<td align="right">25.90580</td>
+<td align="left">Traits_db</td>
+<td align="right">24.8</td>
+<td align="right">25.9</td>
 </tr>
 </tbody>
 </table>
@@ -555,7 +582,8 @@ mainly at <em>species</em> level.</p>
 taxa in the trait databases and in the density databases is included in
 database <em>Taxonomy</em>.</p>
 <p>The names of the taxa in all databases has been checked with the
-worms database, using R-package <em>worms</em> (Holstein, 2018).</p>
+WoRMS database, using R-package <em>worrms</em> (Chanberlain and
+Vanhoorne, 2023).</p>
 </div>
 <div class="section level3">
 <h3 id="consistency-of-the-trait-databases">Consistency of the trait databases<a class="anchor" aria-label="anchor" href="#consistency-of-the-trait-databases"></a>
@@ -576,10 +604,11 @@ they are</p>
 <span><span class="va">nioz_select</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="fu"><a href="../reference/utilities.html">metadata</a></span><span class="op">(</span><span class="va">Traits_nioz</span><span class="op">)</span>, </span>
 <span>     <span class="va">trait</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Body length"</span>, <span class="st">"Life span"</span>, <span class="st">"Substratum depth distribution"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">cefas_select</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">5</span>,<span class="fl">7</span><span class="op">)</span><span class="op">]</span>, caption<span class="op">=</span><span class="st">"CEFAS traits in common"</span>,</span>
-<span>             row.names<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">cefas_select</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">5</span>,<span class="fl">7</span><span class="op">)</span><span class="op">]</span>, </span>
+<span>             caption <span class="op">=</span> <span class="st">"CEFAS traits in common with NIOZ traits"</span>,</span>
+<span>             row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
-<caption>CEFAS traits in common</caption>
+<caption>CEFAS traits in common with NIOZ traits</caption>
 <colgroup>
 <col width="34%">
 <col width="20%">
@@ -696,10 +725,11 @@ they are</p>
 </tbody>
 </table>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">nioz_select</span> <span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">5</span>,<span class="fl">7</span><span class="op">)</span><span class="op">]</span>, caption<span class="op">=</span><span class="st">"NIOZ traits in common"</span>,</span>
-<span>             row.names<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">nioz_select</span> <span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">5</span>,<span class="fl">7</span><span class="op">)</span><span class="op">]</span>, </span>
+<span>             caption <span class="op">=</span> <span class="st">"NIOZ traits in common with CEFAS traits"</span>,</span>
+<span>             row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
-<caption>NIOZ traits in common</caption>
+<caption>NIOZ traits in common with CEFAS traits</caption>
 <thead><tr class="header">
 <th align="left">colname</th>
 <th align="left">trait</th>
@@ -816,7 +846,7 @@ they are</p>
 </tbody>
 </table>
 <p>The traits in the cefas database are now matched with those in the
-nioz database, with function <em>getTrait</em>. The species data in the
+nioz database, with function <em>get_trait</em>. The species data in the
 nioz database are calculated on genus level, so that they can be
 compared with the cefas data. This is done by passing the taxonomic tree
 up to genus level. For a large number of genera in the cefas database,
@@ -824,7 +854,7 @@ the traits could not be found; they are removed (they are NA in the
 returned data).</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Select nioz traits for the taxa in the cefas database</span></span>
-<span><span class="va">TR_nioz</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/traitfun.html">getTrait</a></span><span class="op">(</span></span>
+<span><span class="va">TR_nioz</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/traitfun.html">get_trait</a></span><span class="op">(</span></span>
 <span>  taxon    <span class="op">=</span> <span class="va">Traits_cefas</span><span class="op">$</span><span class="va">taxon</span>,   </span>
 <span>  trait    <span class="op">=</span> <span class="va">Traits_nioz</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"taxon"</span>, <span class="va">nioz_select</span><span class="op">$</span><span class="va">colname</span><span class="op">)</span><span class="op">]</span>,</span>
 <span>  taxonomy <span class="op">=</span> <span class="va">Taxonomy</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"taxon"</span>, <span class="st">"genus"</span><span class="op">)</span><span class="op">]</span></span>
@@ -838,13 +868,13 @@ cefas data.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">trnioz</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/traitfun.html">fuzzy2crisp</a></span><span class="op">(</span></span>
 <span>  trait       <span class="op">=</span> <span class="va">TR_nioz</span>,</span>
-<span>  trait.class <span class="op">=</span> <span class="va">nioz_select</span><span class="op">$</span><span class="va">trait</span>,</span>
-<span>  trait.score <span class="op">=</span> <span class="va">nioz_select</span><span class="op">$</span><span class="va">value</span></span>
+<span>  trait_class <span class="op">=</span> <span class="va">nioz_select</span><span class="op">$</span><span class="va">trait</span>,</span>
+<span>  trait_score <span class="op">=</span> <span class="va">nioz_select</span><span class="op">$</span><span class="va">value</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">trcefas</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/traitfun.html">fuzzy2crisp</a></span><span class="op">(</span>  </span>
 <span>  trait       <span class="op">=</span> <span class="va">Traits_cefas</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"taxon"</span>, <span class="va">cefas_select</span><span class="op">$</span><span class="va">colname</span><span class="op">)</span><span class="op">]</span>,</span>
-<span>  trait.class <span class="op">=</span> <span class="va">cefas_select</span><span class="op">$</span><span class="va">trait</span>,</span>
-<span>  trait.score <span class="op">=</span> <span class="va">cefas_select</span><span class="op">$</span><span class="va">value</span></span>
+<span>  trait_class <span class="op">=</span> <span class="va">cefas_select</span><span class="op">$</span><span class="va">trait</span>,</span>
+<span>  trait_score <span class="op">=</span> <span class="va">cefas_select</span><span class="op">$</span><span class="va">value</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">trall</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">trnioz</span>, <span class="va">trcefas</span>, by<span class="op">=</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">trall</span><span class="op">)</span></span></code></pre></div>
@@ -1011,7 +1041,7 @@ zooplankton).</td>
 deviation between both datasets. These deviations are very close to 0,
 showing that both datasets are comparable.</p>
 <div class="figure">
-<img src="BtraitData_files/figure-html/unnamed-chunk-18-1.png" alt="Comparison of common traits in the nioz and cefas database" width="768"><p class="caption">
+<img src="BtraitData_files/figure-html/unnamed-chunk-18-1.png" class="r-plt" alt="Comparison of common traits in the nioz and cefas database" width="768"><p class="caption">
 Comparison of common traits in the nioz and cefas database
 </p>
 </div>
@@ -1031,7 +1061,7 @@ data</caption>
 <td align="right">-1.00</td>
 <td align="right">0.00</td>
 <td align="right">0</td>
-<td align="right">0.0130438</td>
+<td align="right">0.0130</td>
 <td align="right">0.0</td>
 <td align="right">1.0</td>
 </tr>
@@ -1039,7 +1069,7 @@ data</caption>
 <td align="right">-1.00</td>
 <td align="right">0.00</td>
 <td align="right">0</td>
-<td align="right">0.0061662</td>
+<td align="right">0.0062</td>
 <td align="right">0.0</td>
 <td align="right">1.0</td>
 </tr>
@@ -1047,7 +1077,7 @@ data</caption>
 <td align="right">-0.50</td>
 <td align="right">0.00</td>
 <td align="right">0</td>
-<td align="right">0.0214800</td>
+<td align="right">0.0215</td>
 <td align="right">0.0</td>
 <td align="right">1.0</td>
 </tr>
@@ -1055,7 +1085,7 @@ data</caption>
 <td align="right">-40.00</td>
 <td align="right">-1.75</td>
 <td align="right">0</td>
-<td align="right">-0.7519293</td>
+<td align="right">-0.7519</td>
 <td align="right">0.5</td>
 <td align="right">29.0</td>
 </tr>
@@ -1063,7 +1093,7 @@ data</caption>
 <td align="right">-8.50</td>
 <td align="right">-1.50</td>
 <td align="right">0</td>
-<td align="right">-0.2101715</td>
+<td align="right">-0.2102</td>
 <td align="right">0.0</td>
 <td align="right">23.5</td>
 </tr>
@@ -1071,7 +1101,7 @@ data</caption>
 <td align="right">-6.25</td>
 <td align="right">0.00</td>
 <td align="right">0</td>
-<td align="right">1.6675702</td>
+<td align="right">1.6676</td>
 <td align="right">2.5</td>
 <td align="right">17.5</td>
 </tr>
@@ -1089,23 +1119,24 @@ traits.<a class="anchor" aria-label="anchor" href="#community-weighted-mean-cwm-
 </h3>
 <p>The Community Weighted Mean (CWM) of traits is estimated, based on
 the (stations x taxon density) and (taxon x traits) matrix; we use the
-cefas data. In the function <em>getTraitDensity</em>, we pass the value
-of the modalities (trait.score) of the trait classes, so that the
-average modality value will be calculated. We also pass the taxonomy
+cefas data. In the function <em>get_trait_density</em>, we pass the
+value of the modalities (trait_._score) of the trait classes, so that
+the average modality value will be calculated. We also pass the taxonomy
 table, so that the traits for unknown taxa will be generated, based on
 their taxonomic relationship.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Tcefas.lab</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/utilities.html">metadata</a></span><span class="op">(</span><span class="va">Traits_cefas</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">MWTL.cwm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getTraitDensity.html">getTraitDensity</a></span><span class="op">(</span></span>
-<span>                descriptor  <span class="op">=</span> <span class="va">MWTL</span><span class="op">$</span><span class="va">density</span><span class="op">$</span><span class="va">station</span>, </span>
-<span>                taxon       <span class="op">=</span> <span class="va">MWTL</span><span class="op">$</span><span class="va">density</span><span class="op">$</span><span class="va">taxon</span>, </span>
-<span>                averageOver <span class="op">=</span> <span class="va">MWTL</span><span class="op">$</span><span class="va">density</span><span class="op">$</span><span class="va">year</span>,</span>
-<span>                value       <span class="op">=</span> <span class="va">MWTL</span><span class="op">$</span><span class="va">density</span><span class="op">$</span><span class="va">density</span>, </span>
+<span><span class="va">MWTL.cwm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getTraitDensity.html">get_trait_density</a></span><span class="op">(</span></span>
+<span>                data        <span class="op">=</span> <span class="va">MWTL</span><span class="op">$</span><span class="va">density</span>,</span>
+<span>                descriptor  <span class="op">=</span> <span class="va">station</span>, </span>
+<span>                taxon       <span class="op">=</span> <span class="va">taxon</span>, </span>
+<span>                averageOver <span class="op">=</span> <span class="va">year</span>,</span>
+<span>                value       <span class="op">=</span> <span class="va">density</span>, </span>
 <span></span>
 <span>                trait       <span class="op">=</span> <span class="va">Traits_cefas</span>, </span>
-<span>                trait.class <span class="op">=</span> <span class="va">Tcefas.lab</span><span class="op">$</span><span class="va">trait</span>, </span>
-<span>                trait.score <span class="op">=</span> <span class="va">Tcefas.lab</span><span class="op">$</span><span class="va">value</span>, </span>
+<span>                trait_class <span class="op">=</span> <span class="va">Tcefas.lab</span><span class="op">$</span><span class="va">trait</span>, </span>
+<span>                trait_score <span class="op">=</span> <span class="va">Tcefas.lab</span><span class="op">$</span><span class="va">value</span>, </span>
 <span>                taxonomy    <span class="op">=</span> <span class="va">Taxonomy</span><span class="op">)</span>  </span></code></pre></div>
 <p>The mean trait values per station are plotted for the sediment
 position, the maximum size and the lifespan.</p>
@@ -1113,16 +1144,20 @@ position, the maximum size and the lifespan.</p>
 <code class="sourceCode R"><span><span class="va">Station.traits</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">MWTL</span><span class="op">$</span><span class="va">stations</span>, <span class="va">MWTL.cwm</span>, by<span class="op">=</span><span class="fl">1</span><span class="op">)</span> </span></code></pre></div>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, mar<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>,<span class="fl">3</span>,<span class="fl">3</span>,<span class="fl">2</span><span class="op">)</span>, oma<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">2</span>,<span class="fl">0</span>,<span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
 <span><span class="va">units</span>          <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">Tcefas.lab</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"trait"</span>, <span class="st">"units"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">units</span><span class="op">$</span><span class="va">colnames</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/make.names.html" class="external-link">make.names</a></span><span class="op">(</span><span class="va">units</span><span class="op">$</span><span class="va">trait</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">ii</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">units</span><span class="op">$</span><span class="va">trait</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Sediment position"</span>, <span class="st">"Lifespan"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
 <span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="va">ii</span><span class="op">)</span></span>
-<span> <span class="fu"><a href="../reference/BtraitMap.html">mapBtrait</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">Station.traits</span><span class="op">$</span><span class="va">x</span>, y<span class="op">=</span><span class="va">Station.traits</span><span class="op">$</span><span class="va">y</span>, contours<span class="op">=</span><span class="va">MWTL</span><span class="op">$</span><span class="va">contours</span>,</span>
-<span>      colvar<span class="op">=</span> <span class="va">Station.traits</span><span class="op">[</span>,<span class="va">units</span><span class="op">$</span><span class="va">colnames</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span>, </span>
-<span>      cex<span class="op">=</span><span class="fl">2</span>, clab<span class="op">=</span><span class="va">units</span><span class="op">[</span><span class="va">i</span>,<span class="fl">2</span><span class="op">]</span>, main<span class="op">=</span><span class="va">units</span><span class="op">[</span><span class="va">i</span>,<span class="fl">1</span><span class="op">]</span>, pch<span class="op">=</span><span class="fl">18</span><span class="op">)</span></span></code></pre></div>
+<span> <span class="fu"><a href="../reference/BtraitMap.html">map_key</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Station.traits</span><span class="op">$</span><span class="va">x</span>, y <span class="op">=</span> <span class="va">Station.traits</span><span class="op">$</span><span class="va">y</span>, </span>
+<span>         colvar <span class="op">=</span> <span class="va">Station.traits</span><span class="op">[</span>,<span class="va">units</span><span class="op">$</span><span class="va">colnames</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span>, </span>
+<span>         contours <span class="op">=</span> <span class="va">MWTL</span><span class="op">$</span><span class="va">contours</span>,</span>
+<span>         clab <span class="op">=</span> <span class="va">units</span><span class="op">[</span><span class="va">i</span>,<span class="fl">2</span><span class="op">]</span>, main <span class="op">=</span> <span class="va">units</span><span class="op">[</span><span class="va">i</span>,<span class="fl">1</span><span class="op">]</span>, </span>
+<span>         cex <span class="op">=</span> <span class="fl">2</span>, pch <span class="op">=</span> <span class="fl">18</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
-<img src="BtraitData_files/figure-html/unnamed-chunk-22-1.png" alt="Community weighed trait values based on the MWTL density and cefas trait data" width="768"><p class="caption">
+<img src="BtraitData_files/figure-html/unnamed-chunk-22-1.png" class="r-plt" alt="Community weighed trait values based on the MWTL density and cefas trait data" width="768"><p class="caption">
 Community weighed trait values based on the MWTL density and cefas trait
 data
 </p>
@@ -1134,55 +1169,107 @@ data
 <p>We use the data from the Dutch part of the Northsea, in 1995, to
 estimate the bioturbation potential index sensu Solan et al., 2004 and
 Queiros et al., 2013.</p>
-<p>The contribution of a species, <span class="math inline">\(i\)</span>
-to the <em>bioturbation potential</em> (<span class="math inline">\(BPc\)</span>) is based on its mean individual
-weight (<span class="math inline">\(W_i\)</span>), the abundance (<span class="math inline">\(A_i\)</span>), and its mobility (<span class="math inline">\(M_i\)</span>) and sediment reworking mode (<span class="math inline">\(R_i\)</span>); the station BPc is then simply the
-sum of the species bioturbation potential.</p>
-<p><span class="math display">\[BPc = \sum_i \sqrt{W_i} \times A_i
-\times M_i \times R_i\]</span></p>
+<p>The contribution of a species,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+to the <em>bioturbation potential</em>
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mi>P</mi><mi>c</mi></mrow><annotation encoding="application/x-tex">BPc</annotation></semantics></math>)
+is based on its mean individual weight
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>W</mi><mi>i</mi></msub><annotation encoding="application/x-tex">W_i</annotation></semantics></math>),
+the abundance
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>A</mi><mi>i</mi></msub><annotation encoding="application/x-tex">A_i</annotation></semantics></math>),
+and its mobility
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mi>i</mi></msub><annotation encoding="application/x-tex">M_i</annotation></semantics></math>)
+and sediment reworking mode
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>R</mi><mi>i</mi></msub><annotation encoding="application/x-tex">R_i</annotation></semantics></math>);
+the station BPc is then simply the sum of the species bioturbation
+potential.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mi>P</mi><mi>c</mi><mo>=</mo><munder><mo>∑</mo><mi>i</mi></munder><msqrt><msub><mi>W</mi><mi>i</mi></msub></msqrt><mo>×</mo><msub><mi>A</mi><mi>i</mi></msub><mo>×</mo><msub><mi>M</mi><mi>i</mi></msub><mo>×</mo><msub><mi>R</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">BPc = \sum_i \sqrt{W_i} \times A_i \times M_i \times R_i</annotation></semantics></math></p>
 <ul>
-<li><p>Mobility scales, <span class="math inline">\(M_i\)</span> have a
-value of <span class="math inline">\(1\)</span> for organisms living in
-a fixed tube, <span class="math inline">\(2\)</span> indicates limited
-movement; <span class="math inline">\(3\)</span> indicates slow, free
-movement through the sediment matrix; <span class="math inline">\(4\)</span> indicates free movement, via burrow
-system.</p></li>
-<li><p>sediment reworking (<span class="math inline">\(R_i\)</span>)
-takes on the value <span class="math inline">\(1\)</span> for epifauna
-that bioturbate at the sediment–water interface, <span class="math inline">\(2\)</span> for surficial modifiers; <span class="math inline">\(3\)</span> for upward and downward conveyors;
-<span class="math inline">\(4\)</span> for biodiffusors; and <span class="math inline">\(5\)</span> for regenerators that excavate holes,
-transferring sediment at depth to the surface.</p></li>
+<li><p>Mobility scales,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mi>i</mi></msub><annotation encoding="application/x-tex">M_i</annotation></semantics></math>
+have a value of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>
+for organisms living in a fixed tube,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>2</mn><annotation encoding="application/x-tex">2</annotation></semantics></math>
+indicates limited movement;
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>3</mn><annotation encoding="application/x-tex">3</annotation></semantics></math>
+indicates slow, free movement through the sediment matrix;
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>4</mn><annotation encoding="application/x-tex">4</annotation></semantics></math>
+indicates free movement, via burrow system.</p></li>
+<li><p>sediment reworking
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>R</mi><mi>i</mi></msub><annotation encoding="application/x-tex">R_i</annotation></semantics></math>)
+takes on the value
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>
+for epifauna that bioturbate at the sediment–water interface,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>2</mn><annotation encoding="application/x-tex">2</annotation></semantics></math>
+for surficial modifiers;
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>3</mn><annotation encoding="application/x-tex">3</annotation></semantics></math>
+for upward and downward conveyors;
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>4</mn><annotation encoding="application/x-tex">4</annotation></semantics></math>
+for biodiffusors; and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>5</mn><annotation encoding="application/x-tex">5</annotation></semantics></math>
+for regenerators that excavate holes, transferring sediment at depth to
+the surface.</p></li>
 </ul>
-<p>The contribution of a species, <span class="math inline">\(i\)</span>
-to the <em>bio-irrigation potential</em> (<span class="math inline">\(IPc\)</span>) (sensu Wrede et al., 2018.), is
-based on its mean individual weight (<span class="math inline">\(W_i\)</span>), the abundance (<span class="math inline">\(A_i\)</span>), the burrow type (<span class="math inline">\(BT_i\)</span>), feeding TYPE (<span class="math inline">\(FT_i\)</span>) and the depth of the injection
-pocket, in centimeter (<span class="math inline">\(ID_i\)</span>); the
-station <span class="math inline">\(IPc\)</span> is then simply the sum
-of the species bio-irrigation potential.</p>
-<p><span class="math display">\[IPc = \sum_i {W_i}^{3/4} \times A_i
-\times BT_i \times FT_i \times ID_i\]</span></p>
+<p>The contribution of a species,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+to the <em>bio-irrigation potential</em>
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>I</mi><mi>P</mi><mi>c</mi></mrow><annotation encoding="application/x-tex">IPc</annotation></semantics></math>)
+(sensu Wrede et al., 2018.), is based on its mean individual weight
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>W</mi><mi>i</mi></msub><annotation encoding="application/x-tex">W_i</annotation></semantics></math>),
+the abundance
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>A</mi><mi>i</mi></msub><annotation encoding="application/x-tex">A_i</annotation></semantics></math>),
+the burrow type
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><msub><mi>T</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">BT_i</annotation></semantics></math>),
+feeding TYPE
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><msub><mi>T</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">FT_i</annotation></semantics></math>)
+and the depth of the injection pocket, in centimeter
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>I</mi><msub><mi>D</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">ID_i</annotation></semantics></math>);
+the station
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>I</mi><mi>P</mi><mi>c</mi></mrow><annotation encoding="application/x-tex">IPc</annotation></semantics></math>
+is then simply the sum of the species bio-irrigation potential.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>I</mi><mi>P</mi><mi>c</mi><mo>=</mo><munder><mo>∑</mo><mi>i</mi></munder><msup><msub><mi>W</mi><mi>i</mi></msub><mrow><mn>3</mn><mi>/</mi><mn>4</mn></mrow></msup><mo>×</mo><msub><mi>A</mi><mi>i</mi></msub><mo>×</mo><mi>B</mi><msub><mi>T</mi><mi>i</mi></msub><mo>×</mo><mi>F</mi><msub><mi>T</mi><mi>i</mi></msub><mo>×</mo><mi>I</mi><msub><mi>D</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">IPc = \sum_i {W_i}^{3/4} \times A_i \times BT_i \times FT_i \times ID_i</annotation></semantics></math></p>
 <ul>
-<li>Scores for the burrowtype, <span class="math inline">\(BT_i\)</span>
-are <span class="math inline">\(1\)</span> for epifauna, and species
-with internal irrigation (e.g. using siphons), <span class="math inline">\(2\)</span> for open irrigation (e.g. U- or Y-
-shaped burrows), and <span class="math inline">\(3\)</span> for blind
-ended irrigation (e.g. blind ended burrows, no burrow systems).</li>
-<li>Scores for feeding types, <span class="math inline">\(FT_i\)</span>
-are <span class="math inline">\(1\)</span> for surface filter feeders,
-<span class="math inline">\(2\)</span> for predators, <span class="math inline">\(3\)</span> for deposit feeders and <span class="math inline">\(4\)</span> for sub surface filter feeders.</li>
-<li>Injection pockets, <span class="math inline">\(IP_i\)</span>, at
-depths of 0-2, 2-5, 5-10 and &gt;10 cm depth get an ID score of <span class="math inline">\(1\)</span>, <span class="math inline">\(2\)</span>, <span class="math inline">\(3\)</span>
-and <span class="math inline">\(4\)</span> respectively.</li>
+<li>Scores for the burrowtype,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><msub><mi>T</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">BT_i</annotation></semantics></math>
+are
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>
+for epifauna, and species with internal irrigation (e.g. using siphons),
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>2</mn><annotation encoding="application/x-tex">2</annotation></semantics></math>
+for open irrigation (e.g. U- or Y- shaped burrows), and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>3</mn><annotation encoding="application/x-tex">3</annotation></semantics></math>
+for blind ended irrigation (e.g. blind ended burrows, no burrow
+systems).</li>
+<li>Scores for feeding types,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><msub><mi>T</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">FT_i</annotation></semantics></math>
+are
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>
+for surface filter feeders,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>2</mn><annotation encoding="application/x-tex">2</annotation></semantics></math>
+for predators,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>3</mn><annotation encoding="application/x-tex">3</annotation></semantics></math>
+for deposit feeders and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>4</mn><annotation encoding="application/x-tex">4</annotation></semantics></math>
+for sub surface filter feeders.</li>
+<li>Injection pockets,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>I</mi><msub><mi>P</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">IP_i</annotation></semantics></math>,
+at depths of 0-2, 2-5, 5-10 and &gt;10 cm depth get an ID score of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>2</mn><annotation encoding="application/x-tex">2</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>3</mn><annotation encoding="application/x-tex">3</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>4</mn><annotation encoding="application/x-tex">4</annotation></semantics></math>
+respectively.</li>
 </ul>
 <p>The bioturbation index can easily be estimated from the function
-<em>getDbIndex</em>, and the database <em>Traits_Db</em>. The
+<em>get_Db_index</em>, and the database <em>Traits_Db</em>. The
 bioirrigation index can be estimated from the function
-<em>getIrrIndex</em>, and the database <em>Traits_Irr</em>.</p>
+<em>get_irr_index</em>, and the database <em>Traits_Irr</em>.</p>
 <p>As not all MWTL taxa are represented in <em>Traits_Db</em> or
 <em>Traits_irr</em>, we use information on closely related species at
 the nearest taxonomic level, to also provide values for those taxa that
 are not represented. It suffices to pass the taxonomic information to
-function <em>getDbIndex</em> or <em>getIrrIndex</em> to achieve
+function <em>get_Db_index</em> or <em>get_irr_index</em> to achieve
 this.</p>
 <p>The functions return the total bioturbation or bioirrigation index
 for all stations, and the average BPc or IPC for all taxa.</p>
@@ -1190,27 +1277,30 @@ for all stations, and the average BPc or IPC for all taxa.</p>
 the data for 1995 only. Then the bioturbation and bioirrigation index
 are estimated based on these data.</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">MWTL1995</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span> <span class="op">(</span><span class="va">MWTL</span><span class="op">$</span><span class="va">density</span>, </span>
-<span>     <span class="fu"><a href="../reference/densityfun.html">getDensity</a></span><span class="op">(</span>descriptor <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>station<span class="op">=</span><span class="va">station</span><span class="op">)</span>,</span>
-<span>                subset     <span class="op">=</span> <span class="op">(</span><span class="va">year</span> <span class="op">==</span> <span class="fl">1995</span><span class="op">)</span>,</span>
+<code class="sourceCode R"><span><span class="va">MWTL1995</span> <span class="op">&lt;-</span> </span>
+<span>    <span class="fu"><a href="../reference/densityfun.html">get_density</a></span><span class="op">(</span>data       <span class="op">=</span> <span class="va">MWTL</span><span class="op">$</span><span class="va">density</span>, </span>
+<span>                descriptor <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>station <span class="op">=</span> <span class="va">station</span><span class="op">)</span>,</span>
+<span>                subset     <span class="op">=</span> <span class="va">year</span> <span class="op">==</span> <span class="fl">1995</span>,</span>
 <span>                taxon      <span class="op">=</span> <span class="va">taxon</span>,</span>
-<span>                value      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">density</span>, <span class="va">biomass</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> </span>
+<span>                value      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">density</span>, <span class="va">biomass</span><span class="op">)</span><span class="op">)</span> </span>
 <span></span>
-<span><span class="va">MWTLDb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">MWTL1995</span>, </span>
-<span>  <span class="fu"><a href="../reference/getIndices.html">getDbIndex</a></span> <span class="op">(</span>descriptor <span class="op">=</span> <span class="va">station</span>, </span>
-<span>              taxon      <span class="op">=</span> <span class="va">taxon</span>, </span>
-<span>              density    <span class="op">=</span> <span class="va">density</span>, </span>
-<span>              biomass    <span class="op">=</span> <span class="va">biomass</span>, </span>
-<span>              trait      <span class="op">=</span> <span class="va">Traits_Db</span>, </span>
-<span>              taxonomy   <span class="op">=</span> <span class="va">Taxonomy</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">MWTLDb</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="fu"><a href="../reference/getIndices.html">get_Db_index</a></span> <span class="op">(</span>data       <span class="op">=</span> <span class="va">MWTL1995</span>, </span>
+<span>                descriptor <span class="op">=</span> <span class="va">station</span>, </span>
+<span>                taxon      <span class="op">=</span> <span class="va">taxon</span>, </span>
+<span>                density    <span class="op">=</span> <span class="va">density</span>, </span>
+<span>                biomass    <span class="op">=</span> <span class="va">biomass</span>, </span>
+<span>                trait      <span class="op">=</span> <span class="va">Traits_Db</span>, </span>
+<span>                taxonomy   <span class="op">=</span> <span class="va">Taxonomy</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">MWTLIrr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">MWTL1995</span>, </span>
-<span>  <span class="fu"><a href="../reference/getIndices.html">getIrrIndex</a></span><span class="op">(</span>descriptor <span class="op">=</span> <span class="va">station</span>, </span>
-<span>              taxon      <span class="op">=</span> <span class="va">taxon</span>, </span>
-<span>              density    <span class="op">=</span> <span class="va">density</span>, </span>
-<span>              biomass    <span class="op">=</span> <span class="va">biomass</span>, </span>
-<span>              trait      <span class="op">=</span> <span class="va">Traits_irr</span>, </span>
-<span>              taxonomy   <span class="op">=</span> <span class="va">Taxonomy</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">MWTLIrr</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="fu"><a href="../reference/getIndices.html">get_irr_index</a></span><span class="op">(</span>data       <span class="op">=</span> <span class="va">MWTL1995</span>,</span>
+<span>                descriptor <span class="op">=</span> <span class="va">station</span>, </span>
+<span>                taxon      <span class="op">=</span> <span class="va">taxon</span>, </span>
+<span>                density    <span class="op">=</span> <span class="va">density</span>, </span>
+<span>                biomass    <span class="op">=</span> <span class="va">biomass</span>, </span>
+<span>                trait      <span class="op">=</span> <span class="va">Traits_irr</span>, </span>
+<span>                taxonomy   <span class="op">=</span> <span class="va">Taxonomy</span><span class="op">)</span></span></code></pre></div>
 <p>Both functions return a list with several data.frames:</p>
 <ul>
 <li>
@@ -1222,13 +1312,14 @@ descriptor here stations.</li>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">MWTLbpc</span>            <span class="op">&lt;-</span> <span class="va">MWTLDb</span><span class="op">$</span><span class="va">descriptor</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/row.names.html" class="external-link">row.names</a></span><span class="op">(</span><span class="va">MWTLbpc</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="cn">NULL</span></span>
+<span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">MWTLbpc</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">MWTLbpc</span><span class="op">$</span><span class="va">BPc</span>, decreasing<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>,<span class="op">]</span>, n<span class="op">=</span><span class="fl">10</span><span class="op">)</span>,</span>
 <span>             caption<span class="op">=</span><span class="st">"10 stations with largest bioturbation potential"</span>,</span>
 <span>             row.names<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <caption>10 stations with largest bioturbation potential</caption>
 <thead><tr class="header">
-<th align="left">descriptor</th>
+<th align="left">station</th>
 <th align="right">BPc</th>
 </tr></thead>
 <tbody>
@@ -1338,7 +1429,7 @@ descriptor here stations.</li>
 <table class="table">
 <caption>10 stations with largest bioirrigation potential</caption>
 <thead><tr class="header">
-<th align="left">descriptor</th>
+<th align="left">station</th>
 <th align="right">IPc</th>
 </tr></thead>
 <tbody>
@@ -1459,12 +1550,16 @@ is used to color the dots.</p>
 <span>                 <span class="va">MWTLipc</span>      , </span>
 <span>                 by          <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span> <span class="op">(</span><span class="va">BPCMWTL</span>, </span>
-<span>  <span class="fu"><a href="../reference/BtraitMap.html">mapBtrait</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span>, y<span class="op">=</span><span class="va">y</span>, colvar<span class="op">=</span><span class="va">BPc</span>, cex<span class="op">=</span><span class="fl">2</span>, main<span class="op">=</span><span class="st">"BPc for 1995"</span>,</span>
-<span>            pch<span class="op">=</span><span class="fl">18</span>, contours<span class="op">=</span><span class="va">MWTL</span><span class="op">$</span><span class="va">contours</span>, draw.levels<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="../reference/BtraitMap.html">map_key</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span>, colvar <span class="op">=</span> <span class="va">BPc</span>, </span>
+<span>          main <span class="op">=</span> <span class="st">"BPc for 1995"</span>,</span>
+<span>          contours <span class="op">=</span> <span class="va">MWTL</span><span class="op">$</span><span class="va">contours</span>, draw.levels <span class="op">=</span> <span class="cn">FALSE</span>, </span>
+<span>          pch <span class="op">=</span> <span class="fl">18</span>, cex <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span> <span class="op">(</span><span class="va">IPCMWTL</span>, </span>
-<span>  <span class="fu"><a href="../reference/BtraitMap.html">mapBtrait</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span>, y<span class="op">=</span><span class="va">y</span>, colvar<span class="op">=</span><span class="va">IPc</span>, cex<span class="op">=</span><span class="fl">2</span>, main<span class="op">=</span><span class="st">"IPc for 1995"</span>,</span>
-<span>            pch<span class="op">=</span><span class="fl">18</span>, contours<span class="op">=</span><span class="va">MWTL</span><span class="op">$</span><span class="va">contours</span>, draw.levels<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="BtraitData_files/figure-html/unnamed-chunk-26-1.png" width="960"></p>
+<span>  <span class="fu"><a href="../reference/BtraitMap.html">map_key</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span>, colvar <span class="op">=</span> <span class="va">IPc</span>, main <span class="op">=</span> <span class="st">"IPc for 1995"</span>,</span>
+<span>          contours <span class="op">=</span> <span class="va">MWTL</span><span class="op">$</span><span class="va">contours</span>, draw.levels <span class="op">=</span> <span class="cn">FALSE</span>, </span>
+<span>          pch <span class="op">=</span> <span class="fl">18</span>, cex <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="BtraitData_files/figure-html/unnamed-chunk-26-1.png" class="r-plt" alt="" width="960"></p>
 <div style="page-break-after: always;"></div>
 </div>
 </div>
@@ -1474,26 +1569,26 @@ is used to color the dots.</p>
 <div class="section level3">
 <h3 id="r-packages-and-data-sources">R-packages and data sources<a class="anchor" aria-label="anchor" href="#r-packages-and-data-sources"></a>
 </h3>
-<p>R Core Team (2022). <em>R: A Language and Environment for Statistical
-Computing</em>. R Foundation for Statistical Computing, Vienna, Austria.
-<a href="https://www.R-project.org/" class="external-link uri">https://www.R-project.org/</a>.</p>
-<p>Soetaert K (2021). <em>plot3D: Plotting Multi-Dimensional Data</em>.
-R package version 1.4, <a href="https://CRAN.R-project.org/package=plot3D" class="external-link uri">https://CRAN.R-project.org/package=plot3D</a>.</p>
-<p>Soetaert K, Beauchard O (2023). <em>Btrait: Working with Biological
-density, taxonomy, and trait composition data</em>. R package version
-0.0.0.</p>
-<p>Holstein Jan (2018). worms: Retrieving Aphia Information from World
-Register of Marine Species. R package version 0.2.2. <a href="https://CRAN.R-project.org/package=worms" class="external-link uri">https://CRAN.R-project.org/package=worms</a></p>
+<p>R Core Team (2022). R: A Language and Environment for Statistical
+Computing_. R Foundation for Statistical Computing, Vienna, Austria. <a href="https://www.R-project.org/" class="external-link uri">https://www.R-project.org/</a>.</p>
+<p>Soetaert K (2021). plot3D: Plotting Multi-Dimensional Data_. R
+package version 1.4, <a href="https://CRAN.R-project.org/package=plot3D" class="external-link uri">https://CRAN.R-project.org/package=plot3D</a>.</p>
+<p>Soetaert K, Beauchard O (2024). R-package Btrait: Working with
+Biological density, taxonomy, and trait composition data. Netherlands
+Institute of Sea Research. Data product created under the European
+Marine Observation Data Network (EMODnet) Biology Phase IV.</p>
+<p>Chamberlain S, Vanhoorne. B (2023). worrms: World Register of Marine
+Species (WoRMS) Client_. R package version 0.4.3, <a href="https://CRAN.R-project.org/package=worrms" class="external-link uri">https://CRAN.R-project.org/package=worrms</a>.</p>
 <p>EMODnet Biology (2022) Full Occurrence Data and Parameters downloaded
 from the EMODnet Biology project, consulted on 2022-08-05.</p>
 <p>Beauchard O, Brind’Amour A, Schratzberger M, Laffargue P, Hintzen NT,
 Somerfield PJ, Piet G (2021) A generic approach to develop a trait-based
 indicator of trawling-induced disturbance. Mar Ecol Prog Ser 675:35-52.
 <a href="https://doi.org/10.3354/meps13840" class="external-link uri">https://doi.org/10.3354/meps13840</a></p>
-<p>Olivier Beauchard, Kari Elsa Ellingsen, Murray S.A. Thompson, Gerjan
-Piet, Pascal Laffargue, Karline Soetaert, in press. Assessing sea floor
-functional diversity and vulnerability. Marine Ecology Progress
-Series</p>
+<p>Olivier Beauchard, Murray S.A. Thompson, Kari Elsa Ellingsen, Gerjan
+Piet, Pascal Laffargue, Karline Soetaert, 2023. Assessing sea floor
+functional diversity and vulnerability. Marine Ecology Progress Serie
+v708, p21-43, <a href="https://www.int-res.com/abstracts/meps/v708/p21-43/" class="external-link uri">https://www.int-res.com/abstracts/meps/v708/p21-43/</a></p>
 <p>Clare, David S. / Bolam, Stefan G. / McIlwaine, Paul S.O. / Garcia,
 Clement / Murray, Joanna M. / Eggleton, Jacqueline D. (2022). Ten key
 biological traits of marine benthic invertebrates surveyed in Northwest
@@ -1601,6 +1696,11 @@ to predict bioirrigation. Ecological indicators, 91, 737-743.</p>
 </table>
 <table class="table">
 <caption>contents of data.frame ‘abiotics’ from the MWTL data</caption>
+<colgroup>
+<col width="22%">
+<col width="62%">
+<col width="15%">
+</colgroup>
 <thead><tr class="header">
 <th align="center">name</th>
 <th align="center">description</th>
@@ -1698,9 +1798,39 @@ to predict bioirrigation. Ecological indicators, 91, 737-743.</p>
 <td align="center">-</td>
 </tr>
 <tr class="odd">
-<td align="center">SAR</td>
-<td align="center">swept area ratio (fisheries)</td>
+<td align="center">DRB</td>
+<td align="center">swept area ratio for dredge</td>
 <td align="center">m2/m2/year</td>
+</tr>
+<tr class="even">
+<td align="center">OT</td>
+<td align="center">swept area ratio for otter trawl</td>
+<td align="center">m2/m2/year</td>
+</tr>
+<tr class="odd">
+<td align="center">SN</td>
+<td align="center">swept area ratio for seines</td>
+<td align="center">m2/m2/year</td>
+</tr>
+<tr class="even">
+<td align="center">TBB</td>
+<td align="center">swept area ratio for beam trawl</td>
+<td align="center">m2/m2/year</td>
+</tr>
+<tr class="odd">
+<td align="center">sar</td>
+<td align="center">swept area ratio (fisheries), DRB +OT +SN +TBB</td>
+<td align="center">m2/m2/year</td>
+</tr>
+<tr class="even">
+<td align="center">subsar</td>
+<td align="center">swept area ratio (fisheries) &gt; 2cm</td>
+<td align="center">m2/m2/year</td>
+</tr>
+<tr class="odd">
+<td align="center">gpd</td>
+<td align="center">gear penetration depth</td>
+<td align="center">cm</td>
 </tr>
 </tbody>
 </table>
@@ -1727,13 +1857,13 @@ to predict bioirrigation. Ecological indicators, 91, 737-743.</p>
 <table class="table">
 <caption>contents of data.frame ‘fishing’ from the MWTL data</caption>
 <colgroup>
-<col width="14%">
-<col width="75%">
-<col width="9%">
+<col width="21%">
+<col width="70%">
+<col width="8%">
 </colgroup>
 <thead><tr class="header">
-<th align="center">var</th>
-<th align="center">metadata.NIOZdata.fishing.</th>
+<th align="center">name</th>
+<th align="center">description</th>
 <th align="center">units</th>
 </tr></thead>
 <tbody>
@@ -1764,18 +1894,14 @@ to predict bioirrigation. Ecological indicators, 91, 737-743.</p>
 <td align="center">-</td>
 </tr>
 <tr class="even">
-<td align="center">swim</td>
-<td align="center">proportion swimmers</td>
-<td align="center">-</td>
-</tr>
-<tr class="odd">
-<td align="center">Life.span</td>
-<td align="center">longevity, years</td>
+<td align="center">Age.at.maturity</td>
+<td align="center">Age at maturity</td>
 <td align="center">years</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="center">r</td>
-<td align="center">rate of increase, estimated as 5.31/lifespan</td>
+<td align="center">rate of increase, estimated as
+2.56/Age.at.maturity</td>
 <td align="center">/year</td>
 </tr>
 </tbody>
@@ -1841,6 +1967,11 @@ to predict bioirrigation. Ecological indicators, 91, 737-743.</p>
 </table>
 <table class="table">
 <caption>contents of data.frame ‘abiotics’ from the NSBS data</caption>
+<colgroup>
+<col width="22%">
+<col width="62%">
+<col width="15%">
+</colgroup>
 <thead><tr class="header">
 <th align="center">name</th>
 <th align="center">description</th>
@@ -1938,22 +2069,52 @@ to predict bioirrigation. Ecological indicators, 91, 737-743.</p>
 <td align="center">-</td>
 </tr>
 <tr class="odd">
-<td align="center">SAR</td>
-<td align="center">swept area ratio (fisheries)</td>
+<td align="center">DRB</td>
+<td align="center">swept area ratio for dredge</td>
 <td align="center">m2/m2/year</td>
+</tr>
+<tr class="even">
+<td align="center">OT</td>
+<td align="center">swept area ratio for otter trawl</td>
+<td align="center">m2/m2/year</td>
+</tr>
+<tr class="odd">
+<td align="center">SN</td>
+<td align="center">swept area ratio for seines</td>
+<td align="center">m2/m2/year</td>
+</tr>
+<tr class="even">
+<td align="center">TBB</td>
+<td align="center">swept area ratio for beam trawl</td>
+<td align="center">m2/m2/year</td>
+</tr>
+<tr class="odd">
+<td align="center">sar</td>
+<td align="center">swept area ratio (fisheries), DRB +OT +SN +TBB</td>
+<td align="center">m2/m2/year</td>
+</tr>
+<tr class="even">
+<td align="center">subsar</td>
+<td align="center">swept area ratio (fisheries) &gt; 2cm</td>
+<td align="center">m2/m2/year</td>
+</tr>
+<tr class="odd">
+<td align="center">gpd</td>
+<td align="center">gear penetration depth</td>
+<td align="center">cm</td>
 </tr>
 </tbody>
 </table>
 <table class="table">
 <caption>contents of data.frame ‘fishing’ from the NSBS data</caption>
 <colgroup>
-<col width="14%">
-<col width="75%">
-<col width="9%">
+<col width="21%">
+<col width="70%">
+<col width="8%">
 </colgroup>
 <thead><tr class="header">
-<th align="center">var</th>
-<th align="center">metadata.NIOZdata.fishing.</th>
+<th align="center">name</th>
+<th align="center">description</th>
 <th align="center">units</th>
 </tr></thead>
 <tbody>
@@ -1984,18 +2145,14 @@ to predict bioirrigation. Ecological indicators, 91, 737-743.</p>
 <td align="center">-</td>
 </tr>
 <tr class="even">
-<td align="center">swim</td>
-<td align="center">proportion swimmers</td>
-<td align="center">-</td>
-</tr>
-<tr class="odd">
-<td align="center">Life.span</td>
-<td align="center">longevity, years</td>
+<td align="center">Age.at.maturity</td>
+<td align="center">Age at maturity</td>
 <td align="center">years</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="center">r</td>
-<td align="center">rate of increase, estimated as 5.31/lifespan</td>
+<td align="center">rate of increase, estimated as
+4.165/Age.at.maturity</td>
 <td align="center">/year</td>
 </tr>
 </tbody>
@@ -3289,412 +3446,14 @@ database</caption>
 <div class="section level3">
 <h3 id="traits-and-modalities-in-the-cefas-database-traits_cefas">Traits and modalities in the CEFAS database Traits_cefas<a class="anchor" aria-label="anchor" href="#traits-and-modalities-in-the-cefas-database-traits_cefas"></a>
 </h3>
-<table class="table">
-<caption>Effect traits, modalities, values and scores in
-Traits_cefas</caption>
-<colgroup>
-<col width="28%">
-<col width="25%">
-<col width="26%">
-<col width="6%">
-<col width="7%">
-<col width="6%">
-</colgroup>
-<thead><tr class="header">
-<th align="center">colname</th>
-<th align="center">trait</th>
-<th align="center">modality</th>
-<th align="center">indic</th>
-<th align="center">value</th>
-<th align="center">score</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td align="center">sr_Less_than_10</td>
-<td align="center">Maximum size</td>
-<td align="center">&lt;10</td>
-<td align="center">1</td>
-<td align="center">5.00</td>
-<td align="center">0.00</td>
-</tr>
-<tr class="even">
-<td align="center">sr_11_to_20</td>
-<td align="center">Maximum size</td>
-<td align="center">11-20</td>
-<td align="center">1</td>
-<td align="center">15.00</td>
-<td align="center">0.20</td>
-</tr>
-<tr class="odd">
-<td align="center">sr_21_to_100</td>
-<td align="center">Maximum size</td>
-<td align="center">21-100</td>
-<td align="center">1</td>
-<td align="center">60.00</td>
-<td align="center">0.40</td>
-</tr>
-<tr class="even">
-<td align="center">sr_101_to_200</td>
-<td align="center">Maximum size</td>
-<td align="center">101-200</td>
-<td align="center">1</td>
-<td align="center">150.00</td>
-<td align="center">0.60</td>
-</tr>
-<tr class="odd">
-<td align="center">sr_201_to_500</td>
-<td align="center">Maximum size</td>
-<td align="center">201-500</td>
-<td align="center">1</td>
-<td align="center">350.00</td>
-<td align="center">0.80</td>
-</tr>
-<tr class="even">
-<td align="center">sr_More_than_500</td>
-<td align="center">Maximum size</td>
-<td align="center">&gt;500</td>
-<td align="center">1</td>
-<td align="center">750.00</td>
-<td align="center">1.00</td>
-</tr>
-<tr class="odd">
-<td align="center">m_Soft</td>
-<td align="center">Morphology</td>
-<td align="center">Soft</td>
-<td align="center">2</td>
-<td align="center">0.00</td>
-<td align="center">0.00</td>
-</tr>
-<tr class="even">
-<td align="center">m_Tunic</td>
-<td align="center">Morphology</td>
-<td align="center">Tunic</td>
-<td align="center">2</td>
-<td align="center">0.20</td>
-<td align="center">0.20</td>
-</tr>
-<tr class="odd">
-<td align="center">m_Exoskeleton</td>
-<td align="center">Morphology</td>
-<td align="center">Exoskeleton</td>
-<td align="center">2</td>
-<td align="center">0.40</td>
-<td align="center">0.40</td>
-</tr>
-<tr class="even">
-<td align="center">m_Crustose</td>
-<td align="center">Morphology</td>
-<td align="center">Crustose</td>
-<td align="center">2</td>
-<td align="center">0.60</td>
-<td align="center">0.60</td>
-</tr>
-<tr class="odd">
-<td align="center">m_Cushion</td>
-<td align="center">Morphology</td>
-<td align="center">Cushion</td>
-<td align="center">2</td>
-<td align="center">0.80</td>
-<td align="center">0.80</td>
-</tr>
-<tr class="even">
-<td align="center">m_Stalked</td>
-<td align="center">Morphology</td>
-<td align="center">Stalked</td>
-<td align="center">2</td>
-<td align="center">1.00</td>
-<td align="center">1.00</td>
-</tr>
-<tr class="odd">
-<td align="center">l_Less_than_1</td>
-<td align="center">Lifespan</td>
-<td align="center">&lt;1</td>
-<td align="center">3</td>
-<td align="center">0.50</td>
-<td align="center">0.00</td>
-</tr>
-<tr class="even">
-<td align="center">l_1_to_3</td>
-<td align="center">Lifespan</td>
-<td align="center">1-3</td>
-<td align="center">3</td>
-<td align="center">2.00</td>
-<td align="center">0.33</td>
-</tr>
-<tr class="odd">
-<td align="center">l_3_to_10</td>
-<td align="center">Lifespan</td>
-<td align="center">3-10</td>
-<td align="center">3</td>
-<td align="center">6.50</td>
-<td align="center">0.67</td>
-</tr>
-<tr class="even">
-<td align="center">l_More_than_10</td>
-<td align="center">Lifespan</td>
-<td align="center">&gt;10</td>
-<td align="center">3</td>
-<td align="center">15.00</td>
-<td align="center">1.00</td>
-</tr>
-<tr class="odd">
-<td align="center">ed_Asexual</td>
-<td align="center">Egg development location</td>
-<td align="center">Asexual</td>
-<td align="center">5</td>
-<td align="center">0.00</td>
-<td align="center">0.00</td>
-</tr>
-<tr class="even">
-<td align="center">ed_Sexual_pelagic</td>
-<td align="center">Egg development location</td>
-<td align="center">Sexual_pelagic</td>
-<td align="center">5</td>
-<td align="center">0.33</td>
-<td align="center">0.33</td>
-</tr>
-<tr class="odd">
-<td align="center">ed_Sexual_benthic</td>
-<td align="center">Egg development location</td>
-<td align="center">Sexual_benthic</td>
-<td align="center">5</td>
-<td align="center">0.67</td>
-<td align="center">0.67</td>
-</tr>
-<tr class="even">
-<td align="center">ed_Sexual_brooded</td>
-<td align="center">Egg development location</td>
-<td align="center">Sexual_brooded</td>
-<td align="center">5</td>
-<td align="center">1.00</td>
-<td align="center">1.00</td>
-</tr>
-<tr class="odd">
-<td align="center">ld_Pelagic_planktotrophic</td>
-<td align="center">Larva development location</td>
-<td align="center">Pelagic_planktotrophic</td>
-<td align="center">6</td>
-<td align="center">0.00</td>
-<td align="center">0.00</td>
-</tr>
-<tr class="even">
-<td align="center">ld_Pelagic_lecithotrophic</td>
-<td align="center">Larva development location</td>
-<td align="center">Pelagic_lecithotrophic</td>
-<td align="center">6</td>
-<td align="center">0.50</td>
-<td align="center">0.50</td>
-</tr>
-<tr class="odd">
-<td align="center">ld_Benthic_direct</td>
-<td align="center">Larva development location</td>
-<td align="center">Benthic_direct</td>
-<td align="center">6</td>
-<td align="center">1.00</td>
-<td align="center">1.00</td>
-</tr>
-<tr class="even">
-<td align="center">lh_Tube_dwelling</td>
-<td align="center">Living habit</td>
-<td align="center">Tube_dwelling</td>
-<td align="center">7</td>
-<td align="center">0.00</td>
-<td align="center">0.00</td>
-</tr>
-<tr class="odd">
-<td align="center">lh_Burrow_dwelling</td>
-<td align="center">Living habit</td>
-<td align="center">Burrow_dwelling</td>
-<td align="center">7</td>
-<td align="center">0.20</td>
-<td align="center">0.20</td>
-</tr>
-<tr class="even">
-<td align="center">lh_Free_living</td>
-<td align="center">Living habit</td>
-<td align="center">Free_living</td>
-<td align="center">7</td>
-<td align="center">0.40</td>
-<td align="center">0.40</td>
-</tr>
-<tr class="odd">
-<td align="center">lh_Crevice_hole_under_stones</td>
-<td align="center">Living habit</td>
-<td align="center">Crevice_hole_under_stones</td>
-<td align="center">7</td>
-<td align="center">0.60</td>
-<td align="center">0.60</td>
-</tr>
-<tr class="even">
-<td align="center">lh_Epi_endo_biotic</td>
-<td align="center">Living habit</td>
-<td align="center">Epi_endo_biotic</td>
-<td align="center">7</td>
-<td align="center">0.80</td>
-<td align="center">0.80</td>
-</tr>
-<tr class="odd">
-<td align="center">lh_Attached_to_substratum</td>
-<td align="center">Living habit</td>
-<td align="center">Attached_to_substratum</td>
-<td align="center">7</td>
-<td align="center">1.00</td>
-<td align="center">1.00</td>
-</tr>
-<tr class="even">
-<td align="center">sp_Surface</td>
-<td align="center">Sediment position</td>
-<td align="center">Surface</td>
-<td align="center">8</td>
-<td align="center">0.00</td>
-<td align="center">0.00</td>
-</tr>
-<tr class="odd">
-<td align="center">sp_Shallow_infauna_0_to_5cm</td>
-<td align="center">Sediment position</td>
-<td align="center">Shallow_infauna_0_to_5cm</td>
-<td align="center">8</td>
-<td align="center">2.50</td>
-<td align="center">0.33</td>
-</tr>
-<tr class="even">
-<td align="center">sp_Mid_depth_infauna_5_to_10cm</td>
-<td align="center">Sediment position</td>
-<td align="center">Mid_depth_infauna_5_to_10cm</td>
-<td align="center">8</td>
-<td align="center">7.50</td>
-<td align="center">0.67</td>
-</tr>
-<tr class="odd">
-<td align="center">sp_Deep_infauna_more_than_10cm</td>
-<td align="center">Sediment position</td>
-<td align="center">Deep_infauna_more_than_10cm</td>
-<td align="center">8</td>
-<td align="center">15.00</td>
-<td align="center">1.00</td>
-</tr>
-<tr class="even">
-<td align="center">f_Suspension</td>
-<td align="center">Feeding mode</td>
-<td align="center">Suspension</td>
-<td align="center">9</td>
-<td align="center">0.00</td>
-<td align="center">0.00</td>
-</tr>
-<tr class="odd">
-<td align="center">f_Surface_deposit</td>
-<td align="center">Feeding mode</td>
-<td align="center">Surface_deposit</td>
-<td align="center">9</td>
-<td align="center">0.20</td>
-<td align="center">0.20</td>
-</tr>
-<tr class="even">
-<td align="center">f_Subsurface_deposit</td>
-<td align="center">Feeding mode</td>
-<td align="center">Subsurface_deposit</td>
-<td align="center">9</td>
-<td align="center">0.40</td>
-<td align="center">0.40</td>
-</tr>
-<tr class="odd">
-<td align="center">f_Scavenger</td>
-<td align="center">Feeding mode</td>
-<td align="center">Scavenger</td>
-<td align="center">9</td>
-<td align="center">0.60</td>
-<td align="center">0.60</td>
-</tr>
-<tr class="even">
-<td align="center">f_Predator</td>
-<td align="center">Feeding mode</td>
-<td align="center">Predator</td>
-<td align="center">9</td>
-<td align="center">0.80</td>
-<td align="center">0.80</td>
-</tr>
-<tr class="odd">
-<td align="center">f_Parasite</td>
-<td align="center">Feeding mode</td>
-<td align="center">Parasite</td>
-<td align="center">9</td>
-<td align="center">1.00</td>
-<td align="center">1.00</td>
-</tr>
-<tr class="even">
-<td align="center">mob_Sessile</td>
-<td align="center">Mobility</td>
-<td align="center">Sessile</td>
-<td align="center">10</td>
-<td align="center">0.00</td>
-<td align="center">0.00</td>
-</tr>
-<tr class="odd">
-<td align="center">mob_Swim</td>
-<td align="center">Mobility</td>
-<td align="center">Swim</td>
-<td align="center">10</td>
-<td align="center">0.33</td>
-<td align="center">0.33</td>
-</tr>
-<tr class="even">
-<td align="center">mob_Crawl_creep_climb</td>
-<td align="center">Mobility</td>
-<td align="center">Crawl_creep_climb</td>
-<td align="center">10</td>
-<td align="center">0.67</td>
-<td align="center">0.67</td>
-</tr>
-<tr class="odd">
-<td align="center">mob_Burrower</td>
-<td align="center">Mobility</td>
-<td align="center">Burrower</td>
-<td align="center">10</td>
-<td align="center">1.00</td>
-<td align="center">1.00</td>
-</tr>
-<tr class="even">
-<td align="center">b_Diffusive_mixing</td>
-<td align="center">Bioturbation mode</td>
-<td align="center">Diffusive_mixing</td>
-<td align="center">11</td>
-<td align="center">0.00</td>
-<td align="center">0.00</td>
-</tr>
-<tr class="odd">
-<td align="center">b_Surface_deposition</td>
-<td align="center">Bioturbation mode</td>
-<td align="center">Surface_deposition</td>
-<td align="center">11</td>
-<td align="center">0.25</td>
-<td align="center">0.25</td>
-</tr>
-<tr class="even">
-<td align="center">b_Upward_conveyor</td>
-<td align="center">Bioturbation mode</td>
-<td align="center">Upward_conveyor</td>
-<td align="center">11</td>
-<td align="center">0.50</td>
-<td align="center">0.50</td>
-</tr>
-<tr class="odd">
-<td align="center">b_Downward_conveyer</td>
-<td align="center">Bioturbation mode</td>
-<td align="center">Downward_conveyer</td>
-<td align="center">11</td>
-<td align="center">0.75</td>
-<td align="center">0.75</td>
-</tr>
-<tr class="even">
-<td align="center">b_None</td>
-<td align="center">Bioturbation mode</td>
-<td align="center">None</td>
-<td align="center">11</td>
-<td align="center">1.00</td>
-<td align="center">1.00</td>
-</tr>
-</tbody>
-</table>
+<p>Only the first part is shown (else the vignette does not build).</p>
+<pre><code><span><span class="co">##            colname        trait modality indic value score units</span></span>
+<span><span class="co">## 1  sr_Less_than_10 Maximum size      &lt;10     1     5   0.0    mm</span></span>
+<span><span class="co">## 2      sr_11_to_20 Maximum size    11-20     1    15   0.2    mm</span></span>
+<span><span class="co">## 3     sr_21_to_100 Maximum size   21-100     1    60   0.4    mm</span></span>
+<span><span class="co">## 4    sr_101_to_200 Maximum size  101-200     1   150   0.6    mm</span></span>
+<span><span class="co">## 5    sr_201_to_500 Maximum size  201-500     1   350   0.8    mm</span></span>
+<span><span class="co">## 6 sr_More_than_500 Maximum size     &gt;500     1   750   1.0    mm</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="traits-and-modalities-in-the-bioturbation-database-traits_db">Traits and modalities in the bioturbation database Traits_Db<a class="anchor" aria-label="anchor" href="#traits-and-modalities-in-the-bioturbation-database-traits_db"></a>
@@ -3857,28 +3616,26 @@ Traits_irr</caption>
 </table>
 </div>
 </div>
-  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
 </div>
 
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p>
-<p>Developed by Karline Soetaert.</p>
+  <p>Developed by Karline Soetaert.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>
 </div>
 
-  
 
-  
+
+
 
   </body>
 </html>
