@@ -10,7 +10,7 @@ template:
   opengraph:
     image:
       src: man/figures/Logo_hex.png
-      alt: Btrai logo
+      alt: Btrait logo
 reference:
 - title: Density
   desc: Functions to estimate density under fishing

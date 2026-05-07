@@ -3,6 +3,7 @@ title: "R-package Btrait: working with biological data and trait information"
 author: "Karline Soetaert and Olivier Beauchard"
 date: "18 November 2022"
 output:
+  pdf_document: default
   html_document:
     df_print: paged
     toc: true
@@ -10,7 +11,6 @@ output:
     toc_float: true
     code_folding: show
     theme: flatly
-  pdf_document: default
 vignette: >
   %\VignetteIndexEntry{R-package Btrait: working with biological data and trait information} 
   %\VignetteEngine{knitr::rmarkdown} 
@@ -553,7 +553,7 @@ for (i in 2:length(nscore))
             colvar = cwm[,i],         #color-variable
            
             contours = MWTL$contours, #contourlines
-            draw.levels = TRUE,
+            draw.levels = FALSE,
            
             main    = nscore[i],       #main title
             clab    = nunits[i],       #title above color bar
@@ -606,7 +606,7 @@ Finally the results are plotted.
 MWTLswim <- merge(MWTL$stations, MWTLswim)
 
 map_MWTL(x = MWTLswim$x, y = MWTLswim$y, colvar = MWTLswim$pSwimmer, 
-         type = "Legend", 
+         type = "Legend", draw.levels = FALSE,
          main = "fraction swimmers", clab = "[0-1]",
          col = ramp.col(c("lightgreen", "darkblue"), n=100))
 ```

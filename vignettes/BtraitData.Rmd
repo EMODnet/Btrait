@@ -3,6 +3,7 @@ title: "Benthic density and trait databases in R-package Btrait"
 author: "Karline Soetaert and Olivier Beauchard"
 date: "18 November 2022"
 output:
+  pdf_document: default
   html_document:
     df_print: paged
     toc: true
@@ -10,11 +11,12 @@ output:
     toc_float: true
     code_folding: show
     theme: flatly
-  pdf_document: default
+  word_document:
+    toc: true
 vignette: >
   %\VignetteIndexEntry{Benthic density and trait databases in R-package Btrait} 
   %\VignetteEngine{knitr::rmarkdown} 
-  %\VignetteEncoding{UTF-8}\n"
+  %\VignetteEncoding{UTF-8}\n"    
 ---
 
 ```{r setup, include=FALSE, message=FALSE, warning=FALSE}
@@ -135,7 +137,7 @@ par(las = 1, oma = c(0, 0, 1, 0),
 
 with(MWTLab, 
   map_key(x = x, y = y, colvar = c(1:4)[area], 
-          contours = MWTL$contours, draw.levels = TRUE, 
+          contours = MWTL$contours, draw.levels = FALSE, 
           col = 1:4, colkey = FALSE, 
           main = "MWTL station positions", clab = "m",
           pch = c(15:18)[area], cex = 2))
@@ -156,7 +158,7 @@ par(las=1, oma=c(0,0,1,0), cex.axis=1.2, cex.main=2, cex.lab=1.2)
 with(NSBSabio, 
   map_key(x = x, y = y, colvar = depth, 
           main = "NSBS station positions", clab = "m", 
-          contours = NSBS$contours, draw.levels = TRUE, 
+          contours = NSBS$contours, draw.levels = FALSE, 
           pch = 16, cex = 0.9 ))
 
 # remove the "ICES" from the station names
@@ -291,7 +293,7 @@ NSBS.summ <-
                value      = density)
 ```
 
-```{r, fig.width=11, fig.height=12}
+```{r, fig.width=11, fig.height=12, eval = TRUE}
 par(mfrow = c(2,2))
 par(las = 1, oma = c(1, 1, 1, 1), cex.main = 2)
 
@@ -299,26 +301,27 @@ with(merge(MWTL$stations, MWTL.summ$density,
            by = 1), 
   map_key(x = x, y = y, colvar = density, 
           main = "MWTL total density", clab = "ind/m2", 
-          contours = MWTL$contours, draw.levels = TRUE, 
+          contours = MWTL$contours, draw.levels = FALSE, 
           pch = 18, cex = 2 ))
 
 with(merge(NSBS$stations, NSBS.summ$density, 
            by = 1), 
   map_key(x = x, y = y, colvar = density, 
           main = "NSBS total density", clab = "ind/m2", 
-          contours = NSBS$contours, draw.levels = TRUE,
+          contours = NSBS$contours, draw.levels = FALSE,
           pch = 18, cex = 2))
 
 with(merge(MWTL$stations, MWTL.summ$taxa, 
            by = 1), 
-  map_key( x=x, y=y, colvar=taxon, main="MWTL number of taxa", 
-            clab="/m2", contours=MWTL$contours, draw.levels=TRUE, 
-            pch=18, cex=2))
+  map_key(x = x, y = y, colvar = taxon, 
+          main = "MWTL number of taxa", clab = "/m2", 
+          contours = MWTL$contours, draw.levels = FALSE, 
+          pch = 18, cex = 2))
 with(merge(NSBS$stations, NSBS.summ$taxa, 
            by = 1), 
   map_key(x = x, y = y, colvar=taxon, 
           main = "NSBS number of taxa", clab = "/m2", 
-          contours = NSBS$contours, draw.levels = TRUE,
+          contours = NSBS$contours, draw.levels = FALSE,
           pch = 18, cex = 2))
 ```
 
@@ -676,12 +679,12 @@ IPCMWTL <- merge(MWTL$stations,
 with (BPCMWTL, 
   map_key(x = x, y = y, colvar = BPc, 
           main = "BPc for 1995",
-          contours = MWTL$contours, draw.levels = TRUE, 
+          contours = MWTL$contours, draw.levels = FALSE, 
           pch = 18, cex = 2))
 
 with (IPCMWTL, 
   map_key(x = x, y = y, colvar = IPc, main = "IPc for 1995",
-          contours = MWTL$contours, draw.levels = TRUE, 
+          contours = MWTL$contours, draw.levels = FALSE, 
           pch = 18, cex = 2))
 ```
 
