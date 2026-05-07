@@ -1,0 +1,7 @@
+pandoc: 3.8.3
+pkgdown: 2.2.0
+pkgdown_sha: ~
+articles:
+  Btrait: Btrait.html
+  BtraitData: BtraitData.html
+last_built: 2026-05-07T12:53Z
