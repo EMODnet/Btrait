@@ -319,8 +319,7 @@ The NIOZ trait database is described in the following paper:
 
 Beauchard O, Brind'Amour A, Schratzberger M, Laffargue P, Hintzen NT, Somerfield PJ, Piet G (2021) A generic approach to develop a trait-based indicator of trawling-induced disturbance. Mar Ecol Prog Ser 675:35-52. https://doi.org/10.3354/meps13840 
 
-Beauchard, O., Murray S.A. Thompson, Kari Elsa Ellingsen, Gerjan Piet, Pascal Laffargue, Karline Soetaert, 2023. Assessing sea floor functional diversity and vulnerability. Marine Ecology Progress Serie v708, p21-43, https://www.int-res.com/abstracts/meps/v708/p21-43/
-
+Beauchard, O., Murray S.A. Thompson, Kari Elsa Ellingsen, Gerjan Piet, Pascal Laffargue, Karline Soetaert, 2023. Assessing sea floor functional diversity and vulnerability. Marine Ecology Progress Serie v708, p21-43, 
 The CEFAS trait dataset:
 
 Clare, David S. Bolam, Stefan G. McIlwaine, Paul S.O. Garcia, Clement Murray, Joanna M. Eggleton, Jacqueline D.  (2022). Ten key biological traits of marine benthic invertebrates surveyed in Northwest Europe. Cefas, UK. V2. doi: https://doi.org/10.14466/CefasDataHub.123

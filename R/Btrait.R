@@ -83,7 +83,7 @@ OneFactor <- function(frame){  # a data.frame
 # tapply makes a list for each y with unique values of y
 # stack concatenates them to a data.frame
 
-unique.df <- function(x, y){
+unique_df <- function(x, y){
   stack ( tapply(INDEX=as.data.frame(x), 
                  X    =y, 
                  FUN  =function(x) unique(x)))[,2:1]

@@ -175,7 +175,7 @@ get_density <- function(data,           # data.frame/tibble with data
     value <- data.frame(value[ii,])
    } else value <- data.frame(value[ii])
 
-   AVG <- unique.df(descriptor, as.character(taxon))
+   AVG <- unique_df(descriptor, as.character(taxon))
    colnames(AVG) <- c("descriptor", "taxon")
 
    for (i in 1:ncol(value)){

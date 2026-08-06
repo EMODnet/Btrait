@@ -6,3 +6,8 @@
 ^docs$
 ^pkgdown$
 ^\.github$
+^\.positai$
+^\.claude$
+_pkgdown.yml$
+pkgdown.yml$
+README.md$

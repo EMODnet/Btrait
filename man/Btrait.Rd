@@ -7,7 +7,7 @@
 }
 \description{
   Trait-based analyses of macrofauna data. 
-  \if{html}{\figure{Btrait.png}{options: width=80 alt="Btrait" align='right'}}
+  \if{html}{\figure{Btrait.png}{options: width=80 alt="Btrait"}}
 \if{latex}{\figure{Btrait.png}{options: width=0.5in  align='right'}}
 }
 
@@ -28,7 +28,7 @@ https://doi.org/10.3354/meps13840
 
 Beauchard, O., Murray S.A. Thompson, Kari Elsa Ellingsen, Gerjan Piet, Pascal Laffargue, 
 Karline Soetaert, 2023. Assessing sea floor functional diversity and vulnerability. 
-Marine Ecology Progress Serie v708, p21-43, https://www.int-res.com/abstracts/meps/v708/p21-43/
+Marine Ecology Progress Serie v708, p21-43
 
 For density data sets:
 
